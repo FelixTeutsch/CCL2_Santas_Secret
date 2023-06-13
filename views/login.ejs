@@ -2,24 +2,19 @@
 <html lang="en">
 
 	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="/public/stylesheets/main.css">
+		<%-include('components/head')%>
 		<link rel="stylesheet" href="/public/stylesheets/login_register.css">
 		<title>Login</title>
 	</head>
 
-	<body>
-		<h1>Login</h1>
+	<body class="flex-box center vertical">
 
-		<form action="#" method="post">
-			<div class="input_area">
-				<label for="username">Username</label>
-				<input type="text" class="login_text" name="username" placeholder="Input Username">
-			</div>
-			<div class="input_area">
-				<label for="password">Password</label>
-				<input type="text" class="login_text" name="password" placeholder="Input Password">
+		<%-include('components/back')%>
+		<form action="#" method="post" class="input_form" id="login">
+			<h1 class="heading">Login</h1>
+			<div class="input_area  flex-box vertical">
+				<%-include('components/input_field', {name:"username", label:"Username", autocomplete:"nickname", type:"text"})%>
+				<%- include('components/input_field', {name:"password", label:"Password", type:"password", autocomplete:"current-password"}) %>
 			</div>
 			<input type="submit" value="Login">
 			<p>Don't have an account yet? <a href="/register">Register</a> now!</p>

@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', function (req, res, next) {
-	res.render('template', { title: 'Express' });
+	// TODO: Check if the user is logged in
+	// If he is, show landing page
+	// Else show this:
+	res.render('no_login');
 });
 
 router

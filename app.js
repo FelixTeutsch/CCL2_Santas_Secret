@@ -8,7 +8,7 @@ const ejs = require('ejs');
 const fs = require('fs');
 
 // Port
-const port = 3000;
+const port = 42069;
 
 // Create an Express app
 const app = express();

@@ -1,0 +1,63 @@
+/**************/
+/*Input Fields*/
+/**************/
+.input_field {
+	margin-top: -7px;
+	display: flex;
+	flex-direction: column;
+}
+.input_field label {
+	transform: translate(24px, 50%);
+	background-color: var(--colorBackground);
+	padding: 0 12px;
+	margin: 0;
+	width: fit-content;
+	transition: all ease-in-out 300ms;
+}
+.input_field input {
+	padding: 12px 24px;
+	background-color: transparent;
+
+	border: var(--borderLight);
+	border-radius: var(--border-radius);
+}
+
+.input_field:focus-within label {
+	color: var(--colorHeading);
+}
+.input_field:focus-within input {
+	border: var(--borderGreen);
+	outline: none; /* Remove browser highlight */
+}
+
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	-webkit-box-shadow: 0 0 0 30px var(--colorBackground) inset !important;
+}
+/*Change text in autofill textbox*/
+input:-webkit-autofill {
+	-webkit-text-fill-color: var(--colorText) !important;
+}
+
+.button {
+	transition: all ease-in-out 300ms;
+	border: none;
+	background-color: var(--colorLink);
+	font: var(--dFontButton);
+	padding: 8px 64px;
+	width: 100%;
+	border-radius: var(--border-radius);
+	color: var(--colorBackground);
+	cursor: pointer;
+	border: var(--borderPink);
+	text-decoration: none;
+}
+.button:hover {
+	box-shadow: 0px 0px 8px var(--colorLinkActive);
+	background-color: var(--colorLinkActive);
+	border: var(--borderPinkActive);
+	color: var(--colorBackground);
+}

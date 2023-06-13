@@ -1,0 +1,25 @@
+.signup_options {
+	display: flex;
+	gap: 24px;
+	align-items: center;
+	width: fit-content;
+}
+.text_area {
+	height: fit-content;
+	flex-direction: row;
+}
+.content {
+	display: flex;
+	height: fit-content;
+	width: fit-content;
+	align-items: center;
+	justify-content: center;
+	gap: 64px;
+	box-shadow: 0px 0px 12px var(--colorText);
+	padding: 24px 32px;
+	border-radius: var(--border-radius);
+}
+.content svg {
+	max-height: 400px;
+	width: auto;
+}
