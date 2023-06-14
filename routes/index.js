@@ -3,9 +3,10 @@ const router = express.Router();
 
 router.get('/', function (req, res, next) {
 	// TODO: Check if the user is logged in
-	// If he is, show landing page
+	// If he is, show Home page
+	// res.redirect('/home');
 	// Else show this:
-	res.render('no_login');
+	res.render('landing');
 });
 
 router
@@ -28,5 +29,7 @@ router.all('/logout', (req, res, next) => {
 	// TODO: Implement Logout
 	res.redirect('/');
 });
+
+router.all('/home', (req, res, next) => res.render('home'));
 
 module.exports = router;

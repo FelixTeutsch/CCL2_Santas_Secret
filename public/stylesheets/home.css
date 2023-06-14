@@ -1,0 +1,70 @@
+.iconButton_area {
+	display: flex;
+	flex-direction: row;
+	gap: 12px;
+}
+main {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	height: calc(100% - 82px);
+}
+.no_games_area {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.game_card {
+	display: flex;
+	flex-direction: row;
+	border-radius: var(--border-radius);
+	overflow: hidden;
+	gap: 24px;
+	text-decoration: none;
+	padding: 12px;
+	align-items: center;
+}
+.game_card img {
+	width: 54px;
+	height: 54px;
+	border-radius: 54px;
+	object-fit: cover;
+	border: var(--borderOrange);
+}
+.game_card .icon_area {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	flex-grow: 1;
+	justify-content: space-between;
+	width: 250px;
+	align-items: flex-end;
+}
+.game_card p,
+.game_card h2 {
+	margin: 0;
+	padding: 0;
+}
+.game_card .icon_area {
+	gap: 12px;
+}
+
+.game_area {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	align-items: center;
+}
+.game_area p {
+	margin: 8px;
+}
+
+@media (max-width: 1080px) {
+	.iconButton_area {
+		width: 100%;
+		justify-content: space-between;
+	}
+}

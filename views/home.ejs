@@ -3,18 +3,43 @@
 
 	<head>
 		<%- include('components/head') %>
+		<link rel="stylesheet" href="/public/stylesheets/home.css">
+		<link rel="stylesheet" href="/public/stylesheets/icon_button.css">
+		<link rel="stylesheet" href="/public/stylesheets/games.css">
 		<title>Home</title>
 	</head>
 
 	<body>
 		<nav>
-			<%- include('components/head') %>
+			<%- include('components/navbar', {page: "home"}) %>
+			<div class="iconButton_area">
+				<!-- TODO: Check if notifications -> show notifications_active icon -->
+				<%- include('components/iconButton', {icon: "notifications", locaton: "/notifications"}) %>
+				<%- include('components/iconButton', {icon: "add", locaton: "/group/create"}) %>
+			</div>
+
 		</nav>
-
 		<main>
+			<h1>Your Games</h1>
 
+			<!-- TODO: check if any games exist -->
+			<% if(false) { %>
+			<div class="no_games_area">
+				<p>
+					You are currently part of no group.<br>
+					<a href="/group">Create</a>, or <a href="/search">Join</a> a group...
+				</p>
+			</div>
+			<% } else { %>
+			<div class="game_area">
+
+				<%-include('components/game', {stage:"paused"})%>
+				<%-include('components/game', {stage:"running"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<p><a href="/groups/history">View</a> old groups</p>
+			</div>
+			<% } %>
 		</main>
-
 	</body>
 
 </html>

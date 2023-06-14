@@ -1,0 +1,43 @@
+.paused {
+	box-shadow: 0px 0px 12px var(--colorSubtitle);
+	border: var(--borderDark);
+}
+
+.paused * {
+	color: var(--colorSubtitle);
+}
+
+.paused span {
+	color: var(--colorSubtitle);
+}
+.paused:hover {
+	border: var(--borderOrange);
+}
+
+.running {
+	box-shadow: 0px 0px 12px var(--colorHeading);
+	border: var(--borderDark);
+}
+.running * {
+	color: var(--colorHeading);
+}
+.running span {
+	color: var(--colorHeading);
+}
+.running:hover {
+	border: var(--borderGreen);
+}
+
+.ended {
+	box-shadow: 0px 0px 12px var(--colorLink);
+	border: var(--borderDark);
+}
+.ended * {
+	color: var(--colorLink);
+}
+.ended span {
+	color: var(--colorLink);
+}
+.ended:hover {
+	border: var(--borderPink);
+}
