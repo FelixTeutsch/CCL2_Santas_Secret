@@ -3,10 +3,12 @@
 	gap: 24px;
 	align-items: center;
 	width: fit-content;
+	padding: 48px 0;
 }
 .text_area {
 	height: fit-content;
-	flex-direction: row;
+	display: flex;
+	flex-direction: column;
 }
 .content {
 	display: flex;
@@ -22,4 +24,19 @@
 .content svg {
 	max-height: 400px;
 	width: auto;
+}
+
+@media (max-width: 1080px) {
+	body {
+		padding: 0;
+	}
+	.content {
+		box-shadow: none;
+	}
+	.content svg {
+		display: none;
+	}
+	.signup_options {
+		align-self: center;
+	}
 }

@@ -1,6 +1,7 @@
 :root {
 	/*Colors*/
 	--colorBackground: #272935;
+	--colorBackgroundInactive: hsla(231, 15%, 18%, 0.5);
 	--colorHeading: #b3e59a;
 	--colorSubtitle: #fed090;
 	--colorSubtitleActive: #ffcc80;
@@ -36,6 +37,7 @@
 }
 
 body {
+	margin: 0;
 	width: 100vw;
 	max-width: 100vw;
 	height: 100vh;

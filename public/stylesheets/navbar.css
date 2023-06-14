@@ -1,0 +1,120 @@
+/********/
+/*Navbar*/
+/********/
+.navbar {
+	transition: all ease-in-out 0.3s;
+	position: fixed;
+	top: 24px;
+	right: 24px;
+	background-color: var(--colorHeading);
+	border-radius: var(--border-radius);
+	display: flex;
+	align-items: start;
+	justify-content: center;
+	height: calc(40px + 32px);
+}
+
+.navbar_list {
+	margin: 0;
+	padding: 16px;
+	list-style-type: none;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	transition: all ease-in-out 0.3s; /* Add transition effect */
+}
+
+.navbar:hover {
+	height: 236px;
+}
+
+.navbar_item_container {
+	display: flex;
+	flex-direction: row;
+	transition: all ease-in-out 0.3s; /* Add transition effect */
+}
+
+.navbar:hover .navbar_item_container:first-child span:first-child,
+.navbar_item_container:first-child span:last-child {
+	display: none;
+}
+.navbar:hover .navbar_item_container:first-child span:last-child,
+.navbar_item_container:first-child span:first-child {
+	display: block;
+}
+.navbar_item_container:not(:first-child) {
+	opacity: 0; /* Set initial opacity to 0 */
+	visibility: hidden; /* Hide the menu items initially */
+	transform: translateY(-100%); /* Move the menu items off-screen initially */
+}
+.navbar:hover .navbar_item_container:not(:first-child) {
+	opacity: 1; /* Show the menu items on hover */
+	visibility: visible;
+	transform: translateY(0); /* Move the menu items into position on hover */
+}
+
+.navbar_item {
+	display: flex;
+	flex-direction: row;
+	color: var(--colorBackgroundInactive);
+	text-decoration: none;
+	align-items: center;
+	justify-content: start;
+	gap: 16px;
+	font: var(--dFontSubtitles);
+}
+
+.navbar_item span {
+	color: var(--colorBackgroundInactive);
+	font-size: 32px;
+}
+
+.navbar_item_container:first-child .navbar_item,
+.navbar_item_container:first-child .navbar_item span,
+.active_link span,
+.active_link {
+	color: var(--colorBackground);
+}
+
+.navbar_item_container:not(:first-child) .navbar_item:hover,
+.navbar_item_container:not(:first-child) .navbar_item:hover span {
+	color: var(--colorBackground);
+	font-weight: bold;
+}
+
+@media (max-width: 1080px) {
+	.navbar {
+		width: 100vw;
+		top: auto;
+		bottom: 0;
+		left: 0;
+		border-radius: 0;
+		height: auto;
+		padding: 0 64px;
+	}
+
+	.navbar:hover {
+		height: auto;
+	}
+
+	.navbar_list {
+		flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	.burger {
+		display: none;
+	}
+
+	.navbar_list > * {
+		transform: translateY(0) !important;
+		opacity: 1 !important;
+		visibility: visible !important;
+	}
+	.navbar_item {
+		flex-direction: column;
+		font: var(--dFontDesription);
+		gap: 4px;
+	}
+}

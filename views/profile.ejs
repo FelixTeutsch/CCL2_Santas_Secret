@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<%-include('components/head')%>
+		<link rel="stylesheet" href="/public/stylesheets/profile.css">
+		<title>Profile</title>
+	</head>
+
+	<body class="flex-box center">
+		<header>
+			<%-include('components/navbar', {page: "profile"})%>
+		</header>
+		<main>
+			<!-- TODO: Make responsive -->
+			<img src="/public/images/profile/" alt="Your Profile Picture">
+			<div class="profile_area">
+				<h1>FixiFax</h1>
+				<h2>Felix Teutsch</h2>
+				<ul class="settings_area">
+					<li>
+						<a href="/profile/edit">
+							<span class="material-symbols-rounded">
+								manage_accounts
+							</span>
+							Edit
+						</a>
+					</li>
+					<li>
+						<a href="/profile/share">
+							<span class="material-symbols-rounded">
+								share
+							</span>
+							Share
+						</a>
+					</li>
+					<li>
+						<a href="/profile/disable">
+							<span class="material-symbols-rounded">
+								delete
+							</span>
+							Disable
+						</a>
+					</li>
+				</ul>
+			</div>
+		</main>
+	</body>
+
+</html>

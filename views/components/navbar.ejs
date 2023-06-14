@@ -1,0 +1,39 @@
+<nav class="navbar">
+	<ul class="navbar_list">
+		<li class="navbar_item_container burger">
+			<a href="#" class="navbar_item">
+				<span class="material-symbols-rounded">
+					menu
+				</span>
+				<span class="material-symbols-rounded">
+					menu_open
+				</span>
+				Menu
+			</a>
+		</li>
+		<li class="navbar_item_container">
+			<a href="/home" class="navbar_item <%=page==="home" ? 'active_link':'' %>">
+				<span class="material-symbols-rounded">
+					home
+				</span>
+				Home
+			</a>
+		</li>
+		<li class="navbar_item_container">
+			<a href="/search" class="navbar_item <%=page==="search" ? 'active_link':'' %>">
+				<span class="material-symbols-rounded">
+					search
+				</span>
+				Search
+			</a>
+		</li>
+		<li class="navbar_item_container">
+			<a href="/profile" class="navbar_item <%=page==="profile" ? 'active_link':'' %>">
+				<span class="material-symbols-rounded">
+					person
+				</span>
+				Profile
+			</a>
+		</li>
+	</ul>
+</nav>

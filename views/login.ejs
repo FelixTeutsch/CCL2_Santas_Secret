@@ -9,17 +9,22 @@
 
 	<body class="flex-box center vertical">
 
-		<%-include('components/back')%>
-		<form action="#" method="post" class="input_form" id="login">
-			<h1 class="heading">Login</h1>
-			<div class="input_area  flex-box vertical">
-				<%-include('components/input_field', {name:"username", label:"Username", autocomplete:"nickname", type:"text"})%>
-				<%- include('components/input_field', {name:"password", label:"Password", type:"password", autocomplete:"current-password"}) %>
-			</div>
-			<input type="submit" value="Login">
-			<p>Don't have an account yet? <a href="/register">Register</a> now!</p>
-		</form>
-
+		<header>
+			<nav>
+				<%-include('components/back')%>
+			</nav>
+		</header>
+		<main>
+			<form action="#" method="post" class="input_form" id="login">
+				<h1 class="heading">Login</h1>
+				<div class="input_area  flex-box vertical">
+					<%-include('components/input_field', {name:"username", label:"Username", autocomplete:"nickname", type:"text"})%>
+					<%- include('components/input_field', {name:"password", label:"Password", type:"password", autocomplete:"current-password"}) %>
+				</div>
+				<input type="submit" value="Login">
+				<p>Don't have an account yet? <a href="/register">Register</a> now!</p>
+			</form>
+		</main>
 	</body>
 
 </html>

@@ -2,11 +2,11 @@
 const mySQL = require('mysql');
 
 // const config = mySQL.createConnection({
-//     host: 'atp.fhstp.ac.at',
-//     port: '8007',
-//     user: process.env.DB_USERNAME,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_NAME
+// 	host: 'cc221036-10065.node.fhstp.io',
+// 	port: '3306',
+// 	user: process.env.DB_USERNAME,
+// 	password: process.env.DB_PASSWORD,
+// 	database: process.env.DB_NAME,
 // });
 
 // Local DB
