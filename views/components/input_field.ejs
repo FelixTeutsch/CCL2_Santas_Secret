@@ -1,4 +1,4 @@
 <div class="input_field">
-	<label for="<%= name %>"><%= label %></label>
+	<label for="<%= label.toLowerCase().replace(/ /g, '_') %>"><%= label %></label>
 	<input type="<%= type %>" class="login_text" name="<%= label.toLowerCase().replace(/ /g, '_') %>" placeholder="<%= label %>" required autocomplete="<%= autocomplete %>">
 </div>

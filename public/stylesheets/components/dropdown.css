@@ -1,0 +1,85 @@
+.dropdown {
+	display: flex;
+	flex-direction: column;
+}
+.dropdown select {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	padding: 12px 24px;
+	background-color: transparent;
+	border: var(--borderLight);
+	border-radius: var(--border-radius);
+	color: var(--colorText);
+	font: var(--dFontBigText);
+	cursor: pointer;
+}
+
+.dropdown select:focus {
+	outline: none;
+	border: var(--borderGreen);
+}
+
+/* Dropdown Label */
+.dropdown label {
+	font: var(--dFontDesription);
+	transform: translate(24px, 50%);
+	background-color: var(--colorBackground);
+	padding: 0 12px;
+	margin: 0;
+	width: fit-content;
+	transition: all ease-in-out 300ms;
+}
+
+.dropdown:focus-within label {
+	color: var(--colorHeading);
+}
+
+/* Change the white to any color */
+.dropdown select:-webkit-autofill,
+.dropdown select:-webkit-autofill:hover,
+.dropdown select:-webkit-autofill:focus,
+.dropdown select:-webkit-autofill:active {
+	-webkit-box-shadow: 0 0 0 30px var(--colorBackground) inset !important;
+	-webkit-text-fill-color: var(--colorText) !important;
+	font-size: 24px;
+}
+
+/* Apply same styles to button class for consistency */
+.button {
+	transition: all ease-in-out 300ms;
+	border: none;
+	background-color: var(--colorLink);
+	font: var(--dFontButton);
+	padding: 8px 64px;
+	width: 100%;
+	border-radius: var(--border-radius);
+	color: var(--colorBackground);
+	cursor: pointer;
+	border: var(--borderPink);
+	text-decoration: none;
+}
+
+.button:hover {
+	box-shadow: 0px 0px 8px var(--colorLinkActive);
+	background-color: var(--colorLinkActive);
+	border: var(--borderPinkActive);
+	color: var(--colorBackground);
+}
+
+.dropdown select option {
+	padding: 12px 24px;
+	background-color: var(--colorBackground);
+	color: var(--colorText);
+	cursor: pointer;
+}
+
+.dropdown select option:hover {
+	background-color: var(--colorLink);
+	color: var(--colorBackground);
+}
+
+.dropdown select option:selected {
+	background-color: var(--colorLinkActive);
+	color: var(--colorBackground);
+}

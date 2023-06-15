@@ -23,6 +23,15 @@ main {
 	flex-direction: column;
 	gap: 24px;
 	align-items: center;
+	width: 600px;
+	height: 100%;
+	border: var(--borderLight);
+	padding: 24px;
+	border-radius: var(--border-radius);
+	overflow-y: auto;
+}
+.game_area .game_card {
+	width: 100%;
 }
 .game_area p {
 	margin: 8px;
@@ -32,5 +41,8 @@ main {
 	.iconButton_area {
 		width: 100%;
 		justify-content: space-between;
+	}
+	.game_area {
+		height: calc(100vh - 96px - 250px);
 	}
 }

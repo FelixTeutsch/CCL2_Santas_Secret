@@ -51,6 +51,11 @@ main img:hover {
 	border-bottom: var(--borderLight);
 }
 
+.settings_area li:hover a,
+.settings_area li:hover span {
+	color: var(--colorTextActive);
+}
+
 @media (max-width: 1080px) {
 	main {
 		flex-direction: column;

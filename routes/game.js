@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-// TODO: Implement All Groups View
-router.all('/', (req, res, next) => res.render('allGroups'));
+// TODO: Implement All games View
+router.all('/', (req, res, next) => res.redirect('/home'));
 
-// TODO: Render Group, Make sure group is not Hidden & Implement Logic
-router.all('/:uuid', (req, res, next) => res.render('group'));
+router.all('/create', (req, res, next) => res.render('game/create'));
 
-// TODO: Implement Group Chat View & Logic
+// TODO: Render game, Make sure game is not Hidden & Implement Logic
+router.all('/:uuid', (req, res, next) => res.render('game/game'));
+
+// TODO: Implement game Chat View & Logic
 router.all('/:uuid/chat', (req, res, next) => res.render('chat'));
 
 // TODO: Implement Settings View & Logic

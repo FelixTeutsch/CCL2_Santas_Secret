@@ -23,7 +23,7 @@
 			</div>
 
 			<ul class="search_categories">
-				<li class="active_category">
+				<li id="active_category">
 					<span class="material-symbols-rounded">
 						workspaces
 					</span>
@@ -33,7 +33,7 @@
 					<span class="material-symbols-rounded">
 						groups
 					</span>
-					Groups
+					Games
 				</li>
 				<li>
 					<span class="material-symbols-rounded">
@@ -45,6 +45,17 @@
 			<div class="result_area">
 				<%-include('components/game', {stage:"paused"})%>
 				<%-include('components/game', {stage:"running"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
 				<%-include('components/game', {stage:"ended"})%>
 			</div>
 		</main>

@@ -13,7 +13,7 @@ router
 	.route('/register')
 	.post((req, res, next) => {
 		// TODO: Implement register Logic
-		res.redirect('/');
+		res.redirect('/home');
 	})
 	.get((req, res, next) => res.render('register'));
 
@@ -21,7 +21,7 @@ router
 	.route('/login')
 	.post((req, res, next) => {
 		// TODO: Implement Login Logic
-		res.redirect('/');
+		res.redirect('/home');
 	})
 	.get((req, res, next) => res.render('login'));
 

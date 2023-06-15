@@ -19,6 +19,7 @@
 
 	/*Border*/
 	--borderLight: solid 2px var(--colorText);
+	--borderLightActive: solid 2px var(--colorTextActive);
 	--borderDark: solid 2px var(--colorBackground);
 	--borderGreen: solid 2px var(--colorHeading);
 	--borderOrange: solid 2px var(--colorSubtitle);
@@ -46,7 +47,6 @@ body {
 	padding: 48px 48px;
 	background-color: var(--colorBackground);
 }
-
 .flex-box {
 	display: flex;
 	flex-direction: row;

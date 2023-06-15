@@ -4,7 +4,7 @@
 	<head>
 		<%- include('components/head') %>
 		<link rel="stylesheet" href="/public/stylesheets/home.css">
-		<link rel="stylesheet" href="/public/stylesheets/icon_button.css">
+		<link rel="stylesheet" href="/public/stylesheets/components/icon_button.css">
 		<link rel="stylesheet" href="/public/stylesheets/games.css">
 		<title>Home</title>
 	</head>
@@ -15,7 +15,7 @@
 			<div class="iconButton_area">
 				<!-- TODO: Check if notifications -> show notifications_active icon -->
 				<%- include('components/iconButton', {icon: "notifications", locaton: "/notifications"}) %>
-				<%- include('components/iconButton', {icon: "add", locaton: "/group/create"}) %>
+				<%- include('components/iconButton', {icon: "add", locaton: "/game/create", label:"Create"}) %>
 			</div>
 
 		</nav>
@@ -26,8 +26,8 @@
 			<% if(false) { %>
 			<div class="no_games_area">
 				<p>
-					You are currently part of no group.<br>
-					<a href="/group">Create</a>, or <a href="/search">Join</a> a group...
+					You are currently part of no game.<br>
+					<a href="/game">Create</a>, or <a href="/search">Join</a> a game...
 				</p>
 			</div>
 			<% } else { %>
@@ -36,7 +36,22 @@
 				<%-include('components/game', {stage:"paused"})%>
 				<%-include('components/game', {stage:"running"})%>
 				<%-include('components/game', {stage:"ended"})%>
-				<p><a href="/groups/history">View</a> old groups</p>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<%-include('components/game', {stage:"ended"})%>
+				<p><a href="/game/history">View</a> old games or <a href="/game/create">Create</a> a new one</p>
 			</div>
 			<% } %>
 		</main>

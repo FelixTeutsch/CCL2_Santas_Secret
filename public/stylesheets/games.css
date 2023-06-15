@@ -1,5 +1,5 @@
 .paused {
-	box-shadow: 0px 0px 12px var(--colorSubtitle);
+	box-shadow: 0px 0px 4px var(--colorSubtitle);
 	border: var(--borderDark);
 }
 
@@ -15,7 +15,7 @@
 }
 
 .running {
-	box-shadow: 0px 0px 12px var(--colorHeading);
+	box-shadow: 0px 0px 4px var(--colorHeading);
 	border: var(--borderDark);
 }
 .running * {
@@ -29,7 +29,7 @@
 }
 
 .ended {
-	box-shadow: 0px 0px 12px var(--colorLink);
+	box-shadow: 0px 0px 4px var(--colorLink);
 	border: var(--borderDark);
 }
 .ended * {
@@ -52,6 +52,8 @@
 	text-decoration: none;
 	padding: 12px;
 	align-items: center;
+	max-height: fit-content;
+	min-height: 88px;
 }
 .game_card img {
 	width: 54px;
@@ -64,15 +66,21 @@
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	flex-grow: 1;
 	justify-content: space-between;
-	width: 250px;
 	align-items: flex-end;
 }
 .game_card p,
 .game_card h2 {
 	margin: 0;
 	padding: 0;
+	width: 100%;
+}
+.game_card p {
+	color: var(--colorTextActive);
+}
+
+.game_card .text_area {
+	flex-grow: 1;
 }
 .game_card .icon_area {
 	gap: 12px;

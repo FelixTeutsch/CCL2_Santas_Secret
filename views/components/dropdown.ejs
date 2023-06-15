@@ -1,0 +1,8 @@
+<div class="dropdown">
+	<label for="<%= label.toLowerCase().replace(/ /g, '_') %>"><%= label %></label>
+	<select name="<%= label.toLowerCase().replace(/ /g, '_') %>" class="login_text" required>
+		<% for(let i = 0; i < options.length; i++) { %>
+		<option value="<%= options[i] %>"><%= options[i] %></option>
+		<% } %>
+	</select>
+</div>

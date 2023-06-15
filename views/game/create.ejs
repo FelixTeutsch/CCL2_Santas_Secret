@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<%-include('../components/head')%>
+		<link rel="stylesheet" href="/public/stylesheets/game/create.css">
+		<link rel="stylesheet" href="/public/stylesheets/components/dropdown.css">
+
+		<title>Create Game</title>
+	</head>
+
+	<body>
+		<nav>
+			<%-include('../components/back')%>
+			<%-include('../components/navbar', {page: "home"})%>
+		</nav>
+		<main class="flex-box center">
+			<form action="#" method="post" class="input_form">
+				<%-include('../components/input_field', {label: "Game Name", type: "text",autocomplete: "game-name"})%>
+				<%-include('../components/input_field', {label: "Member Count", type: "number",autocomplete: "game-member-count"})%>
+
+
+
+
+				<%-include('../components/dropdown', {label: "Member Count", type: "number", options: ['Visible','Unlisted','Hidden']})%>
+
+
+
+
+			</form>
+		</main>
+	</body>
+
+</html>

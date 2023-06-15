@@ -29,13 +29,13 @@ app.use(fileUpload());
 // Define your routes here
 const indexRoute = require('./routes/index');
 const apiRoute = require('./routes/api');
-const groupRouter = require('./routes/group');
+const gameRouter = require('./routes/game');
 const profileRouter = require('./routes/profile');
 const searchRouter = require('./routes/search');
 
 app.use('/', indexRoute); // Also handles register, login, logout!
 app.use('/api', apiRoute);
-app.use('/group', groupRouter);
+app.use('/game', gameRouter);
 app.use('/profile', profileRouter);
 app.use('/search', searchRouter);
 
