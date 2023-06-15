@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+
+		<%-include('components/head')%>
+		<link rel="stylesheet" href="/public/stylesheets/search.css">
+		<link rel="stylesheet" href="/public/stylesheets/games.css">
+		<title>Search</title>
+	</head>
+
+	<body class="flex-box">
+		<header>
+			<%-include('components/navbar', {page:"search"})%>
+		</header>
+		<main>
+
+			<div class="search_area">
+				<input type="text" name="search" id="search" placeholder="Search...">
+				<span class="material-symbols-rounded">
+					search
+				</span>
+			</div>
+
+			<ul class="search_categories">
+				<li class="active_category">
+					<span class="material-symbols-rounded">
+						workspaces
+					</span>
+					All
+				</li>
+				<li>
+					<span class="material-symbols-rounded">
+						groups
+					</span>
+					Groups
+				</li>
+				<li>
+					<span class="material-symbols-rounded">
+						person
+					</span>
+					People
+				</li>
+			</ul>
+			<div class="result_area">
+				<%-include('components/game', {stage:"paused"})%>
+				<%-include('components/game', {stage:"running"})%>
+				<%-include('components/game', {stage:"ended"})%>
+			</div>
+		</main>
+	</body>
+
+</html>

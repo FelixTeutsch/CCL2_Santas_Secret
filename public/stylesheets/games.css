@@ -41,3 +41,39 @@
 .ended:hover {
 	border: var(--borderPink);
 }
+
+/*ELEMENT STYLE*/
+.game_card {
+	display: flex;
+	flex-direction: row;
+	border-radius: var(--border-radius);
+	overflow: hidden;
+	gap: 24px;
+	text-decoration: none;
+	padding: 12px;
+	align-items: center;
+}
+.game_card img {
+	width: 54px;
+	height: 54px;
+	border-radius: 54px;
+	object-fit: cover;
+	border: var(--borderOrange);
+}
+.game_card .icon_area {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	flex-grow: 1;
+	justify-content: space-between;
+	width: 250px;
+	align-items: flex-end;
+}
+.game_card p,
+.game_card h2 {
+	margin: 0;
+	padding: 0;
+}
+.game_card .icon_area {
+	gap: 12px;
+}

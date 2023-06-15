@@ -125,3 +125,11 @@ a:hover {
 .back:hover * {
 	color: var(--colorTextActive);
 }
+
+span {
+	user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+}

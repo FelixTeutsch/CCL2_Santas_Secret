@@ -1,0 +1,110 @@
+main {
+	width: 600px;
+	height: 100vh;
+}
+body {
+	justify-content: center;
+}
+.search_area {
+	display: flex;
+	width: 100%;
+	height: fit-content;
+	background-color: var(--colorText);
+	overflow: hidden;
+	border-radius: var(--border-radius);
+	justify-content: center;
+	align-items: center;
+}
+.search_area input {
+	font: var(--dFontBigText);
+	font-weight: normal;
+	color: var(--colorBackground);
+
+	padding: 12px 24px;
+	width: 100%;
+	border: none;
+	background-color: transparent;
+}
+
+.search_area input:active,
+.search_area input:focus {
+	border: none;
+	outline: none; /* Remove browser highlight */
+}
+
+.input_field input:focus-within {
+	border: var(--borderGreen);
+	outline: none;
+}
+
+.search_area input:-webkit-autofill,
+.search_area input:-webkit-autofill:hover,
+.search_area input:-webkit-autofill:focus,
+.search_area input:-webkit-autofill:active {
+	-webkit-box-shadow: 0 0 0 30px var(--colorBackground) inset !important;
+	-webkit-text-fill-color: var(--colorText) !important;
+}
+
+.search_area span {
+	color: var(--colorBackground);
+	font-size: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 80px;
+	height: 53px;
+}
+.search_area span:hover {
+	cursor: pointer;
+}
+
+.result_area {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 100%;
+}
+
+.search_categories {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	list-style-type: none;
+	justify-content: space-between;
+	padding: 0 42px;
+	border-bottom: var(--borderLight);
+}
+.search_categories li {
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 12px 0;
+	gap: 4px;
+}
+.search_categories li span {
+	font-size: 32px;
+}
+.search_categories li {
+	font: var(--dFontDesription);
+	width: 100%;
+}
+.search_categories li:nth-child(2) {
+	border-left: var(--borderLight);
+	border-right: var(--borderLight);
+}
+
+.search_categories li:hover,
+.search_categories li:hover span {
+	font-weight: bold;
+}
+
+.active_category {
+}
+
+@media (max-width: 1080px) {
+	main {
+		height: calc(100vh - 82px);
+	}
+}
