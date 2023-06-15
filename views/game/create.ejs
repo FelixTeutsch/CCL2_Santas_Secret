@@ -18,15 +18,11 @@
 			<form action="#" method="post" class="input_form">
 				<%-include('../components/input_field', {label: "Game Name", type: "text",autocomplete: "game-name"})%>
 				<%-include('../components/input_field', {label: "Member Count", type: "number",autocomplete: "game-member-count"})%>
-
-
-
-
+				<%-include('../components/input_field', {label: "Start Date", type: "datetime-local",autocomplete: "game-start-date"})%>
+				<%-include('../components/input_field', {label: "Number of Circles", type: "number",autocomplete: "game-number-of-curcles"})%>
+				<p>The number of circles defines how many people are in a row before you arrive at the start again. (Set 0 for a circle that goes through all people)</p>
 				<%-include('../components/dropdown', {label: "Member Count", type: "number", options: ['Visible','Unlisted','Hidden']})%>
-
-
-
-
+				<input type="submit" value="Creat Group" class="button">
 			</form>
 		</main>
 	</body>

@@ -42,6 +42,25 @@ input:-webkit-autofill:active {
 
 .button {
 	transition: all ease-in-out 300ms;
+	background-color: var(--colorSubtitle);
+	font: var(--dFontButton);
+	padding: 8px 64px;
+	width: 100%;
+	border-radius: var(--border-radius);
+	color: var(--colorBackground);
+	cursor: pointer;
+	border: var(--borderOrange);
+	text-decoration: none;
+}
+.button:hover,
+.button:hover a {
+	box-shadow: 0px 0px 8px var(--colorSubtitleActive);
+	background-color: var(--colorSubtitleActive);
+	border: var(--borderOrangeActive);
+	color: var(--colorBackground);
+}
+.button_pink {
+	transition: all ease-in-out 300ms;
 	border: none;
 	background-color: var(--colorLink);
 	font: var(--dFontButton);
@@ -53,9 +72,16 @@ input:-webkit-autofill:active {
 	border: var(--borderPink);
 	text-decoration: none;
 }
-.button:hover {
+.button_pink:hover,
+.button_pink:hover a {
 	box-shadow: 0px 0px 8px var(--colorLinkActive);
 	background-color: var(--colorLinkActive);
 	border: var(--borderPinkActive);
 	color: var(--colorBackground);
+}
+
+/*Style for Date Time*/
+.input_field_element::-webkit-calendar-picker-indicator {
+	/* filter: invert(100%) hue-rotate(77deg) saturate(11%) brightness(87%); */
+	filter: invert(100%) sepia(17%) saturate(741%) hue-rotate(40deg) brightness(103%) contrast(77%);
 }

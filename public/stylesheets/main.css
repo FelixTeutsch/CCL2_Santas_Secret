@@ -93,14 +93,16 @@ a:hover {
 }
 
 .textBig,
-.input_field input {
+.input_field input,
+.dropdown select {
 	font: var(--dFontBigText);
 	font-weight: normal;
 	color: var(--colorText);
 }
 
 .description,
-.input_field label {
+.input_field label,
+.dropdown label {
 	font: var(--dFontDesription);
 	font-weight: light;
 	color: var(--colorText);
