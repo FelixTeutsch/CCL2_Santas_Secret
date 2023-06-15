@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<%- include('../components/head') %>
+		<link rel="stylesheet" href="/public/stylesheets/game/games.css">
+		<link rel="stylesheet" href="/public/stylesheets/components/icon_button.css">
+		<title>Game xxx</title>
+	</head>
+
+	<body>
+		<nav>
+			<%-include('../components/back')%>
+			<%-include('../components/navbar', {page: "home"})%>
+		</nav>
+		<menu>
+			<div class="game_area">
+				<img src="/public/images/icons/game.png" alt="Game Image">
+				<h1 class="subtitle">Funny Game 2k23</h1>
+			</div>
+			<div class="your_person">
+
+				<p>You got:</p>
+				<div class="person_segment">
+					<img src="/public/images/profile/image.png" alt="User Picture">
+					<h2>Felix Teutsch</h2>
+					<%-include('../components/iconButton', {icon:'forum', locaton:'/game/<group_uuid>/chat'})%>
+				</div>
+
+			</div>
+			<div class="who_got_you">
+
+			</div>
+		</menu>
+	</body>
+
+</html>
