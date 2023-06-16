@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const userController = require('../controller/userController.js');
 
 router.get('/', function (req, res, next) {
 	// TODO: Check if the user is logged in
@@ -11,10 +12,7 @@ router.get('/', function (req, res, next) {
 
 router
 	.route('/register')
-	.post((req, res, next) => {
-		// TODO: Implement register Logic
-		res.redirect('/home');
-	})
+	.post(userController.registerUser)
 	.get((req, res, next) => res.render('register'));
 
 router

@@ -1,140 +1,129 @@
 const { config } = require('../services/database');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
+const userModel = require('../model/userModel');
 
 // Create a new user
-let createUser = (userData) =>
-	new Promise((resolve, reject) => {
-		const { username, password, first_name, last_name, birthday, gender, visibility } = userData;
-		const U_ID = uuidv4();
+function createUser(req, res, next) {
+	userModel
+		.create(req.body)
+		.then((result) => res.status(201).json({ message: 'User created successfully' }))
+		.catch((error) => res.status(500).json({ error: 'Failed to create user', message: error }));
+}
 
-		bcrypt.hash(password, 10, (err, hashedPassword) => {
-			if (err) {
-				reject(err);
-				return;
-			}
-
-			const sql = 'INSERT INTO `user` (`U_ID`, `username`, `password`, `first_name`, `last_name`, `birthday`, `gender`, `visibility`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-			const values = [U_ID, username, hashedPassword, first_name, last_name, birthday, gender, visibility];
-
-			config.query(sql, values, (error, results) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(results);
-				}
-			});
+function getAllUsers(req, res, next) {
+	userModel
+		.getAll()
+		.then((users) => {
+			res.status(200).json(users);
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).json({ error: 'Failed to fetch users', message: error });
 		});
-	});
+}
 
-// Get all users
-let getAllUsers = () =>
-	new Promise((resolve, reject) => {
-		const sql = 'SELECT * FROM `user` WHERE visibility = "Visible"';
-
-		config.query(sql, (error, results) => {
-			if (error) {
-				reject(error);
+function getUser(req, res, next) {
+	console.log('User requested: ', req.params.U_ID);
+	userModel
+		.get(req.params.U_ID)
+		.then((user) => {
+			if (user) {
+				res.status(200).json(user);
 			} else {
-				resolve(results);
+				res.status(404).json({ error: 'User not found' });
 			}
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).json({ error: 'Failed to fetch user', message: error });
 		});
-	});
+}
 
-// Get all users that corelate to the search value
-let findUser = (searchValue) =>
-	new Promise((resolve, reject) => {
-		const sql = 'SELECT * FROM `user` WHERE `visibility`= "Visible" AND (`U_ID` = ? OR `username` LIKE ?)';
-		const values = [searchValue, `%${searchValue}%`];
-
-		config.query(sql, values, (error, results) => {
-			if (error) {
-				reject(error);
+function searchUser(req, res, next) {
+	console.log('User requested: ', req.params.U_ID);
+	userModel
+		.search(req.params.U_ID)
+		.then((user) => {
+			if (user) {
+				res.status(200).json(user);
 			} else {
-				resolve(results);
+				res.status(404).json({ error: 'User not found' });
 			}
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).json({ error: 'Failed to fetch user', message: error });
 		});
-	});
-
-// Get a specific user
-let getUser = (U_ID) =>
-	new Promise((resolve, reject) => {
-		const sql = 'SELECT * FROM `user` WHERE `U_ID` = ?';
-		const values = [U_ID];
-
-		config.query(sql, values, (error, results) => {
-			if (error) {
-				reject(error);
+}
+function updateUser(req, res, next) {
+	if (Object.keys(req.body).length === 0) {
+		res.status(400).json({ error: 'Request body is empty' });
+		return;
+	}
+	userModel
+		.update(req.params.U_ID, req.body)
+		.then((affectedRows) => {
+			if (affectedRows === 0) {
+				res.status(404).json({ error: 'User not found' });
 			} else {
-				resolve(results[0]);
+				res.status(200).json({ message: 'User updated successfully' });
 			}
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).json({ error: 'Failed to update user', message: error });
 		});
-	});
+}
 
-// Update a user
-let updateUser = (U_ID, userData) =>
-	new Promise((resolve, reject) => {
-		const { username, password, first_name, last_name, birthday, gender, visibility } = userData;
+function checkUserCredentials(req, res, next) {
+	if (Object.keys(req.body).length === 0 || !req.body.username || !req.body.password) {
+		const fields = ['username', 'password'];
+		res.status(400).json({ error: 'Request body is empty or necessary fields are missing', fields });
+		return;
+	}
 
-		bcrypt.hash(password, 10, (err, hashedPassword) => {
-			if (err) {
-				reject(err);
-				return;
-			}
+	const { username, password } = req.body;
 
-			const sql = 'UPDATE `user` SET `username` = ?, `password` = ?, `first_name` = ?, `last_name` = ?, `birthday` = ?, `gender` = ?, `visibility` = ? WHERE `U_ID` = ?';
-			const values = [username, hashedPassword, first_name, last_name, birthday, gender, visibility, U_ID];
-
-			config.query(sql, values, (error, results) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(results.affectedRows);
-				}
-			});
-		});
-	});
-
-// Delete a user
-let deleteUser = (U_ID) =>
-	new Promise((resolve, reject) => {
-		const sql = 'DELETE FROM `user` WHERE `U_ID` = ?';
-		const values = [U_ID];
-
-		config.query(sql, values, (error, results) => {
-			if (error) {
-				reject(error);
+	userModel
+		.checkCredentials(username, password)
+		.then((user) => {
+			if (user) {
+				res.status(200).json({ message: 'Credentials are correct', user });
 			} else {
-				resolve(results.affectedRows);
+				res.status(401).json({ error: 'Invalid credentials' });
 			}
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).json({ error: 'Failed to check credentials', message: error });
 		});
-	});
+}
 
-let checkUserCredentials = (username, password) =>
-	new Promise((resolve, reject) => {
-		const sql = 'SELECT * FROM `user` WHERE `username` = ?';
-		const values = [username];
+function deleteUser(req, res, next) {
+	if (Object.keys(req.body).length === 0) {
+		res.status(400).json({ error: 'Request body is empty' });
+		return;
+	}
 
-		config.query(sql, values, (error, results) => {
-			if (error) {
-				reject(error);
+	deleteUser(req.params.U_ID)
+		.then((affectedRows) => {
+			if (affectedRows === 0) {
+				res.status(404).json({ error: 'User not found' });
 			} else {
-				const user = results[0];
-				if (user) {
-					bcrypt.compare(password, user.password, (err, isMatch) => {
-						if (err) {
-							reject(err);
-						} else if (isMatch) {
-							resolve(user);
-						} else {
-							resolve(null);
-						}
-					});
-				} else {
-					resolve(null);
-				}
+				res.status(200).json({ message: 'User deleted successfully' });
 			}
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).json({ error: 'Failed to delete user', message: error });
 		});
-	});
+}
 
-module.exports = { createUser, getAllUsers, findUser, getUser, updateUser, deleteUser, checkUserCredentials };
+function availableUsername(req, res, next) {
+	userModel
+		.available(req.params.username)
+		.then((availableUsers) => {})
+		.catch((err) => res.status(500).json({ error: 'Failed to check username', message: error }));
+}
+module.exports = { createUser, getAllUsers, getUser, searchUser, updateUser, deleteUser, checkUserCredentials, availableUsername };

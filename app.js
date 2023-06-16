@@ -26,6 +26,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(fileUpload());
 
+// SERVE PUBLIC FILES:
+// Serve static files from the "public" directory
+app.use('/public', express.static('public', { fallthrough: true }));
+
 // Define your routes here
 const indexRoute = require('./routes/index');
 const apiRoute = require('./routes/api');
@@ -34,15 +38,13 @@ const profileRouter = require('./routes/profile');
 const searchRouter = require('./routes/search');
 
 app.use('/', indexRoute); // Also handles register, login, logout!
-app.use('/api', apiRoute);
 app.use('/game', gameRouter);
-app.use('/profile', profileRouter);
 app.use('/search', searchRouter);
+app.use('/profile', profileRouter);
 
-// SERVE PUBLIC FILES:
-// Serve static files from the "public" directory
-app.use('/public', express.static('public', { fallthrough: true }));
-// Custom error-handling middleware for handling static file not found
+app.use('/api', apiRoute);
+
+// Custom error-handling middleware for handling static file not found, api error and general page errors. Use next(); to make it cleaner
 app.use((req, res, next) => {
 	const resourcePath = req.url;
 	console.log('Unknown file Requested:', resourcePath);
@@ -50,14 +52,14 @@ app.use((req, res, next) => {
 	const defaultImagePath = path.join(__dirname, 'public', 'images', 'default.jpg');
 
 	// Serve default Image
-	if (resourcePath.startsWith('/public/images/') && !fs.existsSync(publicPath)) {
-		res.sendFile(defaultImagePath);
-	} else {
+	if (resourcePath.startsWith('/public') && !fs.existsSync(publicPath)) {
+		if (resourcePath.startsWith('/public/images/') && !fs.existsSync(publicPath)) res.sendFile(defaultImagePath);
 		const error = 'file not found';
 		const message = 'Please use one of the following resources';
 		const routes = ['/public/images', '/public/javascripts', '/public/stylesheets'];
 		res.status(400).json({ error, message, routes });
-	}
+	} else if (resourcePath.startsWith('/api')) res.status(500).json({ error: 'Error with the resource you requested' });
+	else res.sendFile('error');
 });
 
 // Start the app and listen for requests on the specified port

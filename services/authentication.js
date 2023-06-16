@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+const salt = 10;
 
 async function authenticateUser({ username, password }, user, res) {
 	console.log(username, password);
@@ -74,10 +75,15 @@ async function checkPassword(password, hash) {
 	return pw;
 }
 
+async function hashPassword(password) {
+	return await bcrypt.hash(password, salt);
+}
+
 module.exports = {
 	authenticateUser,
 	authenticateJWT,
 	createJWT,
 	getJwtPayload,
 	getJwtUsername,
+	hashPassword,
 };

@@ -1,4 +1,4 @@
 <div class="input_field">
 	<label for="<%= label.toLowerCase().replace(/ /g, '_') %>"><%= label %></label>
-	<input type="<%= type %>" class="input_field_element" name="<%= label.toLowerCase().replace(/ /g, '_') %>" placeholder="<%= label %>" required autocomplete="<%= autocomplete %>">
+	<input type="<%= type %>" class="input_field_element" maxlength="64" min="1" max="100" name="<%= label.toLowerCase().replace(/ /g, '_') %>" placeholder="<%= label %>" required autocomplete="<%= autocomplete %>">
 </div>
