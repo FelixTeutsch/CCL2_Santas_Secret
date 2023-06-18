@@ -59,6 +59,12 @@ input:-webkit-autofill:active {
 	border: var(--borderOrangeActive);
 	color: var(--colorBackground);
 }
+
+.button:disabled,
+form:not(:valid) .button {
+	opacity: 0.5;
+}
+
 .button_pink {
 	transition: all ease-in-out 300ms;
 	border: none;

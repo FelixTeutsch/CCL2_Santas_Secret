@@ -34,3 +34,21 @@ h1 {
 		max-width: 400px;
 	}
 }
+
+#username-feedback {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 12px;
+
+	font: var(--dFontDesription);
+}
+
+.unavailable * {
+	transition: all ease-in-out 0.3s;
+	color: var(--colorLink) !important;
+}
+.unavailable input {
+	transition: all ease-in-out 0.3s;
+	border: var(--borderPink) !important;
+}

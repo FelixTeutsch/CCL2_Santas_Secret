@@ -3,11 +3,11 @@ const router = express.Router();
 const userController = require('../controller/userController.js');
 
 router.get('/', function (req, res, next) {
-	// TODO: Check if the user is logged in
-	// If he is, show Home page
-	// res.redirect('/home');
-	// Else show this:
-	res.render('landing');
+	if (req.isAuthenticated) {
+		res.redirect('/home');
+	} else {
+		res.render('landing');
+	}
 });
 
 router
@@ -17,17 +17,17 @@ router
 
 router
 	.route('/login')
-	.post((req, res, next) => {
-		// TODO: Implement Login Logic
-		res.redirect('/home');
-	})
-	.get((req, res, next) => res.render('login'));
+	.post(userController.loginUser)
+	.get((req, res, next) => (req.isAuthenticated ? res.redirect('/home') : res.render('login')));
 
 router.all('/logout', (req, res, next) => {
-	// TODO: Implement Logout
+	req.cookies['token'] = null;
 	res.redirect('/');
 });
 
-router.all('/home', (req, res, next) => res.render('home'));
+router.all('/home', (req, res, next) => {
+	if (!req.isAuthenticated) res.redirect('/');
+	else res.render('home');
+});
 
 module.exports = router;

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const userApi = require('../api/userApi');
-const { createUser, getAllUsers, findUser, getUser, updateUser, deleteUser, checkUserCredentials } = require('../api/userApi');
 
 // Get all users
 router.all('/user', userApi.getAllUsers);

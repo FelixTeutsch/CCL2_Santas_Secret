@@ -63,8 +63,8 @@ function updateUser(req, res, next) {
 	}
 	userModel
 		.update(req.params.U_ID, req.body)
-		.then((affectedRows) => {
-			if (affectedRows === 0) {
+		.then((result) => {
+			if (result.affectedRows === 0) {
 				res.status(404).json({ error: 'User not found' });
 			} else {
 				res.status(200).json({ message: 'User updated successfully' });
@@ -123,7 +123,9 @@ function deleteUser(req, res, next) {
 function availableUsername(req, res, next) {
 	userModel
 		.available(req.params.username)
-		.then((availableUsers) => {})
+		.then((availableUsers) => {
+			res.status(200).json(availableUsers);
+		})
 		.catch((err) => res.status(500).json({ error: 'Failed to check username', message: error }));
 }
 module.exports = { createUser, getAllUsers, getUser, searchUser, updateUser, deleteUser, checkUserCredentials, availableUsername };

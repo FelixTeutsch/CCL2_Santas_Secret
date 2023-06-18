@@ -6,6 +6,7 @@ const cors = require('cors');
 const path = require('path');
 const ejs = require('ejs');
 const fs = require('fs');
+const { verifyToken } = require('./services/authentication'); // Import the authentication file
 
 // Port
 const port = 42069;
@@ -30,6 +31,9 @@ app.use(fileUpload());
 // Serve static files from the "public" directory
 app.use('/public', express.static('public', { fallthrough: true }));
 
+// JWT verification middleware
+app.use(verifyToken);
+
 // Define your routes here
 const indexRoute = require('./routes/index');
 const apiRoute = require('./routes/api');
@@ -38,14 +42,16 @@ const profileRouter = require('./routes/profile');
 const searchRouter = require('./routes/search');
 
 app.use('/', indexRoute); // Also handles register, login, logout!
+// Maybe a new home router?
 app.use('/game', gameRouter);
 app.use('/search', searchRouter);
 app.use('/profile', profileRouter);
 
 app.use('/api', apiRoute);
 
-// Custom error-handling middleware for handling static file not found, api error and general page errors. Use next(); to make it cleaner
+// Custom error-handling middleware for handling static file not found, api error, and general page errors. Use next(); to make it cleaner
 app.use((req, res, next) => {
+	// Your existing error-handling logic
 	const resourcePath = req.url;
 	console.log('Unknown file Requested:', resourcePath);
 	const publicPath = path.join(__dirname, 'public', resourcePath);
@@ -59,7 +65,16 @@ app.use((req, res, next) => {
 		const routes = ['/public/images', '/public/javascripts', '/public/stylesheets'];
 		res.status(400).json({ error, message, routes });
 	} else if (resourcePath.startsWith('/api')) res.status(500).json({ error: 'Error with the resource you requested' });
-	else res.sendFile('error');
+	else res.render('error');
+
+	// Example usage of isAuthenticated and user in subsequent middleware or route handlers
+	if (req.isAuthenticated) {
+		console.log('User is authenticated');
+		console.log('User data:', req.user);
+	} else {
+		console.log('User is not authenticated');
+	}
+	next();
 });
 
 // Start the app and listen for requests on the specified port

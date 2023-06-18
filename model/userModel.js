@@ -32,14 +32,10 @@ let search = (searchValue) =>
 // Get all users that corelate to the search value
 let get = (U_ID) =>
 	new Promise((resolve, reject) => {
-		const sql = 'SELECT * FROM `user` WHERE `U_ID` = ? ';
-
-		db.query(sql, U_ID, (error, results) => {
-			if (error) {
-				reject(error);
-			} else {
-				resolve(results);
-			}
+		const sql = 'SELECT * FROM `user` WHERE `U_ID` = ' + db.escape(U_ID) + ' OR username = ' + db.escape(U_ID);
+		db.query(sql, (error, results) => {
+			if (error) reject(error);
+			resolve(results);
 		});
 	});
 
@@ -85,16 +81,30 @@ let checkCredentials = (username, password) =>
 	});
 
 // Update a user
-let update = (U_ID, { username, first_name, last_name, visibility }) =>
+const update = (U_ID, { username, first_name, last_name, visibility }) =>
 	new Promise((resolve, reject) => {
-		const sql = 'UPDATE `user` SET `username` = ?, `first_name` = ?, `last_name` = ?, `visibility` = ? WHERE `U_ID` = ?';
-		const values = [username, first_name, last_name, visibility, U_ID];
+		const sql = 'UPDATE `user` SET';
+		const values = [];
+		const updateFields = [];
 
-		db.query(sql, values, (error, results) => {
+		if (username) updateFields.push('`username` = ?') && values.push(username);
+		if (first_name) updateFields.push('`first_name` = ?') && values.push(first_name);
+		if (last_name) updateFields.push('`last_name` = ?') && values.push(last_name);
+		if (visibility) updateFields.push('`visibility` = ?') && values.push(visibility);
+
+		if (updateFields.length === 0) {
+			resolve(null); // No fields to update
+			return;
+		}
+
+		const updateQuery = `${sql} ${updateFields.join(', ')} WHERE \`U_ID\` = ?`;
+		values.push(U_ID);
+
+		db.query(updateQuery, values, (error, results) => {
 			if (error) {
 				reject(error);
 			} else {
-				resolve(results.affectedRows);
+				resolve(results);
 			}
 		});
 	});
@@ -129,7 +139,7 @@ let available = (username) =>
 		const request = 'SELECT * FROM user WHERE username = ' + db.escape(username);
 		db.query(request, (error, results) => {
 			if (error) reject(error);
-			resolve(results.affectedRows > 0);
+			resolve(results.length < 1);
 		});
 	});
 
@@ -141,4 +151,6 @@ module.exports = {
 	checkCredentials,
 	update,
 	deleteUser,
+	updatePassword,
+	available,
 };
