@@ -44,6 +44,8 @@ async function authenticateJWT(req, res, next) {
 
 async function createJWT(id, username) {
 	console.log('Secret is:', ACCESS_TOKEN_SECRET);
+	console.log('ID is:', id);
+	console.log('Username is:', username);
 	const expirationTime = 60 * 60 * 24 * 7;
 	const expirationDate = Math.floor(Date.now() / 1000) + expirationTime; // 1 week from now
 	return (santas_cookies = await jwt.sign({ id: id, username: username, exp: expirationDate }, ACCESS_TOKEN_SECRET));

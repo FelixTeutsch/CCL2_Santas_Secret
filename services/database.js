@@ -16,6 +16,7 @@ const config = mySQL.createConnection({
 	user: 'root',
 	password: '',
 	database: 'santas_secret',
+	multipleStatements: true,
 });
 
 config.connect(function (err) {
