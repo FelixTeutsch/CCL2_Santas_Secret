@@ -13,12 +13,16 @@ function registerUser(req, res, next) {
 }
 
 function loginUser(req, res, next) {
+	// TODO: Fix Login with wrong credentials bug
 	userModel
 		.get(req.body.username)
-		.then((user) => {
-			if (user) {
-				authenticateUser(req.body, user, res, next);
-				res.redirect('/home');
+		.then(async (user) => {
+			if (user.length > 0) {
+				if (await authenticateUser(req.body, user, res, next)) res.redirect('/home');
+				else res.redirect('/login');
+			} else {
+				console.log('User not found');
+				res.redirect('/login');
 			}
 		})
 		.catch((err) => {

@@ -14,10 +14,10 @@ async function authenticateUser({ username, password }, user, res, next) {
 		const santas_cookies = await createJWT(user.U_ID, expirationDate);
 
 		res.cookie('santas_cookies', santas_cookies, { maxAge: expirationDate });
-		next();
+		return true;
 	} else {
 		console.log('Wrong password!');
-		next();
+		return false;
 	}
 }
 

@@ -1,13 +1,31 @@
 const db = require('../services/database').config;
 
-let search = (keyword) =>
+let searchUser = ({ keyword }) =>
 	new Promise((resolve, reject) => {
-		// Check if it is like the User
-		const db_keyword = db.escape(keyword);
-		const userRequest = `SELECT * FROM 'user' WHERE visibility = 'visible' AND (username LIKE ${db_keyword} OR first_name LIKE ${db_keyword}) OR U_ID = ${db_keyword} AND visibility = 'unlisted'`;
-		const gameRequest = `SELECT * FROM 'game' WHERE visibility = 'visible' AND name LIKE ${db_keyword}) OR G_ID = ${db_keyword} AND (visibility = 'unlisted' OR visibility = 'visible'`;
+		const userRequest = `SELECT * FROM user WHERE (visibility = 'visible' AND (username LIKE '%${keyword}%' OR first_name LIKE '%${keyword}%' OR last_name LIKE '%${keyword}%')) OR (U_ID = '${keyword}' AND visibility = 'unlisted');`;
+		db.query(userRequest, (err, result) => {
+			if (err) {
+				console.log(err);
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		});
+	});
+let searchGame = ({ keyword }) =>
+	new Promise((resolve, reject) => {
+		const gameRequest = `SELECT * FROM game WHERE (visibility = 'visible' AND name LIKE '%${keyword}%') OR G_ID = '${keyword}' AND (visibility = 'unlisted' OR visibility = 'visible')`;
+		db.query(gameRequest, (err, result) => {
+			if (err) {
+				console.log(err);
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		});
 	});
 
 module.exports = {
-	search,
+	searchUser,
+	searchGame,
 };

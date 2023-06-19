@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userApi = require('../api/userApi');
+const searchApi = require('../api/searchApi');
 
 // Get all users
 router.all('/user', userApi.getAllUsers);
@@ -24,5 +25,7 @@ router.all('/user/update/:U_ID', userApi.updateUser);
 router.all('/user/delete/:U_ID', userApi.deleteUser);
 
 router.all('/user/available/:username', userApi.availableUsername);
+
+router.all('/search', searchApi.search);
 
 module.exports = router;

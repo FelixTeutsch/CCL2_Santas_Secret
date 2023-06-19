@@ -42,7 +42,7 @@
 					People
 				</li>
 			</ul>
-			<div class="result_area">
+			<div class="result_area" id="result_area">
 				<%-include('components/game', {stage:"paused"})%>
 				<%-include('components/game', {stage:"running"})%>
 				<%-include('components/game', {stage:"ended"})%>
@@ -60,5 +60,6 @@
 			</div>
 		</main>
 	</body>
+	<script src="/public/javascripts/search.js"></script>
 
 </html>
