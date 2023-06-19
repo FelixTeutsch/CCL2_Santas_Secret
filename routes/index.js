@@ -20,10 +20,7 @@ router
 	.post(userController.loginUser)
 	.get((req, res, next) => (req.isAuthenticated ? res.redirect('/home') : res.render('login')));
 
-router.all('/logout', (req, res, next) => {
-	req.cookies['token'] = null;
-	res.redirect('/');
-});
+router.all('/logout', userController.logoutUser);
 
 router.all('/home', (req, res, next) => {
 	if (!req.isAuthenticated) res.redirect('/');

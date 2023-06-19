@@ -5,11 +5,8 @@ function registerUser(req, res, next) {
 	userModel
 		.create(req.body)
 		.then(async (result) => {
-			console.log('User created successfully');
-			console.log('User is:', result);
-			const token = await createJWT(result.U_ID, result.username);
-			console.log('Token is:', token);
-			res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000 * 7, httpOnly: true });
+			const token = await createJWT(result['U_ID'], req.body.username);
+			res.cookie('santas_cookies', token, { maxAge: 24 * 60 * 60 * 1000 * 7, httpOnly: true });
 			res.redirect('/home');
 		})
 		.catch((err) => res.status(401).redirect('/register'));
@@ -20,7 +17,7 @@ function loginUser(req, res, next) {
 	userModel
 		.get(req.body.username)
 		.then(async (user) => {
-			if (user.length > 0) {
+			if (user) {
 				if (await authenticateUser(req.body, user, res, next)) res.redirect('/home');
 				else res.redirect('/login');
 			} else {
@@ -34,7 +31,12 @@ function loginUser(req, res, next) {
 		});
 }
 
+function logoutUser(req, res, next) {
+	res.cookie('santas_cookies', 'santas_cookies', { maxAge: 0 });
+	res.redirect('/');
+}
 module.exports = {
 	registerUser,
 	loginUser,
+	logoutUser,
 };

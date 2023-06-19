@@ -6,7 +6,8 @@ const salt = 10;
 
 async function authenticateUser({ username, password }, user, res, next) {
 	console.log(username, password);
-
+	console.log(user);
+	console.log(user.username, user.password);
 	if (user.username === username && (await checkPassword(password, user.password))) {
 		console.log('User Logged in!');
 		const expirationTime = 60 * 60 * 24 * 7;
@@ -83,10 +84,10 @@ async function hashPassword(password) {
 }
 
 const verifyToken = (req, res, next) => {
-	const token = req.cookies.token; // Assuming the JWT is stored in a cookie named "token"
+	const token = req.cookies.santas_cookies;
 
 	if (token) {
-		jwt.verify(token, 'your_jwt_secret_key', (err, decoded) => {
+		jwt.verify(token, ACCESS_TOKEN_SECRET, (err, decoded) => {
 			if (err) {
 				req.isAuthenticated = false;
 				req.user = null;

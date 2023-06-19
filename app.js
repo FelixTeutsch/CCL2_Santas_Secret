@@ -41,13 +41,19 @@ const gameRouter = require('./routes/game');
 const profileRouter = require('./routes/profile');
 const searchRouter = require('./routes/search');
 
+app.use('/api', apiRoute);
 app.use('/', indexRoute); // Also handles register, login, logout!
 // Maybe a new home router?
+app.use((req, res, next) => {
+	if (!req.isAuthenticated) {
+		res.redirect('/');
+	} else {
+		next();
+	}
+});
 app.use('/game', gameRouter);
 app.use('/search', searchRouter);
 app.use('/profile', profileRouter);
-
-app.use('/api', apiRoute);
 
 // Custom error-handling middleware for handling static file not found, api error, and general page errors. Use next(); to make it cleaner
 app.use((req, res, next) => {

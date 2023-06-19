@@ -5,13 +5,15 @@ let create = ({ username, first_name, last_name, password }) =>
 	new Promise(async (resolve, reject) => {
 		// User Searcher
 		// const request = 'INSERT INTO `user`(`U_ID`, `username`, `first_name`, `last_name`, `password`) VALUES (uuid(), ?, ?, ?, ?) OUTPUT inserted.* SELECT 1';
-		const request = 'INSERT INTO `user`(`U_ID`, `username`, `first_name`, `last_name`, `password`) VALUES (UUID(), ?, ?, ?, ?); SELECT * FROM `user` WHERE `U_ID` = LAST_INSERT_ID();';
+		// const request = 'INSERT INTO `user`(`U_ID`, `username`, `first_name`, `last_name`, `password`) VALUES (UUID(), ?, ?, ?, ?); SELECT * FROM `user` WHERE `U_ID` = LAST_INSERT_ID();';
+
+		const request = 'SET @new_uuid = UUID(); ' + 'INSERT INTO `user`(`U_ID`, `username`, `first_name`, `last_name`, `password`) ' + 'VALUES (@new_uuid, ?, ?, ?, ?); ' + 'SELECT @new_uuid as U_ID;';
 
 		console.log('Request:', request);
 		const hashedPassword = await hashPassword(password);
 		db.query(request, [username, first_name, last_name, hashedPassword], (err, res) => {
 			if (err) reject(err);
-			resolve(res);
+			resolve(res[2][0]);
 		});
 	});
 
@@ -34,7 +36,7 @@ let get = (U_ID) =>
 		const sql = 'SELECT * FROM `user` WHERE `U_ID` = ' + db.escape(U_ID) + ' OR username = ' + db.escape(U_ID);
 		db.query(sql, (error, results) => {
 			if (error) reject(error);
-			resolve(results);
+			resolve(results[0]);
 		});
 	});
 
