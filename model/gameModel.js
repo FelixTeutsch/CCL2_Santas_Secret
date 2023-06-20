@@ -7,7 +7,8 @@ let create = ({ game_name, member_count, number_of_circles, visibility }, creato
 		db.query(request, [game_name, creator, member_count, visibility], (err, res) => {
 			if (err) reject(err);
 			console.log(res);
-			resolve(res);
+
+			if (res && affectedRows > 0) resolve({ G_ID: res.insertId });
 		});
 	});
 
