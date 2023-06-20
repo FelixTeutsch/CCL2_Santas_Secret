@@ -11,7 +11,7 @@ let create = ({ username, first_name, last_name, password }) =>
 		db.query(request, [username, first_name, last_name, hashedPassword], (err, res) => {
 			if (err) reject(err);
 			console.log(res);
-			if (res && affectedRows > 0) resolve({ U_ID: res.insertId });
+			if (res && res.affectedRows > 0) resolve({ U_ID: res.insertId });
 		});
 	});
 

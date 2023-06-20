@@ -5,32 +5,36 @@
 		<%- include('../components/head') %>
 		<link rel="stylesheet" href="/public/stylesheets/game/games.css">
 		<link rel="stylesheet" href="/public/stylesheets/components/icon_button.css">
-		<title>Game xxx</title>
+		<title>Game <%= game.name %></title>
 	</head>
 
 	<body>
 		<nav>
-			<%-include('../components/back')%>
-			<%-include('../components/navbar', {page: "home"})%>
+			<%- include('../components/back') %>
+			<%- include('../components/navbar', { page: "home" }) %>
 		</nav>
 		<menu>
 			<div class="game_area">
 				<img src="/public/images/icons/game.png" alt="Game Image">
-				<h1 class="subtitle">Funny Game 2k23</h1>
+				<h1 class="subtitle"><%= game.name %></h1>
 			</div>
+			<% if(game.stage == "running") { %>
 			<div class="your_person">
-
 				<p>You got:</p>
 				<div class="person_segment">
 					<img src="/public/images/profile/image.png" alt="User Picture">
 					<h2>Felix Teutsch</h2>
-					<%-include('../components/iconButton', {icon:'forum', locaton:'/game/<group_uuid>/chat'})%>
+					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
 				</div>
-
 			</div>
 			<div class="who_got_you">
-
+				<!-- Display other game-related information here -->
 			</div>
+			<% } else { %>
+			<div class="game_not_started">
+				This game has not started yet. Wait for <a href="/user/<%= game.username %>"><%= game.username %></a> to start the game.
+			</div>
+			<% } %>
 		</menu>
 	</body>
 
