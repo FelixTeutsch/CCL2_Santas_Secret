@@ -1,15 +1,28 @@
-<a href="/game/<game_uuid>" class="game_card <%= stage %>">
+<a href="/game/<%= game.G_ID %>" class="game_card <%= game.stage %>">
 	<img src="/public/images/gameImage.svg" alt="Game Image">
 	<div class="text_area">
-		<h2>Game Name</h2>
-		<p>12 / 16 members</p>
+		<h2><%= game.name %></h2>
+		<p><%= game.max_members %></p>
 	</div>
 	<div class="icon_area">
 		<span class="material-symbols-rounded">
-			visibility
+			<% switch (game.visibility) {
+                case "visible":
+                %><%= "visibility"%><%
+                    break;
+			case "unlisted":
+			%><%= "visibility_off"%><%
+			break;
+			case "hidden":
+			%><%= "disable_visible"%><%
+			break;
+			default:
+			%><%= "question_mark"%><%
+			break;
+			} %>
 		</span>
 		<span class="material-symbols-rounded">
-			<% switch (stage) {
+			<% switch (game.stage) {
                 case "paused":
                 %><%= "pause"%><%
                     break;

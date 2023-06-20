@@ -46,9 +46,19 @@ function remove(gameId) {
 	});
 }
 
+let getGames = (U_ID) =>
+	new Promise((resolve, reject) => {
+		const sql = 'SELECT * FROM `game` WHERE `creator` = ' + db.escape(U_ID);
+		db.query(sql, (error, results) => {
+			if (error) reject(error);
+			resolve(results);
+		});
+	});
+
 module.exports = {
 	create,
 	get,
 	update,
 	delete: remove,
+	getGames,
 };

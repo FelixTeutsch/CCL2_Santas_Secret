@@ -10,7 +10,8 @@
 .paused span {
 	color: var(--colorSubtitle);
 }
-.paused:hover {
+.paused:hover,
+.paused img {
 	border: var(--borderOrange);
 }
 
@@ -18,13 +19,15 @@
 	box-shadow: 0px 0px 4px var(--colorHeading);
 	border: var(--borderDark);
 }
+
 .running * {
 	color: var(--colorHeading);
 }
 .running span {
 	color: var(--colorHeading);
 }
-.running:hover {
+.running:hover,
+.running img {
 	border: var(--borderGreen);
 }
 
@@ -38,12 +41,26 @@
 .ended span {
 	color: var(--colorLink);
 }
-.ended:hover {
+.ended:hover,
+.ended img {
 	border: var(--borderPink);
 }
 
+/*USER CARD*/
+.user_card {
+	box-shadow: 0px 0px 4px var(--colorText);
+	border-radius: var(--border-radius);
+}
+.user_card * {
+	color: var(--colorText);
+}
+.user_card:hover {
+	border: var(--borderLight);
+}
+
 /*ELEMENT STYLE*/
-.game_card {
+.game_card,
+.user_card {
 	display: flex;
 	flex-direction: row;
 	border-radius: var(--border-radius);
@@ -55,14 +72,16 @@
 	max-height: fit-content;
 	min-height: 88px;
 }
-.game_card img {
+.game_card img,
+.user_card img {
 	width: 54px;
 	height: 54px;
 	border-radius: 54px;
 	object-fit: cover;
-	border: var(--borderOrange);
+	/* border: var(--borderOrange); */
 }
-.game_card .icon_area {
+.game_card .icon_area,
+.user_card .icon_area {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -70,18 +89,23 @@
 	align-items: flex-end;
 }
 .game_card p,
-.game_card h2 {
+.game_card h2,
+.user_card p,
+.user_card h2 {
 	margin: 0;
 	padding: 0;
 	width: 100%;
 }
-.game_card p {
+.game_card p,
+.user_card p {
 	color: var(--colorTextActive);
 }
 
-.game_card .text_area {
+.game_card .text_area,
+.user_card .text_area {
 	flex-grow: 1;
 }
-.game_card .icon_area {
+.game_card .icon_area,
+.user_card .icon_area {
 	gap: 12px;
 }

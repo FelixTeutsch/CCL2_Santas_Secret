@@ -17,7 +17,7 @@ function getGame(req, res, next) {
 		.get(req.params.id)
 		.then((result) => {
 			console.log(result);
-			res.render('game/game', { game: result });
+			res.render('game/game', { game: result, user: req.user });
 		})
 		.catch((error) => res.status(500).json({ error: 'Failed to get game', message: error }));
 }

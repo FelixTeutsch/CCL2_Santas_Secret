@@ -23,35 +23,22 @@
 			<h1>Your Games</h1>
 
 			<!-- TODO: check if any games exist -->
-			<% if(false) { %>
+			<% if(games.length>0) { %>
+			<div class="game_area">
+
+				<% games.forEach((game) => {%>
+				<%-include('components/game', {game})%>
+				<% }); %>
+
+				<p><a href="/game/history">View</a> old games or <a href="/game/create">Create</a> a new one</p>
+			</div>
+			<% } else { %>
+
 			<div class="no_games_area">
 				<p>
 					You are currently part of no game.<br>
-					<a href="/game">Create</a>, or <a href="/search">Join</a> a game...
+					<a href="/game/create">Create</a>, or <a href="/search">Join</a> a game...
 				</p>
-			</div>
-			<% } else { %>
-			<div class="game_area">
-
-				<%-include('components/game', {stage:"paused"})%>
-				<%-include('components/game', {stage:"running"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<p><a href="/game/history">View</a> old games or <a href="/game/create">Create</a> a new one</p>
 			</div>
 			<% } %>
 		</main>

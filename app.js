@@ -37,20 +37,24 @@ app.use(verifyToken);
 // Define your routes here
 const indexRoute = require('./routes/index');
 const apiRoute = require('./routes/api');
+const homeRouter = require('./routes/home');
 const gameRouter = require('./routes/game');
 const profileRouter = require('./routes/profile');
 const searchRouter = require('./routes/search');
 
-app.use('/api', apiRoute);
 app.use('/', indexRoute); // Also handles register, login, logout!
+app.use('/api', apiRoute);
 // Maybe a new home router?
 app.use((req, res, next) => {
-	if (!req.isAuthenticated) {
+	const resourcePath = req.url;
+
+	if (!req.isAuthenticated && !resourcePath.startsWith('/public')) {
 		res.redirect('/');
 	} else {
 		next();
 	}
 });
+app.use('/home', homeRouter);
 app.use('/game', gameRouter);
 app.use('/search', searchRouter);
 app.use('/profile', profileRouter);
@@ -65,7 +69,10 @@ app.use((req, res, next) => {
 
 	// Serve default Image
 	if (resourcePath.startsWith('/public') && !fs.existsSync(publicPath)) {
-		if (resourcePath.startsWith('/public/images/') && !fs.existsSync(publicPath)) res.sendFile(defaultImagePath);
+		if (resourcePath.startsWith('/public/images/') && !fs.existsSync(publicPath)) {
+			res.sendFile(defaultImagePath);
+			return;
+		}
 		const error = 'file not found';
 		const message = 'Please use one of the following resources';
 		const routes = ['/public/images', '/public/javascripts', '/public/stylesheets'];
@@ -74,12 +81,12 @@ app.use((req, res, next) => {
 	else res.render('error');
 
 	// Example usage of isAuthenticated and user in subsequent middleware or route handlers
-	if (req.isAuthenticated) {
-		console.log('User is authenticated');
-		console.log('User data:', req.user);
-	} else {
-		console.log('User is not authenticated');
-	}
+	// if (req.isAuthenticated) {
+	// 	console.log('User is authenticated');
+	// 	console.log('User data:', req.user);
+	// } else {
+	// 	console.log('User is not authenticated');
+	// }
 	next();
 });
 

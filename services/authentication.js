@@ -5,14 +5,10 @@ const ACCESS_TOKEN_SECRET = 'test'; // token temporarily set to 'test' for testi
 const salt = 10;
 
 async function authenticateUser({ username, password }, user, res, next) {
-	console.log(username, password);
-	console.log(user);
-	console.log(user.username, user.password);
 	if (user.username === username && (await checkPassword(password, user.password))) {
-		console.log('User Logged in!');
 		const expirationTime = 60 * 60 * 24 * 7;
 		const expirationDate = Math.floor(Date.now() / 1000) + expirationTime; // 1 week from now
-		const santas_cookies = await createJWT(user.U_ID, expirationDate);
+		const santas_cookies = await createJWT(user.U_ID, user.username);
 
 		res.cookie('santas_cookies', santas_cookies, { maxAge: expirationDate });
 		return true;
@@ -44,9 +40,6 @@ async function authenticateJWT(req, res, next) {
 }
 
 async function createJWT(id, username) {
-	console.log('Secret is:', ACCESS_TOKEN_SECRET);
-	console.log('ID is:', id);
-	console.log('Username is:', username);
 	const expirationTime = 60 * 60 * 24 * 7;
 	const expirationDate = Math.floor(Date.now() / 1000) + expirationTime; // 1 week from now
 	return (santas_cookies = await jwt.sign({ id: id, username: username, exp: expirationDate }, ACCESS_TOKEN_SECRET));
@@ -56,7 +49,6 @@ function getJwtPayload(req, res, next) {
 	const token = req.cookies['santas_cookies'];
 	if (token) {
 		const payload = jwt.decode(token);
-		// console.log('JWT payload is:', payload);
 		return payload;
 	}
 	return token;
@@ -66,7 +58,6 @@ function getJwtUsername(req, res, next) {
 	const payload = getJwtPayload(req, res, next);
 	if (payload) {
 		const jwtUsername = payload.username;
-		// console.log("JWT Username is:", jwtUsername)
 		return jwtUsername;
 	}
 	return 'guest';

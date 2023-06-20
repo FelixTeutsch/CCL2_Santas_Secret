@@ -22,9 +22,4 @@ router
 
 router.all('/logout', userController.logoutUser);
 
-router.all('/home', (req, res, next) => {
-	if (!req.isAuthenticated) res.redirect('/');
-	else res.render('home');
-});
-
 module.exports = router;

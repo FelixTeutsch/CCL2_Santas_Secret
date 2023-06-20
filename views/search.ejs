@@ -22,41 +22,34 @@
 				</span>
 			</div>
 
-			<ul class="search_categories">
-				<li id="active_category">
+			<ul class="search_categories" id="search_categories">
+				<li onclick="changeCategory(0)" id="active_category">
 					<span class="material-symbols-rounded">
 						workspaces
 					</span>
-					All
+					<p class="description">
+						All
+					</p>
 				</li>
-				<li>
+				<li onclick="changeCategory(1)">
 					<span class="material-symbols-rounded">
 						groups
 					</span>
-					Games
+					<p class="description">
+						Games
+					</p>
 				</li>
-				<li>
+				<li onclick="changeCategory(2)">
 					<span class="material-symbols-rounded">
 						person
 					</span>
-					People
+					<p class="description">
+						People
+					</p>
 				</li>
 			</ul>
 			<div class="result_area" id="result_area">
-				<%-include('components/game', {stage:"paused"})%>
-				<%-include('components/game', {stage:"running"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
-				<%-include('components/game', {stage:"ended"})%>
+				<div class="empty_result">Search for a user or game...</div>
 			</div>
 		</main>
 	</body>

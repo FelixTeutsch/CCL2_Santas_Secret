@@ -2,21 +2,22 @@
 <html lang="en">
 
 	<head>
-		<%-include('components/head')%>
+		<%-include('../components/head')%>
 		<link rel="stylesheet" href="/public/stylesheets/profile.css">
 		<title>Profile</title>
 	</head>
 
 	<body class="flex-box center">
 		<header>
-			<%-include('components/navbar', {page: "profile"})%>
+			<%-include('../components/navbar', {page: "profile"})%>
 		</header>
 		<main>
 			<!-- TODO: Make responsive -->
-			<img src="/public/images/profile/" alt="Your Profile Picture">
+			<img src="/public/images/profile/<%= user.username %>.jpg" alt="Your Profile Picture">
 			<div class="profile_area">
-				<h1>FixiFax</h1>
-				<h2>Felix Teutsch</h2>
+				<h1><%= user.username %></h1>
+				<h2><%= user.first_name + " "+ user.last_name %></h2>
+				<% if(user.username == viewer.username) { %>
 				<ul class="settings_area">
 					<li>
 						<a href="/profile/edit">
@@ -51,6 +52,17 @@
 						</a>
 					</li>
 				</ul>
+				<% } else if(games.length >0) { %>
+
+				<form>
+
+					<div class="input_area flex-box vertical">
+						<%-include('../components/dropdown', {label: "Visibility", type: "number", options: [games]})%>
+					</div>
+
+
+				</form>
+				<% } %>
 			</div>
 		</main>
 	</body>
