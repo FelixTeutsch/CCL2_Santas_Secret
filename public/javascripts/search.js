@@ -5,6 +5,18 @@ const result = {
 	game: [],
 };
 
+const visibility = {
+	visible: 'visibility',
+	unlisted: 'visibility_off',
+	hidden: 'disable_visible',
+};
+
+const stage = {
+	paused: 'pause_circle_filled',
+	running: 'play_circle',
+	ended: 'stop_circle',
+};
+
 const element_list = document.getElementById('search_categories');
 let currentCategory = 0;
 
@@ -73,9 +85,15 @@ async function renderResult() {
 					'<img src="/public/images/gameImage.svg" alt="Game Image"> <div class="text_area"> <h2>' +
 					result.name +
 					'</h2> <p>' +
+					result.current_members +
+					' / ' +
 					result.max_members +
-					'</p> </div> <div class="icon_area"> <span class="material-symbols-rounded"> visibility </span>' +
-					'<span class="material-symbols-rounded"> visibility_off </span> </div> </a>';
+					' members</p> </div> <div class="icon_area"> <span class="material-symbols-rounded"> ' +
+					visibility[result.visibility] +
+					' </span>' +
+					'<span class="material-symbols-rounded"> ' +
+					stage[result.stage] +
+					' </span> </div> </a>';
 			} else if (!result.stage && (currentCategory == 0 || currentCategory == 2)) {
 				resultArea.innerHTML +=
 					'<a href="/profile/view/' +

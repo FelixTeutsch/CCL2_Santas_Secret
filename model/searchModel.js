@@ -11,9 +11,10 @@ let searchUser = ({ keyword }) =>
 
 let searchGame = ({ keyword }) =>
 	new Promise((resolve, reject) => {
-		const gameRequest = `SELECT * FROM game WHERE (visibility = 'visible' AND name LIKE '%${keyword}%') OR G_ID = '${keyword}' AND (visibility = 'unlisted' OR visibility = 'visible')`;
+		const gameRequest = `SELECT *, COUNT(user_game.G_ID) AS current_members FROM game LEFT JOIN user_game ON game.G_ID = user_game.G_ID WHERE (game.visibility = 'visible' AND game.name LIKE '%${keyword}%') OR game.G_ID = '${keyword}' AND (game.visibility = 'unlisted' OR game.visibility = 'visible') GROUP BY game.G_ID;`;
 		db.query(gameRequest, (err, result) => {
 			if (err) reject(err);
+			console.log(result);
 			resolve(result);
 		});
 	});

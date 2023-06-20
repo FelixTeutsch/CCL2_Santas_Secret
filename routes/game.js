@@ -11,6 +11,8 @@ router
 
 router.route('/:id').get(gameController.getGame).put(gameController.updateGame).patch(gameController.updateGame).delete(gameController.deleteGame);
 
+router.route('/:id/join').all(gameController.joinGame);
+
 router.all('/:id/chat', (req, res, next) => res.render('chat'));
 router.all('/:id/settings', (req, res, next) => res.render('settings'));
 router.all('/:id/share', (req, res, next) => res.render('share'));

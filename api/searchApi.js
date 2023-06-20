@@ -15,7 +15,6 @@ function searchGame(req, res, next) {
 		.then((result) => {
 			res.status(200).json({ game: result });
 		})
-		.then(async (result) => {})
 		.catch((err) => res.status(500).json({ error: 'server error', message: err }));
 }
 

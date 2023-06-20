@@ -31,9 +31,21 @@ main {
 	object-fit: cover;
 	border-radius: var(--border-radius);
 }
-.game_area h1 {
+.game_area .text_area {
 	width: 100%;
 	max-width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 8px;
+}
+.game_area .text_area h1,
+.game_area .text_area p {
+	padding: 0;
+	margin: 0;
+}
+.game_area .text_area p {
+	opacity: 0.5;
 }
 
 .edit_button_area {
@@ -62,4 +74,57 @@ main {
 		max-height: calc(100vh - 96px - 250px);
 		/* max-height: 120px; */
 	}
+}
+.join_game_area {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	justify-content: flex-start;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
+
+.member_area {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	width: 100%;
+	height: 100%;
+	border-radius: var(--border-radius);
+	border: var(--borderLight);
+}
+.member_area .member_card {
+	max-width: 100%;
+	display: flex;
+	flex-direction: row;
+	gap: 32px;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 12px 48px;
+	box-sizing: content-box;
+	border-bottom: var(--borderLight);
+}
+
+.admin * {
+	color: var(--colorHeading) !important;
+}
+
+.member_area .member_card img {
+	width: 48px;
+	height: 48px;
+	border-radius: var(--border-radius);
+	object-fit: cover;
+}
+.member_area p {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+.join_game_area {
+	flex-grow: 1;
+}
+.join_game_area .area_description {
+	align-self: flex-start;
+	margin: 0 0 -8px var(--border-radius);
 }

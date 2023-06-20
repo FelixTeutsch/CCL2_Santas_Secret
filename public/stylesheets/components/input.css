@@ -51,6 +51,7 @@ input:-webkit-autofill:active {
 	cursor: pointer;
 	border: var(--borderOrange);
 	text-decoration: none;
+	text-align: center;
 }
 .button:hover,
 .button:hover a {

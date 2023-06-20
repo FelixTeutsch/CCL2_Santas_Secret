@@ -80,13 +80,12 @@ app.use((req, res, next) => {
 	} else if (resourcePath.startsWith('/api')) res.status(500).json({ error: 'Error with the resource you requested' });
 	else res.render('error');
 
-	// Example usage of isAuthenticated and user in subsequent middleware or route handlers
-	// if (req.isAuthenticated) {
-	// 	console.log('User is authenticated');
-	// 	console.log('User data:', req.user);
-	// } else {
-	// 	console.log('User is not authenticated');
-	// }
+	if (req.isAuthenticated) {
+		console.log('User is authenticated');
+		console.log('User data:', req.user);
+	} else {
+		console.log('User is not authenticated');
+	}
 	next();
 });
 

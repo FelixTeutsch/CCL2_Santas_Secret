@@ -1,6 +1,5 @@
 .paused {
 	box-shadow: 0px 0px 4px var(--colorSubtitle);
-	border: var(--borderDark);
 }
 
 .paused * {
@@ -17,7 +16,6 @@
 
 .running {
 	box-shadow: 0px 0px 4px var(--colorHeading);
-	border: var(--borderDark);
 }
 
 .running * {
@@ -33,7 +31,6 @@
 
 .ended {
 	box-shadow: 0px 0px 4px var(--colorLink);
-	border: var(--borderDark);
 }
 .ended * {
 	color: var(--colorLink);
@@ -71,6 +68,7 @@
 	align-items: center;
 	max-height: fit-content;
 	min-height: 88px;
+	border: var(--borderDark);
 }
 .game_card img,
 .user_card img {

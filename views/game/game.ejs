@@ -17,14 +17,20 @@
 		<main class="game_stage_<%= game.stage %>">
 			<div class="game_area">
 				<img src="/public/images/icons/game.png" alt="Game Image">
-				<h1 class="subtitle"><%= game.name %></h1>
-				<%if(game.creator = user.username) {%>
+				<div class="text_area">
+					<h1 class="subtitle"><%= game.name %></h1>
+					<p>
+						<%=game.current_members+ " / "+ game.max_members %> Members
+					</p>
+				</div>
+				<%if(game.creator === user.id) {%>
 				<div class="edit_button_area">
 					<%- include('../components/iconButton', { icon: 'edit', location: '/game/' + game.G_ID + '/edit' }) %>
 				</div>
 				<%}%>
 			</div>
-			<% if(game.stage == "running") { %>
+				<% if(game.creator === user.id || members.filter(member => member.U_ID === user.id).length > 0) { %>
+				<% if(game.stage == "running") { %>
 				<div class="your_person">
 					<p>You got:</p>
 					<div class="person_segment">
@@ -39,11 +45,35 @@
 				<% } else { %>
 				<div class="game_not_started">
 					<p>
-						This game has not started yet. Wait for <a href="/profile/view/<%= game.username %>"><%= game.username %></a> to start the game...
+						This game has not started yet. Wait for <a href="/profile/view/<%= game.username %>"><%= game.username %></a> to start it...
 					</p>
 				</div>
 				<% } %>
-				</ma>
+				<% } else { %>
+				<div class="join_game_area">
+					<p>You are not part of this game!</p>
+
+					<p class="area_description">Members</p>
+					<div class="member_area">
+						<div class="member_card admin">
+							<img src="/public/images/profile/image.png" alt="User Picture">
+							<p><%= game.username %></p>
+							<span class="material-symbols-rounded">
+								shield
+							</span>
+						</div>
+						<% members.forEach(member => { if(member.U_ID !== game.U_ID) { %>
+						<div class="member_card">
+							<img src="/public/images/profile/image.png" alt="User Picture">
+							<p><%= member.username %></p>
+						</div>
+						<% }}); %>
+
+					</div>
+					<a href="/game/<%=game.G_ID %>/join" class="button">Join game</a>
+				</div>
+				<% } %>
+		</main>
 	</body>
 
 </html>

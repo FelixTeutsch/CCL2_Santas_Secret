@@ -13,14 +13,23 @@ function create({ game_name, member_count, number_of_circles, visibility }, crea
 
 function get(gameId) {
 	return new Promise((resolve, reject) => {
-		const request = 'SELECT * FROM `game` LEFT JOIN `user` ON (game.creator = user.U_ID) WHERE `G_ID` = ?';
+		const request = 'SELECT *, COUNT(user_game.G_ID) AS current_members FROM game LEFT JOIN USER ON game.creator = user.U_ID LEFT JOIN user_game ON game.G_ID = user_game.G_ID WHERE game.G_ID = ? GROUP BY game.G_ID;';
+		console.log(request);
 		db.query(request, [gameId], (err, res) => {
 			if (err) reject(err);
-			if (res && res.length > 0) resolve(res[0]);
-			else reject(new Error('Game not found'));
+			resolve(res[0]);
 		});
 	});
 }
+
+let getMembers = (gameId) =>
+	new Promise((resolve, reject) => {
+		const request = 'SELECT * FROM `user_game` LEFT JOIN `user` ON (user_game.U_ID = user.U_ID) WHERE user_game.G_ID = ?';
+		db.query(request, [gameId], (err, res) => {
+			if (err) reject(err);
+			resolve(res);
+		});
+	});
 
 function update(gameId, updatedData) {
 	return new Promise((resolve, reject) => {
@@ -55,10 +64,21 @@ let getGames = (U_ID) =>
 		});
 	});
 
+let joinGame = (U_ID, G_ID) =>
+	new Promise((resolve, reject) => {
+		const sql = 'INSERT INTO `user_game`(`U_ID`, `G_ID`) VALUES (?, ?)';
+		db.query(sql, [U_ID, G_ID], (error, results) => {
+			if (error) reject(error);
+			resolve(results);
+		});
+	});
+
 module.exports = {
 	create,
 	get,
 	update,
 	delete: remove,
 	getGames,
+	getMembers,
+	joinGame,
 };
