@@ -9,7 +9,7 @@ const fs = require('fs');
 const { verifyToken } = require('./services/authentication'); // Import the authentication file
 
 // Port
-const port = 42069;
+const port = 8080;
 
 // Create an Express app
 const app = express();

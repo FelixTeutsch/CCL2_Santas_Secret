@@ -13,6 +13,7 @@ let create = ({ username, first_name, last_name, password }) =>
 		const hashedPassword = await hashPassword(password);
 		db.query(request, [username, first_name, last_name, hashedPassword], (err, res) => {
 			if (err) reject(err);
+			console.log(res);
 			resolve(res[2][0]);
 		});
 	});

@@ -26,6 +26,7 @@ router.all('/user/delete/:U_ID', userApi.deleteUser);
 
 router.all('/user/available/:username', userApi.availableUsername);
 
-router.all('/search', searchApi.search);
+router.all('/search/user', searchApi.searchUser);
+router.all('/search/game', searchApi.searchGame);
 
 module.exports = router;

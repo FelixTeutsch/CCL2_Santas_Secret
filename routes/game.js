@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const gameController = require('../controller/gameController');
 
 // TODO: Implement All games View
 router.all('/', (req, res, next) => res.redirect('/home'));
 
-router.all('/create', (req, res, next) => res.render('game/create'));
+router
+	.route('/create')
+	.get((req, res, next) => res.render('game/create'))
+	.post(gameController.createGame);
 
 // TODO: Render game, Make sure game is not Hidden & Implement Logic
 router.all('/:uuid', (req, res, next) => res.render('game/game'));
