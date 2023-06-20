@@ -10,24 +10,24 @@ const dotenv = require('dotenv');
 // 	multipleStatements: true,
 // });
 
-const config = mySQL.createConnection({
-	host: '169.254.255.253',
-	port: '3306',
-	user: 'node-cc221036-10098',
-	password: 'QN+-62h-yvF-JfQ',
-	database: 'node_cc221036_10098',
-	multipleStatements: true,
-});
-
-// // Local DB
 // const config = mySQL.createConnection({
-// 	host: 'localhost',
-// 	port: '',
-// 	user: 'root',
-// 	password: '',
-// 	database: 'santas_secret',
+// 	host: '169.254.255.253',
+// 	port: '3306',
+// 	user: 'node-cc221036-10098',
+// 	password: 'QN+-62h-yvF-JfQ',
+// 	database: 'node_cc221036_10098',
 // 	multipleStatements: true,
 // });
+
+// Local DB
+const config = mySQL.createConnection({
+	host: 'localhost',
+	port: '',
+	user: 'root',
+	password: '',
+	database: 'santas_secret2',
+	multipleStatements: true,
+});
 
 config.connect(function (err) {
 	if (err) throw err;

@@ -5,6 +5,7 @@ function registerUser(req, res, next) {
 	userModel
 		.create(req.body)
 		.then(async (result) => {
+			console.log(result + ' created');
 			const token = await createJWT(result['U_ID'], req.body.username);
 			res.cookie('santas_cookies', token, { maxAge: 24 * 60 * 60 * 1000 * 7, httpOnly: true });
 			res.redirect('/home');

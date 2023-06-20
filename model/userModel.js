@@ -4,17 +4,14 @@ const { hashPassword } = require('../services/authentication');
 let create = ({ username, first_name, last_name, password }) =>
 	new Promise(async (resolve, reject) => {
 		// User Searcher
-		// const request = 'INSERT INTO `user`(`U_ID`, `username`, `first_name`, `last_name`, `password`) VALUES (uuid(), ?, ?, ?, ?) OUTPUT inserted.* SELECT 1';
-		// const request = 'INSERT INTO `user`(`U_ID`, `username`, `first_name`, `last_name`, `password`) VALUES (UUID(), ?, ?, ?, ?); SELECT * FROM `user` WHERE `U_ID` = LAST_INSERT_ID();';
-
-		const request = 'SET @new_uuid = UUID(); ' + 'INSERT INTO `user`(`U_ID`, `username`, `first_name`, `last_name`, `password`) ' + 'VALUES (@new_uuid, ?, ?, ?, ?); ' + 'SELECT @new_uuid as U_ID;';
+		const request = 'INSERT INTO `user`(`username`, `first_name`, `last_name`, `password`) VALUES (?, ?, ?, ?);';
 
 		console.log('Request:', request);
 		const hashedPassword = await hashPassword(password);
 		db.query(request, [username, first_name, last_name, hashedPassword], (err, res) => {
 			if (err) reject(err);
 			console.log(res);
-			resolve(res[2][0]);
+			if (res && affectedRows > 0) resolve({ U_ID: res.insertId });
 		});
 	});
 
