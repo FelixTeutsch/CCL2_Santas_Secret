@@ -140,11 +140,23 @@ main * {
 
 .your_person {
 	width: 100%;
-	height: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
+.your_santa p,
+.your_santa .person_segment *:not(.iconButton):not(.iconButton *) {
+	opacity: 0.5;
+}
+
+.game_button {
+	display: flex;
+	height: 100%;
+	width: 100%;
+	align-items: end;
+	justify-content: center;
+}
+
 .your_person p {
 	margin: 0;
 	padding: 0;
@@ -168,4 +180,8 @@ main * {
 }
 .person_segment h2 {
 	width: 100%;
+}
+
+.game_description {
+	opacity: 0.5;
 }

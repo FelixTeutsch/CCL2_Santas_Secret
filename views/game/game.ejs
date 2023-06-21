@@ -21,7 +21,7 @@
 				<div class="text_area">
 					<h1 class="subtitle"><%= game.name %></h1>
 					<p>
-						<%=game.current_members+ " / "+ game.max_members %> Members
+						<%=game.current_members+ " / "+ game.max_members %> Members - <%= game.stage %>
 					</p>
 				</div>
 				<div class="edit_button_area">
@@ -36,8 +36,8 @@
 			<div class="your_person">
 				<p>You got:</p>
 				<div class="person_segment">
-					<img src="/public/images/profile/image.png" alt="User Picture">
-					<h2>Felix Teutsch</h2>
+					<img src="/public/images/profile/<%= target.U_ID %>.png" alt="User Picture">
+					<h2><%= target.username%></h2>
 					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
 				</div>
 			</div>
@@ -45,11 +45,16 @@
 				<p>Your Santa:</p>
 				<div class="person_segment">
 					<img src="/public/images/profile/image.png" alt="User Picture">
-					<h2>Felix Teutsch</h2>
+					<h2>--- <%= /*santa.username*/ %></h2>
 					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
 				</div>
 			</div>
-			<% } else { %>
+			<% if(game.creator === user.id) { %>
+			<div class="game_button">
+				<a href="/game/<%=game.G_ID%>/end" class="button">End the Game</a>
+			</div>
+			<% } %>
+			<% } else if(game.stage == "paused") { %>
 			<div class="game_not_started">
 				<% if(game.creator === user.id) {	%>
 				<a href="/game/<%=game.G_ID%>/start" class="button">Start the Game...</a>
@@ -59,6 +64,36 @@
 				</p>
 				<%} %>
 			</div>
+			<% } else if(game.stage == "ended") { %>
+			<% if(game.creator !== user.id) {%>
+			<div class="game_not_started">
+				<p>
+					This game has ended. Wait for <a href="/profile/view/<%= game.username %>"><%= game.username %></a> to start a new one,
+					or <a href="/game/create">create</a> one yourself...
+				</p>
+			</div>
+			<% } %>
+			<div class="your_person">
+				<p>You had:</p>
+				<div class="person_segment">
+					<img src="/public/images/profile/<%= target.U_ID %>.png" alt="User Picture">
+					<h2><%= target.username%></h2>
+					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
+				</div>
+			</div>
+			<div class="your_santa">
+				<p>Your Santa was:</p>
+				<div class="person_segment">
+					<img src="/public/images/profile/<%= santa.U_ID %>.png" alt="User Picture">
+					<h2><%= santa.username %></h2>
+					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
+				</div>
+			</div>
+			<% if(game.creator === user.id) { %>
+			<div class="game_button">
+				<a href="/game/<%=game.G_ID%>/restart" class="button">Restart Game</a>
+			</div>
+			<% }%>
 			<% } %>
 			<% } else { %>
 			<div class="join_game_area">

@@ -8,7 +8,7 @@ const result = {
 const visibility = {
 	visible: 'visibility',
 	unlisted: 'visibility_off',
-	hidden: 'disable_visible',
+	hidden: 'disabled_visible',
 };
 
 const stage = {
