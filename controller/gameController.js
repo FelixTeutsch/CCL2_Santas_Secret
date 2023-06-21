@@ -56,10 +56,47 @@ function joinGame(req, res, next) {
 		.catch((error) => res.status(500).json({ error: 'Failed to join game', message: error }));
 }
 
+function infoGame(req, res, next) {
+	const game = gameModel.get(req.params.id);
+	const members = gameModel.getMembers(req.params.id);
+
+	Promise.all([game, members])
+		.then((result) => {
+			res.render('game/info', { game: result[0], user: req.user, members: result[1] });
+		})
+		.catch((error) => res.status(500).json({ error: 'Failed to get game', message: error }));
+}
+
+function startGame(req, res, next) {
+	console.log(req.params.id);
+	const members = gameModel.getMembers(req.params.id);
+	const game = gameModel.get(req.params.id);
+
+	// TODO: Get Game Members
+	// TODO: Check if Game Members >= 2
+	// TODO: Get Number of Circles
+	// TODO: If Number of Circles > Game Members -> Make groups of 2
+	// TODO: If number of circles = 0 -> Make one big group
+	// TODO: Else split members into groups of "Number of Circles"
+
+	// TODO: Assign each member a different member in the same group
+	// TODO: Save the assigned member in the database
+	// TODO: Send each member a message with the assigned member
+	gameModel
+		.startGame(req.params.id)
+		.then((result) => {
+			console.log(result);
+			res.redirect('/game/' + req.params.id);
+		})
+		.catch((error) => res.status(500).json({ error: 'Failed to start game', message: error }));
+}
+
 module.exports = {
 	createGame,
 	getGame,
 	updateGame,
 	deleteGame,
 	joinGame,
+	infoGame,
+	startGame,
 };

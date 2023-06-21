@@ -1,9 +1,9 @@
 const db = require('../services/database').config;
 
-function create({ game_name, member_count, number_of_circles, visibility }, creator) {
+function create({ game_name, description, member_count, number_of_circles, visibility }, creator) {
 	return new Promise((resolve, reject) => {
-		const request = 'INSERT INTO `game`(`name`, `creator`, `max_members`, `visibility`) VALUES (?, ?, ?, ?)';
-		db.query(request, [game_name, creator, member_count, visibility], (err, res) => {
+		const request = 'INSERT INTO `game`(`name`, `description`, `creator`, `max_members` ,`visibility`) VALUES (?, ?, ?, ?)';
+		db.query(request, [game_name, description, creator, member_count, visibility], (err, res) => {
 			if (err) reject(err);
 			console.log(res);
 			if (res && res.affectedRows > 0) resolve({ G_ID: res.insertId });
@@ -13,10 +13,11 @@ function create({ game_name, member_count, number_of_circles, visibility }, crea
 
 function get(gameId) {
 	return new Promise((resolve, reject) => {
-		const request = 'SELECT *, COUNT(user_game.G_ID) AS current_members FROM game LEFT JOIN USER ON game.creator = user.U_ID LEFT JOIN user_game ON game.G_ID = user_game.G_ID WHERE game.G_ID = ? GROUP BY game.G_ID;';
+		const request = 'SELECT game.*, user.*, IFNULL(COUNT(user_game.G_ID), 0) AS current_members FROM game LEFT JOIN user ON game.creator = user.U_ID LEFT JOIN user_game ON game.G_ID = user_game.G_ID WHERE game.G_ID = ? GROUP BY game.G_ID;';
 		console.log(request);
 		db.query(request, [gameId], (err, res) => {
 			if (err) reject(err);
+			console.log(res);
 			resolve(res[0]);
 		});
 	});
@@ -73,6 +74,15 @@ let joinGame = (U_ID, G_ID) =>
 		});
 	});
 
+let startGame = (G_ID) =>
+	new Promise((resolve, reject) => {
+		const sql = 'UPDATE `game` SET `stage` = "started" WHERE `G_ID` = ?';
+		db.query(sql, [G_ID], (error, results) => {
+			if (error) reject(error);
+			resolve(results);
+		});
+	});
+
 module.exports = {
 	create,
 	get,
@@ -81,4 +91,5 @@ module.exports = {
 	getGames,
 	getMembers,
 	joinGame,
+	startGame,
 };

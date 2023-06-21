@@ -14,6 +14,7 @@
 			<%- include('../components/back') %>
 			<%- include('../components/navbar', { page: "home" }) %>
 		</nav>
+		<% const userIsPartOfGame = game.creator === user.id || members.filter(member => member.U_ID === user.id).length > 0; %>
 		<main class="game_stage_<%= game.stage %>">
 			<div class="game_area">
 				<img src="/public/images/icons/game.png" alt="Game Image">
@@ -23,56 +24,66 @@
 						<%=game.current_members+ " / "+ game.max_members %> Members
 					</p>
 				</div>
-				<%if(game.creator === user.id) {%>
 				<div class="edit_button_area">
+					<%if(game.creator === user.id) {%>
 					<%- include('../components/iconButton', { icon: 'edit', location: '/game/' + game.G_ID + '/edit' }) %>
+					<%} %>
+					<%- include('../components/iconButton', { icon: 'info', location: '/game/' + game.G_ID + '/info' }) %>
 				</div>
-				<%}%>
 			</div>
-				<% if(game.creator === user.id || members.filter(member => member.U_ID === user.id).length > 0) { %>
-				<% if(game.stage == "running") { %>
-				<div class="your_person">
-					<p>You got:</p>
-					<div class="person_segment">
+			<% if(userIsPartOfGame) { %>
+			<% if(game.stage == "running") { %>
+			<div class="your_person">
+				<p>You got:</p>
+				<div class="person_segment">
+					<img src="/public/images/profile/image.png" alt="User Picture">
+					<h2>Felix Teutsch</h2>
+					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
+				</div>
+			</div>
+			<div class="your_santa">
+				<p>Your Santa:</p>
+				<div class="person_segment">
+					<img src="/public/images/profile/image.png" alt="User Picture">
+					<h2>Felix Teutsch</h2>
+					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
+				</div>
+			</div>
+			<% } else { %>
+			<div class="game_not_started">
+				<% if(game.creator === user.id) {	%>
+				<a href="/game/<%=game.G_ID%>/start" class="button">Start the Game...</a>
+				<%} else {%>
+				<p>
+					This game has not started yet. Wait for <a href="/profile/view/<%= game.username %>"><%= game.username %></a> to start it...
+				</p>
+				<%} %>
+			</div>
+			<% } %>
+			<% } else { %>
+			<div class="join_game_area">
+				<p>You are not part of this game!</p>
+
+				<p class="area_description">Members</p>
+				<div class="member_area">
+					<div class="member_card admin">
 						<img src="/public/images/profile/image.png" alt="User Picture">
-						<h2>Felix Teutsch</h2>
-						<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
+						<p><%= game.username %></p>
+						<span class="material-symbols-rounded">
+							shield
+						</span>
 					</div>
-				</div>
-				<div class="who_got_you">
-					<!-- Display other game-related information here -->
-				</div>
-				<% } else { %>
-				<div class="game_not_started">
-					<p>
-						This game has not started yet. Wait for <a href="/profile/view/<%= game.username %>"><%= game.username %></a> to start it...
-					</p>
-				</div>
-				<% } %>
-				<% } else { %>
-				<div class="join_game_area">
-					<p>You are not part of this game!</p>
-
-					<p class="area_description">Members</p>
-					<div class="member_area">
-						<div class="member_card admin">
-							<img src="/public/images/profile/image.png" alt="User Picture">
-							<p><%= game.username %></p>
-							<span class="material-symbols-rounded">
-								shield
-							</span>
-						</div>
-						<% members.forEach(member => { if(member.U_ID !== game.U_ID) { %>
-						<div class="member_card">
-							<img src="/public/images/profile/image.png" alt="User Picture">
-							<p><%= member.username %></p>
-						</div>
-						<% }}); %>
-
+					<% members.forEach(member => { if(member.U_ID !== game.U_ID) { %>
+					<div class="member_card">
+						<img src="/public/images/profile/image.png" alt="User Picture">
+						<p><%= member.username %></p>
 					</div>
-					<a href="/game/<%=game.G_ID %>/join" class="button">Join game</a>
+					<% }}); %>
+
 				</div>
-				<% } %>
+				<a href="/game/<%=game.G_ID %>/join" class="button">Join game</a>
+			</div>
+			<% } %>
 		</main>
 	</body>
 

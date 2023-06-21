@@ -29,9 +29,22 @@ const config = mySQL.createConnection({
 	multipleStatements: true,
 });
 
-config.connect(function (err) {
-	if (err) throw err;
-	console.log('Connected');
-});
+function handleDisconnect() {
+	config.connect((err) => {
+		if (err) {
+			console.error('Error connecting to database:', err);
+			setTimeout(handleDisconnect, 5000); // Wait for 5 seconds before trying to reconnect
+		} else {
+			console.log('Connected to database!');
+		}
+	});
 
+	config.on('error', (err) => {
+		console.error('Database connection error:', err);
+		setTimeout(handleDisconnect, 5000);
+	});
+}
+
+// Initial connection attempt
+handleDisconnect();
 module.exports = { config };

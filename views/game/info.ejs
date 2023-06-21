@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<%- include('../components/head') %>
+		<link rel="stylesheet" href="/public/stylesheets/game/games.css">
+		<link rel="stylesheet" href="/public/stylesheets/components/icon_button.css">
+		<link rel="stylesheet" href="/public/stylesheets/game.css">
+		<title>Game <%= game.name %></title>
+	</head>
+
+	<body class="flex-box center">
+		<nav>
+			<%- include('../components/back') %>
+			<%- include('../components/navbar', { page: "home" }) %>
+		</nav>
+		<% const userIsPartOfGame = game.creator === user.id || members.filter(member => member.U_ID === user.id).length > 0; %>
+		<main class="game_stage_<%= game.stage %>">
+			<div class="game_area">
+				<img src="/public/images/icons/game.png" alt="Game Image">
+				<div class="text_area">
+					<h1 class="subtitle"><%= game.name %></h1>
+					<p>
+						<%=game.current_members+ " / "+ game.max_members %> Members
+					</p>
+				</div>
+				<div class="edit_button_area">
+					<%if(game.creator === user.id) {%>
+					<%- include('../components/iconButton', { icon: 'edit', location: '/game/' + game.G_ID + '/edit' }) %>
+					<%} else if(game.stage !== "paused" || userIsPartOfGame) {%>
+					<%- include('../components/iconButton', { icon: 'info', location: '/game/' + game.G_ID + '/info' }) %>
+					<%}%>
+				</div>
+			</div>
+			<div class="join_game_area">
+				<p class="area_description">Members</p>
+				<div class="member_area">
+					<div class="member_card admin">
+						<img src="/public/images/profile/image.png" alt="User Picture">
+						<p><%= game.username %></p>
+					<span class="material-symbols-rounded">
+						shield
+					</span>
+				</div>
+				<% members.forEach(member => { if(member.U_ID !== game.U_ID) { %>
+				<%- include('../components/memberCard', { member }) %>
+				<% }}); %>
+			</div>
+			</div>
+		</main>
+	</body>
+
+</html>
