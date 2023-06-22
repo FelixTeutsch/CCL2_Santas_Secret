@@ -38,7 +38,7 @@
 				<div class="person_segment">
 					<img src="/public/images/profile/<%= target.U_ID %>.png" alt="User Picture">
 					<h2><%= target.username%></h2>
-					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
+					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chatRecipient' }) %>
 				</div>
 			</div>
 			<div class="your_santa">
@@ -46,7 +46,7 @@
 				<div class="person_segment">
 					<img src="/public/images/profile/image.png" alt="User Picture">
 					<h2>--- <%= /*santa.username*/ %></h2>
-					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
+					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chatSanta' }) %>
 				</div>
 			</div>
 			<% if(game.creator === user.id) { %>
@@ -78,7 +78,7 @@
 				<div class="person_segment">
 					<img src="/public/images/profile/<%= target.U_ID %>.png" alt="User Picture">
 					<h2><%= target.username%></h2>
-					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
+					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chatRecipient' }) %>
 				</div>
 			</div>
 			<div class="your_santa">
@@ -86,7 +86,7 @@
 				<div class="person_segment">
 					<img src="/public/images/profile/<%= santa.U_ID %>.png" alt="User Picture">
 					<h2><%= santa.username %></h2>
-					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chat' }) %>
+					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chatSanta' }) %>
 				</div>
 			</div>
 			<% if(game.creator === user.id) { %>

@@ -15,14 +15,12 @@ function getGame(req, res, next) {
 	const members = gameModel.getMembers(req.params.id);
 	Promise.all([game, members])
 		.then((result) => {
-			console.log(result[0].stage);
 			if (result[0].stage !== 'paused') {
 				console.log('game is not paused');
 				const yourSanta = gameModel.getYourSanta(req.params.id, req.user.id);
 				const yourTarget = gameModel.getYourTarget(req.params.id, req.user.id);
 				Promise.all([yourSanta, yourTarget])
 					.then((res2) => {
-						console.log(res2);
 						res.render('game/game', { game: result[0], user: req.user, members: result[1], santa: res2[0][0], target: res2[1][0] });
 					})
 					.catch((error) => res.status(500).json({ error: 'Some error with the santas...', message: error }));
@@ -35,10 +33,10 @@ function getGame(req, res, next) {
 
 function joinGame(req, res, next) {
 	console.log(req.params.id, req.user.id);
+	// TODO: check if game is running!
 	gameModel
 		.joinGame(req.user.id, req.params.id)
 		.then((result) => {
-			console.log(result);
 			res.redirect('/game/' + req.params.id);
 		})
 		.catch((error) => res.status(500).json({ error: 'Failed to join game', message: error }));
@@ -111,7 +109,9 @@ function startGame(req, res, next) {
 		console.log('Assigned Members');
 		console.table(assignedMembers);
 
-		Promise.all([gameModel.assignSantas(assignedMembers, req.params.id), gameModel.startGame(req.params.id)]).then((result) => {
+		// TODO: delete all chats
+
+		Promise.all([gameModel.deleteAllChats(req.params.id), gameModel.assignSantas(assignedMembers, req.params.id), gameModel.createChats(assignedMembers, req.params.id), gameModel.startGame(req.params.id)]).then((result) => {
 			console.log(result);
 			res.redirect('/game/' + req.params.id);
 		});
@@ -151,19 +151,50 @@ function restartGame(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-	console.log('Checking Admin Right:', req.user.id, 'for game', req.params.id);
+	console.log('Checking Admin Right:', req.user.id, 'for game', req.gameId);
 	gameModel
-		.checkAdmin(req.user.id, req.params.id)
+		.checkAdmin(req.user.id, req.gameId)
 		.then((result) => {
 			console.log('Admin Right:', result);
 			if (result) {
 				next();
 			} else {
-				console.log('Not Admin, redirecting to game:', req.params.id);
-				res.redirect('/game/' + req.params.id);
+				console.log('Not Admin, redirecting to game:', req.gameId);
+				res.redirect('/game/' + req.gameId);
 			}
 		})
 		.catch((error) => res.status(500).json({ error: 'Failed to check admin right', message: error }));
+}
+
+function chatSanta(req, res, next) {
+	// TODO: Check if user is assigned to a santa
+	// TODO: If not, redirect to game page
+	// TODO: If yes:
+	// 			TODO: Check if a chat exists (game ID & User as user_receiver)
+	//	(ORDER BY `chat`.`user_receiver` ASC)
+	// TODO: if no chat exists, create a new chat
+	// TODO: Finally send page & chat messages to user
+	console.log(req.params.id);
+	gameModel.chatSanta(req.params.id).then((result) => {
+		console.log(result);
+		res.render('game/chat', { result: result, user: req.user });
+	});
+}
+
+function isMember(req, res, next) {
+	console.log('Checking Member Right:', req.user.id, 'for game', req.gameId);
+	gameModel
+		.checkMember(req.user.id, req.gameId)
+		.then((result) => {
+			console.log('Member Right:', result);
+			if (result) {
+				next();
+			} else {
+				console.log('Not Member, redirecting to game:', req.gameId);
+				res.redirect('/game/' + req.gameId);
+			}
+		})
+		.catch((error) => res.status(500).json({ error: 'Failed to check member right', message: error }));
 }
 
 module.exports = {
@@ -177,4 +208,6 @@ module.exports = {
 	endGame,
 	restartGame,
 	isAdmin,
+	chatSanta,
+	isMember,
 };

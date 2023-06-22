@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<%- include('../components/head.ejs') %>
+		<link rel="stylesheet" href="/public/stylesheets/search.css">
+		<link rel="stylesheet" href="/public/stylesheets/game/chat.css">
+		<title>Chat</title>
+	</head>
+
+	<body>
+		<nav>
+			<%- include('../components/back') %>
+			<%- include('../components/navbar', {page: 'home'}) %>
+		</nav>
+
+		<main>
+			<div class="chat_area">
+				<div class="chat_description">
+					<h1 class="subtitle">Your Recipient</h1>
+				</div>
+				<div class="chat" id="chat">
+					<% for(let i = 0; i < 3; i++) { %>
+					<div class="chat_message me">
+						<div class="message_image">
+							<img src="/public/images/profile/<%= 15%>.png" alt="Image of sender">
+						</div>
+						<div class="message">
+							Hello, this is a test!!!!!!!!!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!! !!!!!! !!!!!!!!!!!!!!!!!!!!
+						</div>
+						<!-- Set the messages read! -->
+					</div>
+					<div class="chat_message them">
+						<div class="message_image">
+							<img src="/public/images/profile/<%= 15%>.png" alt="Image of sender">
+						</div>
+						<div class="message">
+							Hello, this is a test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						</div>
+						<!-- Set the messages read! -->
+					</div>
+					<% } %>
+				</div>
+				<div class="input_area">
+					<input type="text" name="message" id="message_input" placeholder="Message...">
+					<span class="material-symbols-rounded" onclick="addMessage(15)">
+						send
+					</span>
+				</div>
+			</div>
+		</main>
+	</body>
+	<script src="/public/javascripts/chat.js"></script>
+
+</html>

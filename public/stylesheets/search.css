@@ -6,7 +6,8 @@ main {
 body {
 	justify-content: center;
 }
-.search_area {
+.search_area,
+.input_area {
 	display: flex;
 	width: 100%;
 	height: fit-content;
@@ -16,7 +17,8 @@ body {
 	justify-content: center;
 	align-items: center;
 }
-.search_area input {
+.search_area input,
+.input_area input {
 	font: var(--dFontBigText);
 	font-weight: normal;
 	color: var(--colorBackground);
@@ -28,7 +30,9 @@ body {
 }
 
 .search_area input:active,
-.search_area input:focus {
+.search_area input:focus,
+.input_area input:active,
+.input_area input:focus {
 	border: none;
 	outline: none; /* Remove browser highlight */
 }
@@ -36,13 +40,18 @@ body {
 .search_area input:-webkit-autofill,
 .search_area input:-webkit-autofill:hover,
 .search_area input:-webkit-autofill:focus,
-.search_area input:-webkit-autofill:active {
+.search_area input:-webkit-autofill:active,
+.input_area input:-webkit-autofill,
+.input_area input:-webkit-autofill:hover,
+.input_area input:-webkit-autofill:focus,
+.input_area input:-webkit-autofill:active {
 	-webkit-box-shadow: 0 0 0 30px var(--colorText) inset !important;
 	-webkit-text-fill-color: var(--colorBackground) !important;
 	font-size: 24px;
 }
 
-.search_area span {
+.search_area span,
+.input_area span {
 	color: var(--colorBackground);
 	font-size: 32px;
 	display: flex;
@@ -51,7 +60,8 @@ body {
 	width: 80px;
 	height: 53px;
 }
-.search_area span:hover {
+.search_area span:hover,
+.input_area span:hover {
 	cursor: pointer;
 }
 

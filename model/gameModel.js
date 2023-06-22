@@ -88,7 +88,7 @@ let endGame = (G_ID) =>
 
 let assignSantas = (assignedMembers, G_ID) =>
 	new Promise((resolve, reject) => {
-		const sql = 'UPDATE `user_game` SET `recipient` = CASE `U_ID` ';
+		const sql = 'UPDATE user_game SET recipient = NULL WHERE G_ID = ' + G_ID + '; UPDATE `user_game` SET `recipient` = CASE `U_ID` ';
 
 		const updateCases = assignedMembers.map((assignedMember) => {
 			return `WHEN ${assignedMember.member} THEN ${assignedMember.assigned} `;
@@ -152,6 +152,52 @@ let checkAdmin = (G_ID, U_ID) =>
 		});
 	});
 
+let checkMember = (G_ID, U_ID) =>
+	new Promise((resolve, reject) => {
+		const sql = 'SELECT * FROM `user_game` WHERE `G_ID` = ? AND `U_ID` = ?';
+		db.query(sql, [G_ID, U_ID], (error, results) => {
+			if (error) reject(error);
+			resolve(results.length > 0);
+		});
+	});
+
+let deleteAllChats = (G_ID) =>
+	new Promise((resolve, reject) => {
+		const sql = 'DELETE FROM `chat` WHERE `game` = ' + G_ID;
+		db.query(sql, (error, results) => {
+			if (error) reject(error);
+			console.log('Chats deleted: ', results);
+			resolve(results);
+		});
+	});
+
+let createChats = (members, G_ID) =>
+	new Promise((resolve, reject) => {
+		const sqlStart = 'INSERT INTO `chat`(`game`, user_giver, user_receiver) VALUES ';
+		const sqlMiddle = members
+			.map((member) => {
+				return `(${G_ID}, ${member.member}, ${member.assigned})`;
+			})
+			.join(', ');
+		const sqlEnd = ';';
+		const sql = sqlStart + sqlMiddle + sqlEnd;
+		db.query(sql, (error, results) => {
+			if (error) reject(error);
+			console.log('Chats created: ', results);
+			resolve(results);
+		});
+	});
+
+let chatSanta = (G_ID, U_ID) =>
+	new Promise((resolve, reject) => {
+		const sql = 'SELECT * FROM message AS m LEFT JOIN chat AS c ON m.chat = c.C_ID WHERE c.game = ? AND c.user_receiver = ?';
+		db.query(sql, [G_ID, U_ID], (error, results) => {
+			if (error) reject(error);
+			console.log('Chat created: ', results);
+			resolve(results);
+		});
+	});
+
 module.exports = {
 	create,
 	get,
@@ -166,5 +212,8 @@ module.exports = {
 	getYourSanta,
 	getYourTarget,
 	restartGame,
+	checkMember,
 	checkAdmin,
+	deleteAllChats,
+	createChats,
 };
