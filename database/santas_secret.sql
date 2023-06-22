@@ -1,55 +1,174 @@
--- Create the database
-CREATE DATABASE IF NOT EXISTS `santas_secret`;
-USE `santas_secret`;
 
--- Create the 'user' table
-CREATE TABLE `user` (
-  `U_ID` INT AUTO_INCREMENT PRIMARY KEY,
-  `username` VARCHAR(64) DEFAULT NULL,
-  `first_name` VARCHAR(64) DEFAULT NULL,
-  `last_name` VARCHAR(64) DEFAULT NULL,
-  `visibility` ENUM('visible','hidden','unlisted') NOT NULL DEFAULT 'visible',
-  `password` VARCHAR(128) NOT NULL,
-  CONSTRAINT `unique_username` UNIQUE (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Create the 'game' table
-CREATE TABLE `game` (
-  `G_ID` INT AUTO_INCREMENT PRIMARY KEY,
-  `name` TEXT NOT NULL,
-  `creator` INT NOT NULL,
-  `max_members` INT NOT NULL,
-  `stage` ENUM('paused','running','ended') NOT NULL,
-  `visibility` ENUM('visible','hidden','unlisted') NOT NULL DEFAULT 'visible',
-  CONSTRAINT `fk_game_creator` FOREIGN KEY (`creator`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Create the 'chat' table
 CREATE TABLE `chat` (
-  `C_ID` INT AUTO_INCREMENT PRIMARY KEY,
-  `game` INT,
-  `user_giver` INT,
-  `user_receiver` INT,
-  CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`game`) REFERENCES `game` (`G_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`user_giver`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `chat_ibfk_3` FOREIGN KEY (`user_receiver`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `C_ID` int(11) NOT NULL,
+  `game` int(11) DEFAULT NULL,
+  `user_giver` int(11) DEFAULT NULL,
+  `user_receiver` int(11) DEFAULT NULL
+);
 
--- Create the 'message' table
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `game`
+--
+
+CREATE TABLE `game` (
+  `G_ID` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `description` text NOT NULL,
+  `icon` text NOT NULL DEFAULT 'Candle',
+  `creator` int(11) NOT NULL,
+  `max_members` int(11) NOT NULL,
+  `stage` enum('paused','running','ended') NOT NULL,
+  `visibility` enum('visible','hidden','unlisted') NOT NULL DEFAULT 'visible'
+);
+
+--
+-- Dumping data for table `game`
+--
+
+
 CREATE TABLE `message` (
-  `M_ID` INT AUTO_INCREMENT PRIMARY KEY,
-  `chat` INT,
-  `sender` INT,
-  `message_content` VARCHAR(255),
-  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT `message_ibfk_1` FOREIGN KEY (`chat`) REFERENCES `chat` (`C_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `message_ibfk_2` FOREIGN KEY (`sender`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `M_ID` int(11) NOT NULL,
+  `chat` int(11) NOT NULL,
+  `sender` int(11) DEFAULT NULL,
+  `message_content` varchar(255) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+);
 
--- Create the 'user_game' table
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `U_ID` int(11) NOT NULL,
+  `username` varchar(64) DEFAULT NULL,
+  `first_name` varchar(64) DEFAULT NULL,
+  `last_name` varchar(64) DEFAULT NULL,
+  `password` varchar(128) NOT NULL
+);
+
+--
+-- Dumping data for table `user`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_game`
+--
+
 CREATE TABLE `user_game` (
-  `U_ID` INT,
-  `G_ID` INT,
-  CONSTRAINT `user_game_ibfk_1` FOREIGN KEY (`U_ID`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `user_game_ibfk_2` FOREIGN KEY (`G_ID`) REFERENCES `game` (`G_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `U_ID` int(11) DEFAULT NULL,
+  `G_ID` int(11) DEFAULT NULL,
+  `recipient` int(11) DEFAULT NULL
+);
+
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `chat`
+--
+ALTER TABLE `chat`
+  ADD PRIMARY KEY (`C_ID`),
+  ADD KEY `chat_ibfk_1` (`game`),
+  ADD KEY `chat_ibfk_2` (`user_giver`),
+  ADD KEY `chat_ibfk_3` (`user_receiver`);
+
+--
+-- Indexes for table `game`
+--
+ALTER TABLE `game`
+  ADD PRIMARY KEY (`G_ID`),
+  ADD KEY `fk_game_creator` (`creator`);
+
+--
+-- Indexes for table `message`
+--
+ALTER TABLE `message`
+  ADD PRIMARY KEY (`M_ID`),
+  ADD KEY `message_ibfk_1` (`chat`),
+  ADD KEY `message_ibfk_2` (`sender`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`U_ID`),
+  ADD UNIQUE KEY `unique_username` (`username`);
+
+--
+-- Indexes for table `user_game`
+--
+ALTER TABLE `user_game`
+  ADD UNIQUE KEY `user_game_unique` (`U_ID`,`G_ID`),
+  ADD UNIQUE KEY `user_game_unique_recipient` (`recipient`,`G_ID`),
+  ADD KEY `user_game_ibfk_2` (`G_ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `chat`
+--
+ALTER TABLE `chat`
+  MODIFY `C_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `game`
+--
+ALTER TABLE `game`
+  MODIFY `G_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `message`
+--
+ALTER TABLE `message`
+  MODIFY `M_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `chat`
+--
+ALTER TABLE `chat`
+  ADD CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`game`) REFERENCES `game` (`G_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`user_giver`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chat_ibfk_3` FOREIGN KEY (`user_receiver`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `game`
+--
+ALTER TABLE `game`
+  ADD CONSTRAINT `fk_game_creator` FOREIGN KEY (`creator`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `message`
+--
+ALTER TABLE `message`
+  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`chat`) REFERENCES `chat` (`C_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`sender`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_game`
+--
+ALTER TABLE `user_game`
+  ADD CONSTRAINT `user_game_ibfk_1` FOREIGN KEY (`U_ID`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_game_ibfk_2` FOREIGN KEY (`G_ID`) REFERENCES `game` (`G_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_game_ibfk_3` FOREIGN KEY (`recipient`) REFERENCES `user` (`U_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
