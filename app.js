@@ -76,7 +76,7 @@ app.use((req, res, next) => {
 		const error = 'file not found';
 		const message = 'Please use one of the following resources';
 		const routes = ['/public/images', '/public/javascripts', '/public/stylesheets'];
-		res.status(400).json({ error, message, routes });
+		res.status(404).render('error', { status: 404, error, message, routes });
 	} else if (resourcePath.startsWith('/api')) res.status(500).json({ error: 'Error with the resource you requested' });
 	else res.render('error');
 

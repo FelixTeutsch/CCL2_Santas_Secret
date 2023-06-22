@@ -9,14 +9,14 @@ function editGame(req, res, next) {
 			fs.readdir(iconsDirectory, (err, files) => {
 				if (err) {
 					console.error('Failed to read icons directory:', err);
-					res.status(500).json({ error: 'Failed to retrieve icons' });
+					res.status(500).render('error', { status: 500, error: 'Failed to retrieve icons' });
 				} else {
 					const icons = files.filter((file) => path.extname(file) === '.svg').map((file) => path.basename(file, '.svg'));
 					res.render('game/edit', { game: result, icons });
 				}
 			});
 		} else {
-			res.status(403).json({ error: 'Forbidden' });
+			res.status(403).render('error', { status: 430, error: 'Forbidden' });
 		}
 	});
 }
@@ -28,7 +28,7 @@ function createGame(req, res, next) {
 			gameModel.joinGame(req.user.id, result.G_ID);
 			res.redirect('/game/' + result.G_ID);
 		})
-		.catch((error) => res.status(500).json({ error: 'Failed to create game', message: error }));
+		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to create game', message: error }));
 }
 
 function getGame(req, res, next) {
@@ -44,12 +44,12 @@ function getGame(req, res, next) {
 					.then((res2) => {
 						res.render('game/game', { game: result[0], user: req.user, members: result[1], santa: res2[0][0], target: res2[1][0] });
 					})
-					.catch((error) => res.status(500).json({ error: 'Some error with the santas...', message: error }));
+					.catch((error) => res.status(500).render('error', { status: 500, error: 'Some error with the santas...', message: error }));
 			} else {
 				res.render('game/game', { game: result[0], user: req.user, members: result[1] });
 			}
 		})
-		.catch((error) => res.status(500).json({ error: 'Failed to get game', message: error }));
+		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to get game', message: error }));
 }
 
 function joinGame(req, res, next) {
@@ -67,12 +67,12 @@ function joinGame(req, res, next) {
 						console.log('joined game');
 						res.redirect('/game/' + req.params.id);
 					})
-					.catch((error) => res.status(500).json({ error: 'Failed to join game', message: error }));
+					.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to join game', message: error }));
 			} else {
-				res.status(500).json({ error: 'Failed to join game', message: 'Game is running or full' });
+				res.status(500).render('error', { status: 500, error: 'Failed to join game', message: 'Game is running or full' });
 			}
 		})
-		.catch((error) => res.status(500).json({ error: 'Failed to join game', message: error }));
+		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to join game', message: error }));
 }
 
 function updateGame(req, res, next) {
@@ -81,16 +81,16 @@ function updateGame(req, res, next) {
 		.then((result) => {
 			res.redirect('/game/' + req.params.id);
 		})
-		.catch((error) => res.status(500).json({ error: 'Failed to update game', message: error }));
+		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to update game', message: error }));
 }
 
 function deleteGame(req, res, next) {
 	gameModel
 		.delete(req.params.id)
 		.then((result) => {
-			res.json({ message: 'Game deleted successfully' });
+			res.render('error', { status: 500, message: 'Game deleted successfully' });
 		})
-		.catch((error) => res.status(500).json({ error: 'Failed to delete game', message: error }));
+		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to delete game', message: error }));
 }
 
 function infoGame(req, res, next) {
@@ -101,7 +101,7 @@ function infoGame(req, res, next) {
 		.then((result) => {
 			res.render('game/info', { game: result[0], user: req.user, members: result[1] });
 		})
-		.catch((error) => res.status(500).json({ error: 'Failed to get game', message: error }));
+		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to get game', message: error }));
 }
 
 function startGame(req, res, next) {
@@ -112,7 +112,7 @@ function startGame(req, res, next) {
 	Promise.all([members]).then((result) => {
 		// Check if Game Members >= 2
 		if (result[0].length < 2) {
-			res.status(500).json({ error: 'Failed to start game', message: 'Not enough members' });
+			res.status(500).render('error', { status: 500, error: 'Failed to start game', message: 'Not enough members' });
 			return;
 		}
 
@@ -162,7 +162,7 @@ function startGame(req, res, next) {
 	// 		console.log(result);
 	// 		res.redirect('/game/' + req.params.id);
 	// 	})
-	// 	.catch((error) => res.status(500).json({ error: 'Failed to start game', message: error }));
+	// 	.catch((error) => res.status(500).render('error',{ error: 'Failed to start game', message: error }));
 }
 
 function endGame(req, res, next) {
@@ -194,7 +194,7 @@ function isAdmin(req, res, next) {
 				res.redirect('/game/' + req.gameId);
 			}
 		})
-		.catch((error) => res.status(500).json({ error: 'Failed to check admin right', message: error }));
+		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to check admin right', message: error }));
 }
 
 function chatSanta(req, res, next) {
@@ -226,7 +226,7 @@ function isMember(req, res, next) {
 				res.redirect('/game/' + req.gameId);
 			}
 		})
-		.catch((error) => res.status(500).json({ error: 'Failed to check member right', message: error }));
+		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to check member right', message: error }));
 }
 
 function leaveGame(req, res, next) {

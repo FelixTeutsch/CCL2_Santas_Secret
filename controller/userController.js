@@ -45,7 +45,7 @@ function getProfile(req, res, next) {
 		.then((values) => {
 			res.render('profile/profile', { user: values[0], viewer: req.user, games: values[1] });
 		})
-		.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
+		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get profile', message: err }));
 }
 
 function viewProfile(req, res, next) {
@@ -58,9 +58,9 @@ function viewProfile(req, res, next) {
 				.then((values) => {
 					res.render('profile/profile', { user: user, viewer: req.user, games: values });
 				})
-				.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
+				.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get profile', message: err }));
 		})
-		.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
+		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get profile', message: err }));
 }
 
 function edit(req, res, next) {
@@ -69,7 +69,7 @@ function edit(req, res, next) {
 		.then((values) => {
 			res.render('profile/edit', { user: values });
 		})
-		.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
+		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get profile', message: err }));
 }
 
 // Update a user's profile
@@ -83,7 +83,7 @@ function updateProfile(req, res, next) {
 			res.redirect('/home');
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Failed to update profile', message: error });
+			res.status(500).render('error', { status: 500, error: 'Failed to update profile', message: error });
 		});
 }
 
@@ -99,7 +99,7 @@ function deleteProfile(req, res, next) {
 			res.redirect('/'); // Redirect to the homepage after deleting the profile
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Failed to delete profile', message: error });
+			res.status(500).render('error', { status: 500, error: 'Failed to delete profile', message: error });
 		});
 }
 
@@ -109,7 +109,7 @@ function changePictrue(req, res, next) {
 		.then((user) => {
 			res.render('profile/picture', { user: user });
 		})
-		.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
+		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get profile', message: err }));
 }
 
 function updatePicture(req, res, next) {
@@ -129,7 +129,7 @@ function updatePicture(req, res, next) {
 
 	// // Check if a file was uploaded
 	// if (!file) {
-	// 	res.status(400).json({ error: 'No file uploaded' });
+	// 	res.status(400).render('error',{ error: 'No file uploaded' });
 	// 	return;
 	// }
 
@@ -144,7 +144,7 @@ function updatePicture(req, res, next) {
 	// // Save the file to the specified path
 	// file.mv(filePath, (err) => {
 	// 	if (err) {
-	// 		res.status(500).json({ error: 'Failed to update picture', message: err });
+	// 		res.status(500).render('error',{ error: 'Failed to update picture', message: err });
 	// 	} else {
 	// 		res.redirect('/profile');
 	// 	}
@@ -156,7 +156,7 @@ function updatePicture(req, res, next) {
 
 // 	// Check if a file was uploaded
 // 	if (!file) {
-// 		res.status(400).json({ error: 'No file uploaded' });
+// 		res.status(400).render('error',{ error: 'No file uploaded' });
 // 		return;
 // 	}
 
@@ -171,7 +171,7 @@ function updatePicture(req, res, next) {
 // 	// Save the file to the specified path
 // 	file.mv(filePath, (err) => {
 // 		if (err) {
-// 			res.status(500).json({ error: 'Failed to update picture', message: err });
+// 			res.status(500).render('error',{ error: 'Failed to update picture', message: err });
 // 		} else {
 // 			res.redirect('/profile');
 // 		}
@@ -187,7 +187,7 @@ function addToGame(req, res, next) {
 		.then(() => {
 			res.redirect('/profile/view/' + U_ID);
 		})
-		.catch((err) => res.status(500).json({ error: 'Failed to join game', message: err }));
+		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to join game', message: err }));
 }
 
 module.exports = {

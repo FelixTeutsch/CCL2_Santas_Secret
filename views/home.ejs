@@ -27,6 +27,7 @@
 			<div class="game_area">
 
 				<% games.forEach((game) => {%>
+				<% console.table(game) %>
 				<%-include('components/game', {game})%>
 				<% }); %>
 

@@ -49,7 +49,7 @@ let getMembers = (gameId) =>
 
 let getGames = (U_ID) =>
 	new Promise((resolve, reject) => {
-		const sql = 'SELECT * FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID  WHERE `creator` = ' + db.escape(U_ID) + ' OR `U_ID` = ' + db.escape(U_ID) + ' GROUP BY g.G_ID';
+		const sql = 'SELECT *, IFNULL(COUNT(ug.G_ID), 0) AS current_members FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID  WHERE `creator` = ' + db.escape(U_ID) + ' OR `U_ID` = ' + db.escape(U_ID) + ' GROUP BY g.G_ID';
 		db.query(sql, (error, results) => {
 			if (error) reject(error);
 			resolve(results);
