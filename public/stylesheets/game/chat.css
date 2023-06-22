@@ -3,8 +3,7 @@ main {
 	align-items: flex-start;
 	justify-content: center;
 	width: 100%;
-
-	height: calc(100vh - 96px - 82px - 12px);
+	height: 100%;
 }
 .chat_area {
 	width: 600px;
@@ -96,4 +95,10 @@ main {
 .chat_description * {
 	padding: 24px;
 	margin: 0;
+}
+
+@media (max-width: 1080px) {
+	body {
+		padding-bottom: 92px;
+	}
 }
