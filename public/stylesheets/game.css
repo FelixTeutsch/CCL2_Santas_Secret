@@ -116,6 +116,11 @@ main * {
 	color: var(--colorHeading) !important;
 }
 
+.kickPlayer,
+.kickPlayer * {
+	color: var(--colorLink) !important;
+}
+
 .member_area .member_card img {
 	width: 48px;
 	height: 48px;

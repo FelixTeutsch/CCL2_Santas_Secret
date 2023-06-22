@@ -12,6 +12,7 @@ main {
 	align-items: center;
 	justify-content: flex-start;
 	padding: 12px;
+	padding-top: 0;
 	height: 100%;
 	border: var(--borderLight);
 	border-radius: var(--border-radius);
@@ -68,11 +69,12 @@ main {
 	background-color: var(--colorText);
 	color: var(--colorBackground);
 	display: flex;
-	align-items: center;
+	flex-direction: column;
+	align-items: end;
+	justify-content: center;
 	border-radius: var(--border-radius);
 	padding: 12px;
 	margin-top: 24px;
-	word-break: break-word;
 }
 .chat .me .message {
 	border-top-right-radius: 4px !important;
@@ -80,6 +82,17 @@ main {
 
 .chat .them .message {
 	border-top-left-radius: 4px !important;
+}
+
+.chat .message p,
+.chat .message .timestamp {
+	color: var(--colorBackground);
+	padding: 0;
+	margin: 0;
+	word-break: break-word;
+}
+.chat .message .timestamp {
+	opacity: 0.5;
 }
 .input_area {
 	box-shadow: 0px 0px 12px var(--colorBackground);

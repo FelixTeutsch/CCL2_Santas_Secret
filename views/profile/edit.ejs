@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<%-include('../components/head')%>
+		<link rel="stylesheet" href="/public/stylesheets/login_register.css">
+		<title>Register</title>
+	</head>
+
+	<body class="flex-box center vertical">
+		<header>
+			<nav>
+				<%-include('../components/back')%>
+			</nav>
+		</header>
+		<main>
+			<form action="#" method="post" class="input_form" id="register">
+				<h1 class="heading">Edit Profile</h1>
+				<div class="input_area flex-box vertical">
+					<%-include('../components/input_field', {label:"Username", autocomplete:"nickname", type:"text", value: user.username})%>
+					<%-include('../components/input_field', {label:"First Name", autocomplete:"given-name", type:"text", value: user.first_name})%>
+					<%-include('../components/input_field', {label:"Last Name", autocomplete:"family-name", type:"text", value: user.last_name})%>
+
+					<a href="./password">Change Password...</a>
+				</div>
+				<input type="submit" value="Update Profile" class="button" id="submit_button">
+			</form>
+		</main>
+
+	</body>
+
+	<script src="/public/javascripts/register.js"></script>
+
+</html>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userApi = require('../api/userApi');
 const searchApi = require('../api/searchApi');
+const messageApi = require('../api/messageApi');
 
 // Get all users
 router.all('/user', userApi.getAllUsers);
@@ -28,5 +29,7 @@ router.all('/user/available/:username', userApi.availableUsername);
 
 router.all('/search/user', searchApi.searchUser);
 router.all('/search/game', searchApi.searchGame);
+
+router.post('/message/send', messageApi.sendMessage);
 
 module.exports = router;

@@ -23,16 +23,18 @@ const extractGameId = (req, res, next) => {
 // Middleware to check if the user is a member
 router.use('/:id', extractGameId, gameController.isMember);
 
-router.all('/:id/chatRecipient', (req, res, next) => res.render('game/chat'));
+router.all('/:id/chatRecipient', gameController.chatRecipient);
 router.all('/:id/chatSanta', gameController.chatSanta);
+router.route('/:id/leave').all(gameController.leaveGame);
 
 router.use(gameController.isAdmin);
 router.route('/:id/start').all(gameController.startGame);
 router.route('/:id/end').all(gameController.endGame);
 router.route('/:id/restart').all(gameController.restartGame);
+router.route('/:id/edit').get(gameController.editGame).post(gameController.updateGame);
+router.all('/:id/delete', gameController.deleteGame);
+router.all('/:id/kick/:U_ID', gameController.kickPlayer);
 
-// router.route('/:id/leave').all(gameController.leaveGame);
-// router.all('/:id/settings', (req, res, next) => res.render('settings'));
 // router.all('/:id/share', (req, res, next) => res.render('share'));
 // router.all('/:id/add', (req, res, next) => res.render('add'));
 

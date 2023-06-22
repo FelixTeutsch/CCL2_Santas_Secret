@@ -2,7 +2,10 @@
 	<label for="<%= label.toLowerCase().replace(/ /g, '_') %>"><%= label %></label>
 	<select name="<%= label.toLowerCase().replace(/ /g, '_') %>" class="login_text" required>
 		<% for(let i = 0; i < options.length; i++) { %>
+		<% if(locals.value && value === options[i]) {%>
+		<option value="<%= options[i] %>" selected="selected"><%= options[i] %></option>
+		<% } else { %>
 		<option value="<%= options[i] %>"><%= options[i] %></option>
-		<% } %>
+		<% }} %>
 	</select>
 </div>

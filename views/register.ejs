@@ -21,7 +21,6 @@
 					<%-include('components/input_field', {label:"First Name", autocomplete:"given-name", type:"text"})%>
 					<%-include('components/input_field', {label:"Last Name", autocomplete:"family-name", type:"text"})%>
 					<%- include('components/input_field', {label:"Password", type:"password", autocomplete:"new-password"}) %>
-					<%- include('components/input_field', {label:"Repeat Password", type:"password", autocomplete:"new-password"}) %>
 					<% if(locals.error) {%>
 					<p><%=error%></p>
 					<% } %>

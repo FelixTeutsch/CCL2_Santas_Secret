@@ -1,5 +1,15 @@
 const gameModel = require('../model/gameModel');
 
+function editGame(req, res, next) {
+	gameModel.get(req.params.id).then((result) => {
+		if (result.creator === req.user.id) {
+			res.render('game/edit', { game: result });
+		} else {
+			res.status(403).json({ error: 'Forbidden' });
+		}
+	});
+}
+
 function createGame(req, res, next) {
 	gameModel
 		.create(req.body, req.user.id)
@@ -34,10 +44,20 @@ function getGame(req, res, next) {
 function joinGame(req, res, next) {
 	console.log(req.params.id, req.user.id);
 	// TODO: check if game is running!
-	gameModel
-		.joinGame(req.user.id, req.params.id)
+	const isRunning = gameModel.get(req.params.id);
+	const getMembers = gameModel.getMembers(req.params.id);
+	Promise.all([isRunning, getMembers])
 		.then((result) => {
-			res.redirect('/game/' + req.params.id);
+			if (result[0].stage === 'paused' && result[1].length < result[0].maxPlayers) {
+				gameModel
+					.joinGame(req.user.id, req.params.id)
+					.then((result) => {
+						res.redirect('/game/' + req.params.id);
+					})
+					.catch((error) => res.status(500).json({ error: 'Failed to join game', message: error }));
+			} else {
+				res.status(500).json({ error: 'Failed to join game', message: 'Game is running or full' });
+			}
 		})
 		.catch((error) => res.status(500).json({ error: 'Failed to join game', message: error }));
 }
@@ -153,7 +173,7 @@ function restartGame(req, res, next) {
 function isAdmin(req, res, next) {
 	console.log('Checking Admin Right:', req.user.id, 'for game', req.gameId);
 	gameModel
-		.checkAdmin(req.user.id, req.gameId)
+		.checkAdmin(req.gameId, req.user.id)
 		.then((result) => {
 			console.log('Admin Right:', result);
 			if (result) {
@@ -167,26 +187,27 @@ function isAdmin(req, res, next) {
 }
 
 function chatSanta(req, res, next) {
-	// TODO: Check if user is assigned to a santa
-	// TODO: If not, redirect to game page
-	// TODO: If yes:
-	// 			TODO: Check if a chat exists (game ID & User as user_receiver)
-	//	(ORDER BY `chat`.`user_receiver` ASC)
-	// TODO: if no chat exists, create a new chat
-	// TODO: Finally send page & chat messages to user
+	// TODO: check if game is running or has ended
+	// TODO: if ended: show all names & icons
 	console.log(req.params.id);
-	gameModel.chatSanta(req.params.id).then((result) => {
-		console.log(result);
-		res.render('game/chat', { result: result, user: req.user });
+	Promise.all([gameModel.chatSanta(req.params.id, req.user.id), gameModel.chatSantaId(req.params.id, req.user.id), gameModel.getSanta(req.params.id, req.user.id)]).then((result) => {
+		res.render('game/chat', { showThem: false, santa: true, messages: result[0], user: req.user, chatId: result[1], chatPartner: result[2] });
+	});
+}
+
+function chatRecipient(req, res, next) {
+	console.log(req.params.id);
+	Promise.all([gameModel.chatRecipient(req.params.id, req.user.id), gameModel.chatRecipientId(req.params.id, req.user.id), gameModel.getRecipient(req.params.id, req.user.id)]).then((result) => {
+		res.render('game/chat', { showThem: true, santa: false, messages: result[0], user: req.user, chatId: result[1], chatPartner: result[2] });
 	});
 }
 
 function isMember(req, res, next) {
-	console.log('Checking Member Right:', req.user.id, 'for game', req.gameId);
+	console.log('Checking if member:', req.user.id, 'for game', req.gameId);
 	gameModel
-		.checkMember(req.user.id, req.gameId)
+		.checkMember(req.gameId, req.user.id)
 		.then((result) => {
-			console.log('Member Right:', result);
+			console.log('Is member:', result);
 			if (result) {
 				next();
 			} else {
@@ -195,6 +216,41 @@ function isMember(req, res, next) {
 			}
 		})
 		.catch((error) => res.status(500).json({ error: 'Failed to check member right', message: error }));
+}
+
+function leaveGame(req, res, next) {
+	console.log('Leaving game:', req.gameId, 'for user', req.user.id);
+	gameModel.get(req.gameId).then((result) => {
+		console.log('Game:', result);
+		if (result.stage == 'paused') {
+			gameModel.remove(req.gameId, req.user.id).then((result) => {
+				console.log('Left game:', result);
+				res.redirect('/game/' + req.gameId);
+			});
+		} else {
+			console.log("Can't leave running game:", req.gameId);
+			res.redirect('/game/' + req.gameId);
+		}
+	});
+}
+
+function deleteGame(req, res, next) {
+	console.log('Deleting game:', req.gameId, 'for user', req.user.id);
+	gameModel
+		.deleteGame(req.gameId, req.user.id)
+		.then((result) => {
+			console.log('Deleted game:', result);
+			res.redirect('/home');
+		})
+		.catch((err) => res.redirect('/game/' + req.gameId));
+}
+
+function kickPlayer(req, res, next) {
+	console.log('Kicking player:', req.params.U_ID, 'from game', req.gameId);
+	gameModel.remove(req.gameId, req.params.U_ID).then((result) => {
+		console.log('Kicked player:', result);
+		res.redirect('/game/' + req.gameId);
+	});
 }
 
 module.exports = {
@@ -210,4 +266,9 @@ module.exports = {
 	isAdmin,
 	chatSanta,
 	isMember,
+	chatRecipient,
+	leaveGame,
+	deleteGame,
+	editGame,
+	kickPlayer,
 };

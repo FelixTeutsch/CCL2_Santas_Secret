@@ -1,13 +1,13 @@
 const userModel = require('../model/userModel');
 const gameModel = require('../model/gameModel');
 const { authenticateUser, createJWT } = require('../services/authentication');
+const fs = require('fs');
+const path = require('path');
 
 function registerUser(req, res, next) {
 	userModel
 		.create(req.body)
 		.then(async (result) => {
-			console.log(result + ' created');
-			console.log(req.body.username, req.body.password);
 			const token = await createJWT(result['U_ID'], req.body.username);
 			res.cookie('santas_cookies', token, { maxAge: 24 * 60 * 60 * 1000 * 7, httpOnly: true });
 			res.redirect('/home');
@@ -16,7 +16,6 @@ function registerUser(req, res, next) {
 }
 
 function loginUser(req, res, next) {
-	// TODO: Fix Login with wrong credentials bug
 	userModel
 		.get(req.body.username)
 		.then(async (user) => {
@@ -44,7 +43,6 @@ function getProfile(req, res, next) {
 	const gameData = gameModel.getGames(req.user.id);
 	Promise.all([userData, gameData])
 		.then((values) => {
-			console.log(values);
 			res.render('profile/profile', { user: values[0], viewer: req.user, games: values[1] });
 		})
 		.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
@@ -56,15 +54,135 @@ function viewProfile(req, res, next) {
 	const gameData = gameModel.getGames(req.user.id);
 	Promise.all([requestedProfile, gameData])
 		.then((values) => {
-			console.log(values);
 			res.render('profile/profile', { user: values[0], viewer: req.user, games: values[1] });
 		})
 		.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
 }
+
+function edit(req, res, next) {
+	userModel
+		.get(req.user.id)
+		.then((values) => {
+			res.render('profile/edit', { user: values });
+		})
+		.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
+}
+
+// Update a user's profile
+function updateProfile(req, res, next) {
+	const { username, first_name, last_name, visibility } = req.body;
+	const U_ID = req.user.id; // Assuming you're using passport or similar authentication middleware
+
+	userModel
+		.update(U_ID, { username, first_name, last_name, visibility })
+		.then(() => {
+			res.redirect('/home');
+		})
+		.catch((error) => {
+			res.status(500).json({ error: 'Failed to update profile', message: error });
+		});
+}
+
+// Delete a user's profile
+function deleteProfile(req, res, next) {
+	const U_ID = req.user.id;
+
+	userModel
+		.deleteUser(U_ID)
+		.then(() => {
+			console.log('Profile deleted');
+			res.cookie('santas_cookies', 'santas_cookies', { maxAge: 0 });
+			res.redirect('/'); // Redirect to the homepage after deleting the profile
+		})
+		.catch((error) => {
+			res.status(500).json({ error: 'Failed to delete profile', message: error });
+		});
+}
+
+function changePictrue(req, res, next) {
+	userModel
+		.get(req.user.id)
+		.then((user) => {
+			res.render('profile/picture', { user: user });
+		})
+		.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
+}
+
+function updatePicture(req, res, next) {
+	try {
+		if (req.files) {
+			let picture = req.files.Picture;
+			let filename = './public/images/profile/' + req.user.id + '.jpg';
+			picture.mv(filename);
+			console.log('File uploaded to ' + filename);
+		}
+		res.redirect('/profile');
+	} catch (err) {
+		console.log(err);
+	}
+
+	// const file = req.files.Picture; // Assuming you're using a file upload middleware that populates `req.files`
+
+	// // Check if a file was uploaded
+	// if (!file) {
+	// 	res.status(400).json({ error: 'No file uploaded' });
+	// 	return;
+	// }
+
+	// const U_ID = req.user.id;
+
+	// // Get the file extension
+	// // const extension = path.extname(file.name);
+
+	// // Generate the file path
+	// const filePath = path.join(__dirname, '../public/images/profile/', `${U_ID}.jpg`);
+
+	// // Save the file to the specified path
+	// file.mv(filePath, (err) => {
+	// 	if (err) {
+	// 		res.status(500).json({ error: 'Failed to update picture', message: err });
+	// 	} else {
+	// 		res.redirect('/profile');
+	// 	}
+	// });
+}
+// function updatePicture(req, res, next) {
+// 	console.log(req.files);
+// 	const file = req.files.Picture; // Assuming you're using a file upload middleware that populates `req.files`
+
+// 	// Check if a file was uploaded
+// 	if (!file) {
+// 		res.status(400).json({ error: 'No file uploaded' });
+// 		return;
+// 	}
+
+// 	const U_ID = req.user.id;
+
+// 	// Get the file extension
+// 	// const extension = path.extname(file.name);
+
+// 	// Generate the file path
+// 	const filePath = path.join(__dirname, '../public/images/profile/', `${U_ID}.jpg`);
+
+// 	// Save the file to the specified path
+// 	file.mv(filePath, (err) => {
+// 		if (err) {
+// 			res.status(500).json({ error: 'Failed to update picture', message: err });
+// 		} else {
+// 			res.redirect('/profile');
+// 		}
+// 	});
+// }
+
 module.exports = {
 	registerUser,
 	loginUser,
 	logoutUser,
 	getProfile,
 	viewProfile,
+	edit,
+	updateProfile,
+	deleteProfile,
+	changePictrue,
+	updatePicture,
 };

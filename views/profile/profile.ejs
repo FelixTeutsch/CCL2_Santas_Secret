@@ -12,12 +12,14 @@
 			<%-include('../components/navbar', {page: "profile"})%>
 		</header>
 		<main>
-			<!-- TODO: Make responsive -->
-			<img src="/public/images/profile/<%= user.username %>.jpg" alt="Your Profile Picture">
+			<div class="profile_picture">
+				<img src="/public/images/profile/<%= user.U_ID %>.jpg" alt="Your Profile Picture">
+				<a href="/profile/picture/">Change Picture</a>
+			</div>
 			<div class="profile_area">
 				<h1><%= user.username %></h1>
 				<h2><%= user.first_name + " "+ user.last_name %></h2>
-				<% if(user.username == viewer.username) { %>
+				<% if(user.username==viewer.username) { %>
 				<ul class="settings_area">
 					<li>
 						<a href="/profile/edit">
@@ -36,12 +38,14 @@
 						</a>
 					</li>
 					<li>
-						<a href="/profile/disable">
-							<span class="material-symbols-rounded">
-								delete
-							</span>
-							Disable
-						</a>
+						<form method="post" action="/profile/delete">
+							<button type="submit" name="submit_param" value="submit_value" class="link-button">
+								<span class="material-symbols-rounded">
+									delete
+								</span>
+								Delete
+							</button>
+						</form>
 					</li>
 					<li>
 						<a href="/logout">

@@ -17,7 +17,7 @@
 		<% const userIsPartOfGame = game.creator === user.id || members.filter(member => member.U_ID === user.id).length > 0; %>
 		<main class="game_stage_<%= game.stage %>">
 			<div class="game_area">
-				<img src="/public/images/icons/game.png" alt="Game Image">
+				<img src="/public/images/icons/game.jpg" alt="Game Image">
 				<div class="text_area">
 					<h1 class="subtitle"><%= game.name %></h1>
 					<p>
@@ -41,17 +41,20 @@
 					<p class="area_description">Members</p>
 					<div class="member_area">
 						<div class="member_card admin">
-							<img src="/public/images/profile/image.png" alt="User Picture">
+							<img src="/public/images/profile/image.jpg" alt="User Picture">
 							<p><%= game.username %></p>
 							<span class="material-symbols-rounded">
 								shield
 							</span>
 						</div>
 						<% members.forEach(member => { if(member.U_ID !== game.U_ID) { %>
-						<%- include('../components/memberCard', { member }) %>
+						<%- include('../components/memberCard', { member, isAdmin:game.creator === user.id }) %>
 						<% }}); %>
 					</div>
 				</div>
+				<% if(game.stage === "paused" && userIsPartOfGame) { %>
+				<a href="/game/<%= game.G_ID %>/leave" class="button">Leave Game</a>
+				<% } %>
 		</main>
 	</body>
 

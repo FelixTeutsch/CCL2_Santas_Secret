@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Parse cookies with cookie-parser
 app.use(cookieParser());
-app.use(fileUpload());
+app.use(fileUpload({ createParentPath: true }));
 
 // SERVE PUBLIC FILES:
 // Serve static files from the "public" directory

@@ -1,4 +1,11 @@
 <div class="member_card">
-	<img src="/public/images/profile/<%= member.U_ID %>.png" alt="<%= member.username%> Profile Picture">
+	<img src="/public/images/profile/<%= member.U_ID %>.jpg" alt="<%= member.username%> Profile Picture">
 	<p><%= member.username %></p>
+	<% if(isAdmin) { %>
+	<a href="./kick/<%= member.U_ID %>" class="kickPlayer">
+		<span class="material-symbols-rounded">
+			person_remove
+		</span>
+	</a>
+	<% } %>
 </div>

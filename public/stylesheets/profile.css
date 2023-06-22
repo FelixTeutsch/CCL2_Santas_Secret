@@ -30,8 +30,16 @@ main img:hover {
 	margin: 32px 0;
 	padding: 0;
 }
+.profile_picture {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	justify-content: center;
+	align-items: center;
+}
 
-.settings_area li a {
+.settings_area li a,
+.settings_area li form button {
 	padding: 4px 24px;
 	display: flex;
 	justify-content: flex-start;
@@ -40,8 +48,12 @@ main img:hover {
 	text-decoration: none;
 	font: var(--dFontButton);
 	color: var(--colorText);
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
 }
-.settings_area li a span {
+.settings_area li a span,
+.settings_area li form button span {
 	font-size: 24px;
 }
 .settings_area li:last-child {
@@ -52,7 +64,9 @@ main img:hover {
 }
 
 .settings_area li:hover a,
-.settings_area li:hover span {
+.settings_area li:hover span,
+.settings_area li:hover form,
+.settings_area li:hover button {
 	color: var(--colorTextActive);
 }
 

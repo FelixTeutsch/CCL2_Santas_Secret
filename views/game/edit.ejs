@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<%-include('../components/head')%>
+		<link rel="stylesheet" href="/public/stylesheets/game/create.css">
+		<link rel="stylesheet" href="/public/stylesheets/components/dropdown.css">
+		<link rel="stylesheet" href="/public/stylesheets/login_register.css">
+
+		<title>Create Game</title>
+	</head>
+
+	<body>
+		<nav>
+			<%-include('../components/back')%>
+			<%-include('../components/navbar', {page: "home"})%>
+		</nav>
+		<main class="flex-box center">
+			<form action="#" method="post" class="input_form">
+				<h1 class="heading">Edit Game</h1>
+				<div class="input_area flex-box vertical">
+					<%-include('../components/input_field', {label: "Name", type: "text",autocomplete: "game-name", value: game.name})%>
+					<%-include('../components/input_field', {label: "Description", type: "textarea",autocomplete: "game-description", value: game.description})%>
+					<%-include('../components/input_field', {label: "Max Members", type: "number",autocomplete: "game-member-count", minLen: game.current_members,  value: game.current_members})%>
+					<%-include('../components/dropdown', {label: "Visibility", type: "number", options: ['Visible','Unlisted','Hidden'] , value: game.Visibility})%>
+					<input type="submit" value="Update Game" class="button">
+					<a href="/game<% game.G_ID %>/delete">Delete Game...</a>
+				</div>
+			</form>
+		</main>
+	</body>
+
+</html>

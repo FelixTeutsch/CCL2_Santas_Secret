@@ -17,7 +17,7 @@
 		<% const userIsPartOfGame = game.creator === user.id || members.filter(member => member.U_ID === user.id).length > 0; %>
 		<main class="game_stage_<%= game.stage %>">
 			<div class="game_area">
-				<img src="/public/images/icons/game.png" alt="Game Image">
+				<img src="/public/images/icons/game.jpg" alt="Game Image">
 				<div class="text_area">
 					<h1 class="subtitle"><%= game.name %></h1>
 					<p>
@@ -36,7 +36,7 @@
 			<div class="your_person">
 				<p>You got:</p>
 				<div class="person_segment">
-					<img src="/public/images/profile/<%= target.U_ID %>.png" alt="User Picture">
+					<img src="/public/images/profile/<%= target.U_ID %>.jpg" alt="User Picture">
 					<h2><%= target.username%></h2>
 					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chatRecipient' }) %>
 				</div>
@@ -44,7 +44,7 @@
 			<div class="your_santa">
 				<p>Your Santa:</p>
 				<div class="person_segment">
-					<img src="/public/images/profile/image.png" alt="User Picture">
+					<img src="/public/images/profile/image.jpg" alt="User Picture">
 					<h2>--- <%= /*santa.username*/ %></h2>
 					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chatSanta' }) %>
 				</div>
@@ -76,7 +76,7 @@
 			<div class="your_person">
 				<p>You had:</p>
 				<div class="person_segment">
-					<img src="/public/images/profile/<%= target.U_ID %>.png" alt="User Picture">
+					<img src="/public/images/profile/<%= target.U_ID %>.jpg" alt="User Picture">
 					<h2><%= target.username%></h2>
 					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chatRecipient' }) %>
 				</div>
@@ -84,7 +84,7 @@
 			<div class="your_santa">
 				<p>Your Santa was:</p>
 				<div class="person_segment">
-					<img src="/public/images/profile/<%= santa.U_ID %>.png" alt="User Picture">
+					<img src="/public/images/profile/<%= santa.U_ID %>.jpg" alt="User Picture">
 					<h2><%= santa.username %></h2>
 					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chatSanta' }) %>
 				</div>
@@ -102,7 +102,7 @@
 				<p class="area_description">Members</p>
 				<div class="member_area">
 					<div class="member_card admin">
-						<img src="/public/images/profile/image.png" alt="User Picture">
+						<img src="/public/images/profile/image.jpg" alt="User Picture">
 						<p><%= game.username %></p>
 						<span class="material-symbols-rounded">
 							shield
@@ -110,7 +110,7 @@
 					</div>
 					<% members.forEach(member => { if(member.U_ID !== game.U_ID) { %>
 					<div class="member_card">
-						<img src="/public/images/profile/image.png" alt="User Picture">
+						<img src="/public/images/profile/image.jpg" alt="User Picture">
 						<p><%= member.username %></p>
 					</div>
 					<% }}); %>

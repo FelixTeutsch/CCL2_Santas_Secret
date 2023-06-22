@@ -6,11 +6,9 @@ let create = ({ username, first_name, last_name, password }) =>
 		// User Searcher
 		const request = 'INSERT INTO `user`(`username`, `first_name`, `last_name`, `password`) VALUES (?, ?, ?, ?);';
 
-		console.log('Request:', request);
 		const hashedPassword = await hashPassword(password);
 		db.query(request, [username, first_name, last_name, hashedPassword], (err, res) => {
 			if (err) reject(err);
-			console.log(res);
 			if (res && res.affectedRows > 0) resolve({ U_ID: res.insertId });
 		});
 	});
