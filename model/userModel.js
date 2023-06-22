@@ -39,7 +39,7 @@ let get = (U_ID) =>
 // Get all users
 let getAll = () =>
 	new Promise((resolve, reject) => {
-		const sql = 'SELECT * FROM `user` WHERE visibility = "Visible"';
+		const sql = 'SELECT * FROM `user`';
 
 		db.query(sql, (error, results) => {
 			if (error) {
@@ -78,7 +78,7 @@ let checkCredentials = (username, password) =>
 	});
 
 // Update a user
-const update = (U_ID, { username, first_name, last_name, visibility }) =>
+const update = (U_ID, { username, first_name, last_name }) =>
 	new Promise((resolve, reject) => {
 		const sql = 'UPDATE `user` SET';
 		const values = [];
@@ -87,7 +87,6 @@ const update = (U_ID, { username, first_name, last_name, visibility }) =>
 		if (username) updateFields.push('`username` = ?') && values.push(username);
 		if (first_name) updateFields.push('`first_name` = ?') && values.push(first_name);
 		if (last_name) updateFields.push('`last_name` = ?') && values.push(last_name);
-		if (visibility) updateFields.push('`visibility` = ?') && values.push(visibility);
 
 		if (updateFields.length === 0) {
 			resolve(null); // No fields to update

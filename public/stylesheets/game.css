@@ -32,7 +32,7 @@ main * {
 .game_area img {
 	width: 100px;
 	height: 100px;
-	object-fit: cover;
+	object-fit: scale-down;
 	border-radius: var(--border-radius);
 }
 .game_area .text_area {

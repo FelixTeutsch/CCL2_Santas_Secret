@@ -70,12 +70,17 @@
 	min-height: 88px;
 	border: var(--borderDark);
 }
+.game_card img {
+	object-fit: scale-down;
+}
+.user_card img {
+	object-fit: cover;
+}
 .game_card img,
 .user_card img {
 	width: 54px;
 	height: 54px;
 	border-radius: 54px;
-	object-fit: cover;
 	/* border: var(--borderOrange); */
 }
 .game_card .icon_area,

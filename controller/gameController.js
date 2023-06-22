@@ -1,9 +1,20 @@
 const gameModel = require('../model/gameModel');
+const fs = require('fs');
+const path = require('path');
 
 function editGame(req, res, next) {
 	gameModel.get(req.params.id).then((result) => {
 		if (result.creator === req.user.id) {
-			res.render('game/edit', { game: result });
+			const iconsDirectory = path.join(__dirname, '..', 'public', 'images', 'icons');
+			fs.readdir(iconsDirectory, (err, files) => {
+				if (err) {
+					console.error('Failed to read icons directory:', err);
+					res.status(500).json({ error: 'Failed to retrieve icons' });
+				} else {
+					const icons = files.filter((file) => path.extname(file) === '.svg').map((file) => path.basename(file, '.svg'));
+					res.render('game/edit', { game: result, icons });
+				}
+			});
 		} else {
 			res.status(403).json({ error: 'Forbidden' });
 		}
@@ -48,10 +59,12 @@ function joinGame(req, res, next) {
 	const getMembers = gameModel.getMembers(req.params.id);
 	Promise.all([isRunning, getMembers])
 		.then((result) => {
-			if (result[0].stage === 'paused' && result[1].length < result[0].maxPlayers) {
+			console.log(result[0].stage, result[1].length, result[0].max_members);
+			if (result[0].stage === 'paused' && result[1].length < result[0].max_members) {
 				gameModel
 					.joinGame(req.user.id, req.params.id)
-					.then((result) => {
+					.then((temp) => {
+						console.log('joined game');
 						res.redirect('/game/' + req.params.id);
 					})
 					.catch((error) => res.status(500).json({ error: 'Failed to join game', message: error }));
@@ -102,7 +115,6 @@ function startGame(req, res, next) {
 			res.status(500).json({ error: 'Failed to start game', message: 'Not enough members' });
 			return;
 		}
-		console.table(result[0]);
 
 		const assignedMembers = [];
 		const memberList = result[0].map((member) => member.U_ID);
@@ -127,7 +139,6 @@ function startGame(req, res, next) {
 		}
 
 		console.log('Assigned Members');
-		console.table(assignedMembers);
 
 		// TODO: delete all chats
 
@@ -249,7 +260,7 @@ function kickPlayer(req, res, next) {
 	console.log('Kicking player:', req.params.U_ID, 'from game', req.gameId);
 	gameModel.remove(req.gameId, req.params.U_ID).then((result) => {
 		console.log('Kicked player:', result);
-		res.redirect('/game/' + req.gameId);
+		res.redirect('/game/' + req.gameId + '/info');
 	});
 }
 

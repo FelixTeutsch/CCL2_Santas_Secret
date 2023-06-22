@@ -55,6 +55,15 @@ let getGames = (U_ID) =>
 			resolve(results);
 		});
 	});
+let getGamesWithoutUser = (U_ID, other_user) =>
+	new Promise((resolve, reject) => {
+		// const sql = 'SELECT * FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID  WHERE `creator` = ' + db.escape(U_ID) + ' AND `U_ID` <> ' + db.escape(other_user) + '  GROUP BY g.G_ID';
+		const sql = 'SELECT g.* FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID AND ug.U_ID = ' + db.escape(other_user) + ' WHERE g.creator = ' + db.escape(U_ID) + ' AND ug.U_ID IS NULL;';
+		db.query(sql, (error, results) => {
+			if (error) reject(error);
+			resolve(results);
+		});
+	});
 
 let joinGame = (U_ID, G_ID) =>
 	new Promise((resolve, reject) => {
@@ -264,6 +273,7 @@ module.exports = {
 	remove,
 	deleteGame,
 	getGames,
+	getGamesWithoutUser,
 	getMembers,
 	joinGame,
 	startGame,

@@ -81,3 +81,8 @@ main img:hover {
 		box-shadow: 0px 0px 12px var(--colorText);
 	}
 }
+
+.input_area {
+	display: flex;
+	gap: 12px;
+}

@@ -50,11 +50,15 @@ function getProfile(req, res, next) {
 
 function viewProfile(req, res, next) {
 	const requestedProfile = req.params.id ? userModel.get(req.params.id) : userModel.get(req.user.id);
-	// const userData = userModel.get(req.params.id);
-	const gameData = gameModel.getGames(req.user.id);
-	Promise.all([requestedProfile, gameData])
-		.then((values) => {
-			res.render('profile/profile', { user: values[0], viewer: req.user, games: values[1] });
+	requestedProfile
+		.then((user) => {
+			// const userData = userModel.get(req.params.id);
+			gameModel
+				.getGamesWithoutUser(req.user.id, user.U_ID)
+				.then((values) => {
+					res.render('profile/profile', { user: user, viewer: req.user, games: values });
+				})
+				.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
 		})
 		.catch((err) => res.status(500).json({ error: 'Failed to get profile', message: err }));
 }
@@ -70,11 +74,11 @@ function edit(req, res, next) {
 
 // Update a user's profile
 function updateProfile(req, res, next) {
-	const { username, first_name, last_name, visibility } = req.body;
+	const { username, first_name, last_name } = req.body;
 	const U_ID = req.user.id; // Assuming you're using passport or similar authentication middleware
 
 	userModel
-		.update(U_ID, { username, first_name, last_name, visibility })
+		.update(U_ID, { username, first_name, last_name })
 		.then(() => {
 			res.redirect('/home');
 		})
@@ -174,6 +178,18 @@ function updatePicture(req, res, next) {
 // 	});
 // }
 
+function addToGame(req, res, next) {
+	const U_ID = req.params.id;
+	const G_ID = req.body.id;
+	console.log('User:', U_ID, 'Game:', G_ID);
+	gameModel
+		.joinGame(U_ID, G_ID)
+		.then(() => {
+			res.redirect('/profile/view/' + U_ID);
+		})
+		.catch((err) => res.status(500).json({ error: 'Failed to join game', message: err }));
+}
+
 module.exports = {
 	registerUser,
 	loginUser,
@@ -185,4 +201,5 @@ module.exports = {
 	deleteProfile,
 	changePictrue,
 	updatePicture,
+	addToGame,
 };

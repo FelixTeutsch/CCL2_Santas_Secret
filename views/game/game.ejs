@@ -17,14 +17,14 @@
 		<% const userIsPartOfGame = game.creator === user.id || members.filter(member => member.U_ID === user.id).length > 0; %>
 		<main class="game_stage_<%= game.stage %>">
 			<div class="game_area">
-				<img src="/public/images/icons/game.jpg" alt="Game Image">
+				<img src="/public/images/icons/<%=game.icon%>.svg" alt="Game Image">
 				<div class="text_area">
 					<h1 class="subtitle"><%= game.name %></h1>
 					<p>
 						<%=game.current_members+ " / "+ game.max_members %> Members - <%= game.stage %>
 					</p>
 				</div>
-				<div class="edit_button_area">
+				<div class=" edit_button_area">
 					<%if(game.creator === user.id) {%>
 					<%- include('../components/iconButton', { icon: 'edit', location: '/game/' + game.G_ID + '/edit' }) %>
 					<%} %>
@@ -44,7 +44,7 @@
 			<div class="your_santa">
 				<p>Your Santa:</p>
 				<div class="person_segment">
-					<img src="/public/images/profile/image.jpg" alt="User Picture">
+					<img src="/public/images/profile/hidden.jpg" alt="User Picture">
 					<h2>--- <%= /*santa.username*/ %></h2>
 					<%- include('../components/iconButton', { icon: 'forum', location: '/game/' + game.G_ID + '/chatSanta' }) %>
 				</div>

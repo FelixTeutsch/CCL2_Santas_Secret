@@ -23,7 +23,7 @@
 					<% messages.forEach((message) => {%>
 					<div class="chat_message <%= message.sender === user.id ? 'me': 'them'%>">
 						<div class="message_image">
-							<img src="/public/images/profile/<%= showThem || message.sender === user.id ? user.id: 'hidden' %>.jpg" alt="Image of sender">
+							<img src="/public/images/profile/<%= showThem || message.sender === user.id ?  (message.sender === user.id ? user.id : chatPartner.U_ID): 'hidden' %>.jpg" alt="Image of sender">
 						</div>
 						<div class="message">
 							<p>

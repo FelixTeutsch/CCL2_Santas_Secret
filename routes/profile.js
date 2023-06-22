@@ -9,6 +9,6 @@ router.route('/delete').post(userController.deleteProfile);
 router.route('/picture').get(userController.changePictrue).post(userController.updatePicture);
 // router.route('/password').get(userController.changePassword).post(userController.updatePassword);
 // The rendered profile is not of the user himself, but if he is viewing someone elses profile
-router.all('/view/:id', userController.viewProfile);
+router.route('/view/:id').get(userController.viewProfile).post(userController.addToGame);
 
 module.exports = router;

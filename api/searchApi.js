@@ -1,5 +1,6 @@
 const searchModel = require('../model/searchModel');
 function searchUser(req, res, next) {
+	console.log('User requested: ', req.body);
 	searchModel
 		.searchUser(req.body)
 		.then((result) => {

@@ -23,6 +23,15 @@
 					<%-include('../components/input_field', {label: "Description", type: "textarea",autocomplete: "game-description", value: game.description})%>
 					<%-include('../components/input_field', {label: "Max Members", type: "number",autocomplete: "game-member-count", minLen: game.current_members,  value: game.current_members})%>
 					<%-include('../components/dropdown', {label: "Visibility", type: "number", options: ['Visible','Unlisted','Hidden'] , value: game.Visibility})%>
+
+					<div class="dropdown">
+						<label for="id">Select Icon</label>
+						<select name="icon" class="login_text" required>
+							<% icons.forEach(icon => { %>
+							<option value="<%= icon %>" <%= icon === game.icon ? "select='selected'":'' %>selected="selected"><%= icon %></option>
+							<% }); %>
+						</select>
+					</div>
 					<input type="submit" value="Update Game" class="button">
 					<a href="/game<% game.G_ID %>/delete">Delete Game...</a>
 				</div>

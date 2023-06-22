@@ -3,6 +3,7 @@
 
 	<head>
 		<%-include('../components/head')%>
+		<link rel="stylesheet" href="/public/stylesheets/components/dropdown.css">
 		<link rel="stylesheet" href="/public/stylesheets/profile.css">
 		<title>Profile</title>
 	</head>
@@ -14,7 +15,10 @@
 		<main>
 			<div class="profile_picture">
 				<img src="/public/images/profile/<%= user.U_ID %>.jpg" alt="Your Profile Picture">
+
+				<% if(user.username==viewer.username) { %>
 				<a href="/profile/picture/">Change Picture</a>
+				<% }%>
 			</div>
 			<div class="profile_area">
 				<h1><%= user.username %></h1>
@@ -30,12 +34,30 @@
 						</a>
 					</li>
 					<li>
-						<a href="/profile/share">
+						<a href="#" id="shareButton">
 							<span class="material-symbols-rounded">
 								share
 							</span>
 							Share
 						</a>
+						<script>
+							const shareButton = document.getElementById('shareButton');
+
+							shareButton.addEventListener('click', () => {
+								if(navigator.share) {
+									navigator.share({
+											title: 'Shared Title',
+											text: 'Shared Text',
+											url: 'https://example.com'
+										})
+										.then(() => console.log('Sharing succeeded.'))
+										.catch((error) => console.log('Sharing failed:', error));
+								} else {
+									console.log('Sharing is not supported in this browser.');
+								}
+							});
+						</script>
+
 					</li>
 					<li>
 						<form method="post" action="/profile/delete">
@@ -56,16 +78,22 @@
 						</a>
 					</li>
 				</ul>
-				<% } else if(games.length >0) { %>
+				<% } else if(locals.games && games.length > 0) { %>
 
-				<form>
 
-					<div class="input_area flex-box vertical">
-						<%-include('../components/dropdown', {label: "Visibility", type: "number", options: [games]})%>
+				<form class="input_area flex-box vertical" method="post" action="#">
+					<div class="dropdown">
+						<label for="id">Select Game</label>
+						<select name="id" class="login_text" required>
+							<% games.forEach(game => { %>
+							<option value="<%= game.G_ID %>" selected="selected"><%= game.name %></option>
+							<% }); %>
+						</select>
 					</div>
-
-
+					<input type="submit" value="Add to game..." class="button">
 				</form>
+
+
 				<% } %>
 			</div>
 		</main>

@@ -75,6 +75,7 @@ async function renderResult() {
 		resultArea.innerHTML = '<div class="empty_result">No results found...</div>';
 	} else
 		searchResult.forEach((result) => {
+			if (!result) return;
 			if (result.stage && currentCategory < 2) {
 				resultArea.innerHTML +=
 					'<a href="/game/' +
@@ -82,7 +83,9 @@ async function renderResult() {
 					'" class="game_card ' +
 					result.stage +
 					'">' +
-					'<img src="/public/images/gameImage.svg" alt="Game Image"> <div class="text_area"> <h2>' +
+					'<img src="/public/images/icons/' +
+					result.icon +
+					'.svg" alt="Game Image"> <div class="text_area"> <h2>' +
 					result.name +
 					'</h2> <p>' +
 					result.current_members +
