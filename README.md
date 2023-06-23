@@ -12,6 +12,10 @@ Santa's Secret is a WebApp designed to facilitate Secret Santa gift exchanges am
 -   Game creation, editing, and deletion.
 -   Chat functionality within active games.
 -   Game stages: waiting for members, running with open chats, and conclusion overview.
+-   Sentiment Analysis added to game description
+    -   <img src="./public/images/sentiment/good.jpg" alt="Good" width="200">
+    -   <img src="./public/images/sentiment/neutral.jpg" alt="Neutral" width="200">
+    -   <img src="./public/images/sentiment/bad.jpg" alt="Bad" width="200">
 
 ## Technologies Used
 
