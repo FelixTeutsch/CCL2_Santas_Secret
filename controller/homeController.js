@@ -1,9 +1,15 @@
 // const userModel = require('../model/userModel');
 const gameModel = require('../model/gameModel');
 
+/**
+ * Renders the home view with the user's games and notifications.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function viewHome(req, res, next) {
-	// get notificaitons
-	// get games
+	// Retrieve the user's games
 	const games = gameModel
 		.getGames(req.user.id)
 		.then((values) => {

@@ -2,6 +2,13 @@ const gameModel = require('../model/gameModel');
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * Handles editing a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function editGame(req, res, next) {
 	gameModel.get(req.params.id).then((result) => {
 		if (result.creator === req.user.id) {
@@ -21,6 +28,13 @@ function editGame(req, res, next) {
 	});
 }
 
+/**
+ * Handles creating a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function createGame(req, res, next) {
 	gameModel
 		.create(req.body, req.user.id)
@@ -31,6 +45,13 @@ function createGame(req, res, next) {
 		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to create game', message: error }));
 }
 
+/**
+ * Handles retrieving a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function getGame(req, res, next) {
 	const game = gameModel.get(req.params.id);
 	const members = gameModel.getMembers(req.params.id);
@@ -52,6 +73,13 @@ function getGame(req, res, next) {
 		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to get game', message: error }));
 }
 
+/**
+ * Handles joining a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function joinGame(req, res, next) {
 	console.log(req.params.id, req.user.id);
 	// TODO: check if game is running!
@@ -75,6 +103,13 @@ function joinGame(req, res, next) {
 		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to join game', message: error }));
 }
 
+/**
+ * Handles updating a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function updateGame(req, res, next) {
 	gameModel
 		.update(req.params.id, req.body)
@@ -84,6 +119,13 @@ function updateGame(req, res, next) {
 		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to update game', message: error }));
 }
 
+/**
+ * Handles deleting a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function deleteGame(req, res, next) {
 	gameModel
 		.delete(req.params.id)
@@ -93,6 +135,13 @@ function deleteGame(req, res, next) {
 		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to delete game', message: error }));
 }
 
+/**
+ * Handles retrieving game information.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function infoGame(req, res, next) {
 	const game = gameModel.get(req.params.id);
 	const members = gameModel.getMembers(req.params.id);
@@ -109,6 +158,13 @@ function infoGame(req, res, next) {
 		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to get game', message: error }));
 }
 
+/**
+ * Handles starting a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function startGame(req, res, next) {
 	console.log(req.params.id);
 	// Get Game Members
@@ -152,24 +208,15 @@ function startGame(req, res, next) {
 			res.redirect('/game/' + req.params.id);
 		});
 	});
-
-	// TODO: Get Number of Circles
-	// TODO: If Number of Circles > Game Members -> Make groups of 2
-	// TODO: If number of circles = 0 -> Make one big group
-	// TODO: Else split members into groups of "Number of Circles"
-
-	// TODO: Assign each member a different member in the same group
-	// TODO: Save the assigned member in the database
-	// TODO: Send each member a message with the assigned member
-	// gameModel
-	// 	.startGame(req.params.id)
-	// 	.then((result) => {
-	// 		console.log(result);
-	// 		res.redirect('/game/' + req.params.id);
-	// 	})
-	// 	.catch((error) => res.status(500).render('error',{ error: 'Failed to start game', message: error }));
 }
 
+/**
+ * Handles ending a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function endGame(req, res, next) {
 	console.log(req.params.id);
 	gameModel.endGame(req.params.id).then((result) => {
@@ -178,6 +225,13 @@ function endGame(req, res, next) {
 	});
 }
 
+/**
+ * Handles restarting a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function restartGame(req, res, next) {
 	console.log(req.params.id);
 	gameModel.restartGame(req.params.id).then((result) => {
@@ -186,6 +240,13 @@ function restartGame(req, res, next) {
 	});
 }
 
+/**
+ * Checks if the user is an admin for the game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function isAdmin(req, res, next) {
 	console.log('Checking Admin Right:', req.user.id, 'for game', req.gameId);
 	gameModel
@@ -202,6 +263,13 @@ function isAdmin(req, res, next) {
 		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to check admin right', message: error }));
 }
 
+/**
+ * Handles chatting with Santa in a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function chatSanta(req, res, next) {
 	// TODO: check if game is running or has ended
 	// TODO: if ended: show all names & icons
@@ -211,6 +279,13 @@ function chatSanta(req, res, next) {
 	});
 }
 
+/**
+ * Handles chatting with the recipient in a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function chatRecipient(req, res, next) {
 	console.log(req.params.id);
 	Promise.all([gameModel.chatRecipient(req.params.id, req.user.id), gameModel.chatRecipientId(req.params.id, req.user.id), gameModel.getRecipient(req.params.id, req.user.id)]).then((result) => {
@@ -218,6 +293,13 @@ function chatRecipient(req, res, next) {
 	});
 }
 
+/**
+ * Checks if the user is a member of the game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function isMember(req, res, next) {
 	console.log('Checking if member:', req.user.id, 'for game', req.gameId);
 	gameModel
@@ -234,6 +316,13 @@ function isMember(req, res, next) {
 		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to check member right', message: error }));
 }
 
+/**
+ * Handles leaving a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function leaveGame(req, res, next) {
 	console.log('Leaving game:', req.gameId, 'for user', req.user.id);
 	gameModel.get(req.gameId).then((result) => {
@@ -250,6 +339,13 @@ function leaveGame(req, res, next) {
 	});
 }
 
+/**
+ * Handles deleting a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function deleteGame(req, res, next) {
 	console.log('Deleting game:', req.gameId, 'for user', req.user.id);
 	gameModel
@@ -261,6 +357,13 @@ function deleteGame(req, res, next) {
 		.catch((err) => res.redirect('/game/' + req.gameId));
 }
 
+/**
+ * Handles kicking a player from a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function kickPlayer(req, res, next) {
 	console.log('Kicking player:', req.params.U_ID, 'from game', req.gameId);
 	gameModel

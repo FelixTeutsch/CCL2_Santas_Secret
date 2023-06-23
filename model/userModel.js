@@ -1,9 +1,16 @@
 const db = require('../services/database').config;
 const { hashPassword } = require('../services/authentication');
 
+/**
+ * Create a new user.
+ * @param {string} username - The username of the user.
+ * @param {string} first_name - The first name of the user.
+ * @param {string} last_name - The last name of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<Object>} - A promise that resolves to the created user object.
+ */
 let create = ({ username, first_name, last_name, password }) =>
 	new Promise(async (resolve, reject) => {
-		// User Searcher
 		const request = 'INSERT INTO `user`(`username`, `first_name`, `last_name`, `password`) VALUES (?, ?, ?, ?);';
 
 		const hashedPassword = await hashPassword(password);
@@ -13,7 +20,11 @@ let create = ({ username, first_name, last_name, password }) =>
 		});
 	});
 
-// Get all users that corelate to the search value
+/**
+ * Search for users based on a search value.
+ * @param {string} searchValue - The value to search for.
+ * @returns {Promise<Array>} - A promise that resolves to an array of user search results.
+ */
 let search = (searchValue) =>
 	new Promise((resolve, reject) => {
 		searchValue = '%' + searchValue + '%';
@@ -26,7 +37,11 @@ let search = (searchValue) =>
 		});
 	});
 
-// Get all users that corelate to the search value
+/**
+ * Get a user by their ID or username.
+ * @param {string} U_ID - The ID or username of the user.
+ * @returns {Promise<Object>} - A promise that resolves to the user object.
+ */
 let get = (U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM `user` WHERE `U_ID` = ' + db.escape(U_ID) + ' OR username = ' + db.escape(U_ID);
@@ -36,7 +51,10 @@ let get = (U_ID) =>
 		});
 	});
 
-// Get all users
+/**
+ * Get all users.
+ * @returns {Promise<Array>} - A promise that resolves to an array of all user objects.
+ */
 let getAll = () =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM `user`';
@@ -50,6 +68,12 @@ let getAll = () =>
 		});
 	});
 
+/**
+ * Check the credentials of a user.
+ * @param {string} username - The username of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<Object>} - A promise that resolves to the user object if the credentials are valid, or null if not.
+ */
 let checkCredentials = (username, password) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM `user` WHERE `username` = ?';
@@ -77,7 +101,15 @@ let checkCredentials = (username, password) =>
 		});
 	});
 
-// Update a user
+/**
+ * Update a user's information.
+ * @param {string} U_ID - The ID of the user to update.
+ * @param {Object} userData - The updated user data.
+ * @param {string} userData.username - The updated username.
+ * @param {string} userData.first_name - The updated first name.
+ * @param {string} userData.last_name - The updated last name.
+ * @returns {Promise<Object>} - A promise that resolves to the update result.
+ */
 const update = (U_ID, { username, first_name, last_name }) =>
 	new Promise((resolve, reject) => {
 		const sql = 'UPDATE `user` SET';
@@ -105,6 +137,12 @@ const update = (U_ID, { username, first_name, last_name }) =>
 		});
 	});
 
+/**
+ * Update a user's password.
+ * @param {string} U_ID - The ID of the user to update.
+ * @param {string} password - The updated password.
+ * @returns {Promise<Object>} - A promise that resolves to the update result.
+ */
 let updatePassword = (U_ID, password) =>
 	new Promise(async (resolve, reject) => {
 		password = await hashPassword(password);
@@ -115,7 +153,11 @@ let updatePassword = (U_ID, password) =>
 		});
 	});
 
-// Delete a user
+/**
+ * Delete a user.
+ * @param {string} U_ID - The ID of the user to delete.
+ * @returns {Promise<number>} - A promise that resolves to the number of affected rows (1 if successful, 0 if the user was not found).
+ */
 let deleteUser = (U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'DELETE FROM `user` WHERE `U_ID` = ?';
@@ -130,6 +172,11 @@ let deleteUser = (U_ID) =>
 		});
 	});
 
+/**
+ * Check if a username is available.
+ * @param {string} username - The username to check.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the username is available, or false if it is already taken.
+ */
 let available = (username) =>
 	new Promise((resolve, reject) => {
 		const request = 'SELECT * FROM user WHERE username = ' + db.escape(username);

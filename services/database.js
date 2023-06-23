@@ -1,25 +1,8 @@
-// Define The Database Servicerequire('dotenv').config();
+// Load environment variables from .env file
+require('dotenv').config();
 const mySQL = require('mysql');
-const dotenv = require('dotenv');
-// const config = mySQL.createConnection({
-// 	host: process.env.DB_HOST,
-// 	port: process.env.DB_PORT,
-// 	user: process.env.DB_USER,
-// 	password: process.env.DB_PASS,
-// 	database: process.env.DB_NAME,
-// 	multipleStatements: true,
-// });
 
-// const config = mySQL.createConnection({
-// 	host: '169.254.255.253',
-// 	port: '3306',
-// 	user: 'node-cc221036-10098',
-// 	password: 'QN+-62h-yvF-JfQ',
-// 	database: 'node_cc221036_10098',
-// 	multipleStatements: true,
-// });
-
-// Local DB
+// Local DB configuration
 const config = mySQL.createConnection({
 	host: 'localhost',
 	port: '',
@@ -29,6 +12,9 @@ const config = mySQL.createConnection({
 	multipleStatements: true,
 });
 
+/**
+ * Handle the database connection and reconnect if disconnected.
+ */
 function handleDisconnect() {
 	config.connect((err) => {
 		if (err) {
@@ -41,10 +27,11 @@ function handleDisconnect() {
 
 	config.on('error', (err) => {
 		console.error('Database connection error:', err);
-		setTimeout(handleDisconnect, 5000);
+		setTimeout(handleDisconnect, 5000); // Retry connection after 5 seconds
 	});
 }
 
 // Initial connection attempt
 handleDisconnect();
+
 module.exports = { config };

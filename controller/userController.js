@@ -4,6 +4,13 @@ const { authenticateUser, createJWT } = require('../services/authentication');
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * Registers a new user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function registerUser(req, res, next) {
 	userModel
 		.create(req.body)
@@ -15,6 +22,13 @@ function registerUser(req, res, next) {
 		.catch((err) => res.status(401).redirect('/register'));
 }
 
+/**
+ * Logs in a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function loginUser(req, res, next) {
 	userModel
 		.get(req.body.username)
@@ -33,11 +47,25 @@ function loginUser(req, res, next) {
 		});
 }
 
+/**
+ * Logs out the user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function logoutUser(req, res, next) {
 	res.cookie('santas_cookies', 'santas_cookies', { maxAge: 0 });
 	res.redirect('/');
 }
 
+/**
+ * Retrieves the user's profile.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function getProfile(req, res, next) {
 	const userData = userModel.get(req.user.id);
 	const gameData = gameModel.getGames(req.user.id);
@@ -48,6 +76,13 @@ function getProfile(req, res, next) {
 		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get profile', message: err }));
 }
 
+/**
+ * Retrieves a user's profile.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function viewProfile(req, res, next) {
 	const requestedProfile = req.params.id ? userModel.get(req.params.id) : userModel.get(req.user.id);
 	requestedProfile
@@ -63,6 +98,13 @@ function viewProfile(req, res, next) {
 		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get profile', message: err }));
 }
 
+/**
+ * Renders the edit profile page.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function edit(req, res, next) {
 	userModel
 		.get(req.user.id)
@@ -72,7 +114,13 @@ function edit(req, res, next) {
 		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get profile', message: err }));
 }
 
-// Update a user's profile
+/**
+ * Updates a user's profile.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function updateProfile(req, res, next) {
 	const { username, first_name, last_name } = req.body;
 	const U_ID = req.user.id; // Assuming you're using passport or similar authentication middleware
@@ -87,7 +135,13 @@ function updateProfile(req, res, next) {
 		});
 }
 
-// Delete a user's profile
+/**
+ * Deletes a user's profile.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function deleteProfile(req, res, next) {
 	const U_ID = req.user.id;
 
@@ -103,6 +157,13 @@ function deleteProfile(req, res, next) {
 		});
 }
 
+/**
+ * Renders the change picture page.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function changePictrue(req, res, next) {
 	userModel
 		.get(req.user.id)
@@ -112,6 +173,13 @@ function changePictrue(req, res, next) {
 		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get profile', message: err }));
 }
 
+/**
+ * Updates the user's profile picture.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function updatePicture(req, res, next) {
 	try {
 		if (req.files) {
@@ -124,60 +192,15 @@ function updatePicture(req, res, next) {
 	} catch (err) {
 		console.log(err);
 	}
-
-	// const file = req.files.Picture; // Assuming you're using a file upload middleware that populates `req.files`
-
-	// // Check if a file was uploaded
-	// if (!file) {
-	// 	res.status(400).render('error',{ error: 'No file uploaded' });
-	// 	return;
-	// }
-
-	// const U_ID = req.user.id;
-
-	// // Get the file extension
-	// // const extension = path.extname(file.name);
-
-	// // Generate the file path
-	// const filePath = path.join(__dirname, '../public/images/profile/', `${U_ID}.jpg`);
-
-	// // Save the file to the specified path
-	// file.mv(filePath, (err) => {
-	// 	if (err) {
-	// 		res.status(500).render('error',{ error: 'Failed to update picture', message: err });
-	// 	} else {
-	// 		res.redirect('/profile');
-	// 	}
-	// });
 }
-// function updatePicture(req, res, next) {
-// 	console.log(req.files);
-// 	const file = req.files.Picture; // Assuming you're using a file upload middleware that populates `req.files`
 
-// 	// Check if a file was uploaded
-// 	if (!file) {
-// 		res.status(400).render('error',{ error: 'No file uploaded' });
-// 		return;
-// 	}
-
-// 	const U_ID = req.user.id;
-
-// 	// Get the file extension
-// 	// const extension = path.extname(file.name);
-
-// 	// Generate the file path
-// 	const filePath = path.join(__dirname, '../public/images/profile/', `${U_ID}.jpg`);
-
-// 	// Save the file to the specified path
-// 	file.mv(filePath, (err) => {
-// 		if (err) {
-// 			res.status(500).render('error',{ error: 'Failed to update picture', message: err });
-// 		} else {
-// 			res.redirect('/profile');
-// 		}
-// 	});
-// }
-
+/**
+ * Adds a user to a game.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function addToGame(req, res, next) {
 	const U_ID = req.params.id;
 	const G_ID = req.body.id;

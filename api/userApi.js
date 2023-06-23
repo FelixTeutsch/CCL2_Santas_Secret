@@ -3,7 +3,13 @@ const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const userModel = require('../model/userModel');
 
-// Create a new user
+/**
+ * Create a new user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function createUser(req, res, next) {
 	userModel
 		.create(req.body)
@@ -11,6 +17,13 @@ function createUser(req, res, next) {
 		.catch((error) => res.status(500).json({ error: 'Failed to create user', message: error }));
 }
 
+/**
+ * Get all users.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function getAllUsers(req, res, next) {
 	userModel
 		.getAll()
@@ -23,6 +36,13 @@ function getAllUsers(req, res, next) {
 		});
 }
 
+/**
+ * Get a specific user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function getUser(req, res, next) {
 	console.log('User requested: ', req.params.U_ID);
 	userModel
@@ -40,6 +60,13 @@ function getUser(req, res, next) {
 		});
 }
 
+/**
+ * Search for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function searchUser(req, res, next) {
 	console.log('User requested: ', req.params.U_ID);
 	userModel
@@ -56,6 +83,14 @@ function searchUser(req, res, next) {
 			res.status(500).json({ error: 'Failed to fetch user', message: error });
 		});
 }
+
+/**
+ * Update a user's information.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function updateUser(req, res, next) {
 	if (Object.keys(req.body).length === 0) {
 		res.status(400).json({ error: 'Request body is empty' });
@@ -76,6 +111,13 @@ function updateUser(req, res, next) {
 		});
 }
 
+/**
+ * Check user credentials.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function checkUserCredentials(req, res, next) {
 	if (Object.keys(req.body).length === 0 || !req.body.username || !req.body.password) {
 		const fields = ['username', 'password'];
@@ -100,6 +142,13 @@ function checkUserCredentials(req, res, next) {
 		});
 }
 
+/**
+ * Delete a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function deleteUser(req, res, next) {
 	if (Object.keys(req.body).length === 0) {
 		res.status(400).json({ error: 'Request body is empty' });
@@ -120,6 +169,13 @@ function deleteUser(req, res, next) {
 		});
 }
 
+/**
+ * Check the availability of a username.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 function availableUsername(req, res, next) {
 	userModel
 		.available(req.params.username)
@@ -128,4 +184,14 @@ function availableUsername(req, res, next) {
 		})
 		.catch((err) => res.status(500).json({ error: 'Failed to check username', message: error }));
 }
-module.exports = { createUser, getAllUsers, getUser, searchUser, updateUser, deleteUser, checkUserCredentials, availableUsername };
+
+module.exports = {
+	createUser,
+	getAllUsers,
+	getUser,
+	searchUser,
+	updateUser,
+	deleteUser,
+	checkUserCredentials,
+	availableUsername,
+};

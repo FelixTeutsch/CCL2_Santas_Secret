@@ -1,5 +1,12 @@
 const db = require('../services/database').config;
 
+/**
+ * Retrieves the information of the Santa associated with the given G_ID and U_ID.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to the Santa information.
+ */
 let getYourSanta = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM `user_game`AS ug LEFT JOIN `user` AS u ON ug.U_ID = u.U_ID WHERE ug.recipient = ? AND ug.G_ID = ?;';
@@ -9,6 +16,13 @@ let getYourSanta = (G_ID, U_ID) =>
 		});
 	});
 
+/**
+ * Retrieves the information of the target associated with the given G_ID and U_ID.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to the target information.
+ */
 let getYourTarget = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM `user_game`AS ug LEFT JOIN `user` AS u ON ug.recipient = u.U_ID WHERE ug.U_ID = ? AND ug.G_ID = ?;';
@@ -18,6 +32,17 @@ let getYourTarget = (G_ID, U_ID) =>
 		});
 	});
 
+/**
+ * Creates a new game with the provided data.
+ *
+ * @param game_name          The name of the game.
+ * @param description        The description of the game.
+ * @param member_count       The number of members in the game.
+ * @param number_of_circles  The number of circles in the game.
+ * @param visibility         The visibility of the game.
+ * @param creator            The creator of the game.
+ * @return A Promise that resolves to the newly created game.
+ */
 function create({ game_name, description, member_count, number_of_circles, visibility }, creator) {
 	return new Promise((resolve, reject) => {
 		const request = 'INSERT INTO `game`(`name`, `description`, `creator`, `max_members` ,`visibility`) VALUES (?, ?, ?, ?,?)';
@@ -28,6 +53,12 @@ function create({ game_name, description, member_count, number_of_circles, visib
 	});
 }
 
+/**
+ * Retrieves the game information for the given game ID.
+ *
+ * @param gameId The game ID.
+ * @return A Promise that resolves to the game information.
+ */
 function get(gameId) {
 	return new Promise((resolve, reject) => {
 		const request = 'SELECT game.*, user.*, IFNULL(COUNT(user_game.G_ID), 0) AS current_members FROM game LEFT JOIN user ON game.creator = user.U_ID LEFT JOIN user_game ON game.G_ID = user_game.G_ID WHERE game.G_ID = ? GROUP BY game.G_ID;';
@@ -38,6 +69,12 @@ function get(gameId) {
 	});
 }
 
+/**
+ * Retrieves the members of the game with the provided game ID.
+ *
+ * @param gameId The game ID.
+ * @return A Promise that resolves to the list of members.
+ */
 let getMembers = (gameId) =>
 	new Promise((resolve, reject) => {
 		const request = 'SELECT * FROM `user_game` LEFT JOIN `user` ON (user_game.U_ID = user.U_ID) WHERE user_game.G_ID = ?';
@@ -47,6 +84,12 @@ let getMembers = (gameId) =>
 		});
 	});
 
+/**
+ * Retrieves the games associated with the given user ID.
+ *
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to the list of games.
+ */
 let getGames = (U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT *, IFNULL(COUNT(ug.G_ID), 0) AS current_members FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID  WHERE `creator` = ' + db.escape(U_ID) + ' OR `U_ID` = ' + db.escape(U_ID) + ' GROUP BY g.G_ID';
@@ -55,6 +98,14 @@ let getGames = (U_ID) =>
 			resolve(results);
 		});
 	});
+
+/**
+ * Retrieves the games associated with the given user ID, excluding a specific user.
+ *
+ * @param U_ID        The user ID.
+ * @param other_user  The ID of the user to be excluded.
+ * @return A Promise that resolves to the list of games.
+ */
 let getGamesWithoutUser = (U_ID, other_user) =>
 	new Promise((resolve, reject) => {
 		// const sql = 'SELECT * FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID  WHERE `creator` = ' + db.escape(U_ID) + ' AND `U_ID` <> ' + db.escape(other_user) + '  GROUP BY g.G_ID';
@@ -67,6 +118,13 @@ let getGamesWithoutUser = (U_ID, other_user) =>
 		});
 	});
 
+/**
+ * Joins a user to a game.
+ *
+ * @param U_ID The user ID.
+ * @param G_ID The game ID.
+ * @return A Promise that resolves when the user joins the game.
+ */
 let joinGame = (U_ID, G_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'INSERT INTO `user_game`(`U_ID`, `G_ID`) VALUES (?, ?)';
@@ -76,6 +134,12 @@ let joinGame = (U_ID, G_ID) =>
 		});
 	});
 
+/**
+ * Starts the game with the provided game ID.
+ *
+ * @param G_ID The game ID.
+ * @return A Promise that resolves when the game is started.
+ */
 let startGame = (G_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'UPDATE `game` SET `stage` = "running" WHERE `G_ID` = ?';
@@ -85,6 +149,12 @@ let startGame = (G_ID) =>
 		});
 	});
 
+/**
+ * Ends the game with the provided game ID.
+ *
+ * @param G_ID The game ID.
+ * @return A Promise that resolves when the game is ended.
+ */
 let endGame = (G_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'UPDATE `game` SET `stage` = "ended" WHERE `G_ID` = ' + G_ID;
@@ -94,6 +164,13 @@ let endGame = (G_ID) =>
 		});
 	});
 
+/**
+ * Assigns Santas to the members of the game.
+ *
+ * @param assignedMembers The list of assigned members and their Santas.
+ * @param G_ID            The game ID.
+ * @return A Promise that resolves when the Santas are assigned.
+ */
 let assignSantas = (assignedMembers, G_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'UPDATE user_game SET recipient = NULL WHERE G_ID = ' + G_ID + '; UPDATE `user_game` SET `recipient` = CASE `U_ID` ';
@@ -116,6 +193,13 @@ let assignSantas = (assignedMembers, G_ID) =>
 		});
 	});
 
+/**
+ * Restarts the game with the provided game ID and creator.
+ *
+ * @param G_ID    The game ID.
+ * @param creator The creator of the game.
+ * @return A Promise that resolves when the game is restarted.
+ */
 let restartGame = (G_ID, creator) =>
 	new Promise((resolve, reject) => {
 		const sql = 'UPDATE `game` SET `stage` = "paused" WHERE `G_ID` = ?; UPDATE `user_game` SET `recipient` = NULL WHERE `G_ID` = ?; ';
@@ -125,6 +209,13 @@ let restartGame = (G_ID, creator) =>
 		});
 	});
 
+/**
+ * Updates the game with the provided game ID and data.
+ *
+ * @param gameId      The game ID.
+ * @param updatedData The updated data for the game.
+ * @return A Promise that resolves when the game is updated.
+ */
 function update(gameId, updatedData) {
 	return new Promise((resolve, reject) => {
 		const request = 'UPDATE `game` SET ? WHERE `G_ID` = ?';
@@ -136,6 +227,13 @@ function update(gameId, updatedData) {
 	});
 }
 
+/**
+ * Deletes the game with the provided game ID and user ID.
+ *
+ * @param gameId The game ID.
+ * @param U_ID   The user ID.
+ * @return A Promise that resolves when the game is deleted.
+ */
 function deleteGame(gameId, U_ID) {
 	return new Promise((resolve, reject) => {
 		const request = 'DELETE FROM `game` WHERE `G_ID` = ? AND `creator` = ?';
@@ -147,6 +245,13 @@ function deleteGame(gameId, U_ID) {
 	});
 }
 
+/**
+ * Removes a user from a game.
+ *
+ * @param gameId The game ID.
+ * @param userId The user ID.
+ * @return A Promise that resolves when the user is removed.
+ */
 function remove(gameId, userId) {
 	return new Promise((resolve, reject) => {
 		const request = 'DELETE FROM `user_game` WHERE `G_ID` = ? AND `U_ID` = ?';
@@ -158,6 +263,13 @@ function remove(gameId, userId) {
 	});
 }
 
+/**
+ * Checks if the user with the given game ID and user ID is the admin of the game.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to a boolean indicating if the user is the admin.
+ */
 let checkAdmin = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM `game` WHERE `G_ID` = ? AND `creator` = ?';
@@ -167,6 +279,13 @@ let checkAdmin = (G_ID, U_ID) =>
 		});
 	});
 
+/**
+ * Checks if the user with the given game ID and user ID is a member of the game.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to a boolean indicating if the user is a member.
+ */
 let checkMember = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM `user_game` WHERE `G_ID` = ? AND `U_ID` = ?';
@@ -176,6 +295,12 @@ let checkMember = (G_ID, U_ID) =>
 		});
 	});
 
+/**
+ * Deletes all chats associated with the given game ID.
+ *
+ * @param G_ID The game ID.
+ * @return A Promise that resolves when the chats are deleted.
+ */
 let deleteAllChats = (G_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'DELETE FROM `chat` WHERE `game` = ' + G_ID;
@@ -185,6 +310,13 @@ let deleteAllChats = (G_ID) =>
 		});
 	});
 
+/**
+ * Creates chats for the members of the game with the provided game ID.
+ *
+ * @param members The list of members and their assignments.
+ * @param G_ID    The game ID.
+ * @return A Promise that resolves when the chats are created.
+ */
 let createChats = (members, G_ID) =>
 	new Promise((resolve, reject) => {
 		const sqlStart = 'INSERT INTO `chat`(`game`, user_giver, user_receiver) VALUES ';
@@ -201,6 +333,13 @@ let createChats = (members, G_ID) =>
 		});
 	});
 
+/**
+ * Retrieves the messages sent by Santa to the user with the given game ID and user ID.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to the list of messages.
+ */
 let chatSanta = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM message AS m LEFT JOIN chat AS c ON m.chat = c.C_ID WHERE c.game = ? AND c.user_receiver = ? ORDER BY m.timestamp DESC';
@@ -210,6 +349,13 @@ let chatSanta = (G_ID, U_ID) =>
 		});
 	});
 
+/**
+ * Retrieves the chat ID for the chat between Santa and the user with the given game ID and user ID.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to the chat ID.
+ */
 let chatSantaId = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT C_ID FROM chat WHERE user_receiver = ? AND game = ?';
@@ -219,6 +365,14 @@ let chatSantaId = (G_ID, U_ID) =>
 		});
 	});
 
+/**
+ * Sends a message from the sender to the chat with the provided chat ID.
+ *
+ * @param chatId  The chat ID.
+ * @param sender  The sender of the message.
+ * @param message The message content.
+ * @return A Promise that resolves when the message is sent.
+ */
 let sendMessage = (chatId, sender, message) =>
 	new Promise((resolve, reject) => {
 		const sql = 'INSERT INTO `message`(`chat`, `message_content`, `sender`) VALUES (?, ?, ?)';
@@ -228,6 +382,13 @@ let sendMessage = (chatId, sender, message) =>
 		});
 	});
 
+/**
+ * Retrieves the messages sent by the user to the recipient with the given game ID and user ID.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to the list of messages.
+ */
 let chatRecipient = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM message AS m LEFT JOIN chat AS c ON m.chat = c.C_ID WHERE c.game = ? AND c.user_giver = ? ORDER BY m.timestamp DESC';
@@ -237,6 +398,13 @@ let chatRecipient = (G_ID, U_ID) =>
 		});
 	});
 
+/**
+ * Retrieves the chat ID for the chat between the user and the recipient with the given game ID and user ID.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to the chat ID.
+ */
 let chatRecipientId = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT C_ID FROM chat WHERE user_giver = ? AND game = ?';
@@ -247,6 +415,14 @@ let chatRecipientId = (G_ID, U_ID) =>
 			} else reject('No chat found');
 		});
 	});
+
+/**
+ * Retrieves the recipient (user receiving gifts) for the user with the given game ID and user ID.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to the recipient.
+ */
 let getRecipient = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM chat AS c LEFT JOIN `user` AS u ON c.user_receiver = u.U_ID WHERE c.user_giver = ? AND c.game = ? GROUP BY c.user_receiver';
@@ -257,6 +433,14 @@ let getRecipient = (G_ID, U_ID) =>
 			} else reject('No chat found');
 		});
 	});
+
+/**
+ * Retrieves Santa (user giving gifts) for the user with the given game ID and user ID.
+ *
+ * @param G_ID The game ID.
+ * @param U_ID The user ID.
+ * @return A Promise that resolves to Santa.
+ */
 let getSanta = (G_ID, U_ID) =>
 	new Promise((resolve, reject) => {
 		const sql = 'SELECT * FROM chat AS c LEFT JOIN `user` AS u ON c.user_giver = u.U_ID WHERE c.user_receiver = ? AND c.game = ? GROUP BY c.user_giver';

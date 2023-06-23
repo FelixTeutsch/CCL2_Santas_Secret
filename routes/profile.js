@@ -2,13 +2,67 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controller/userController');
 
+// Profile route
 router.all('/', userController.viewProfile);
 
-router.route('/edit').get(userController.edit).post(userController.updateProfile);
-router.route('/delete').post(userController.deleteProfile);
-router.route('/picture').get(userController.changePictrue).post(userController.updatePicture);
-// router.route('/password').get(userController.changePassword).post(userController.updatePassword);
-// The rendered profile is not of the user himself, but if he is viewing someone elses profile
-router.route('/view/:id').get(userController.viewProfile).post(userController.addToGame);
+// Edit profile route
+router
+	.route('/edit')
+	/**
+	 * Render the profile editing form.
+	 * HTTP Method: GET
+	 * Endpoint: /profile/edit
+	 */
+	.get(userController.edit)
+	/**
+	 * Handle profile update.
+	 * HTTP Method: POST
+	 * Endpoint: /profile/edit
+	 */
+	.post(userController.updateProfile);
+
+// Delete profile route
+router
+	.route('/delete')
+	/**
+	 * Handle profile deletion.
+	 * HTTP Method: POST
+	 * Endpoint: /profile/delete
+	 */
+	.post(userController.deleteProfile);
+
+// Picture route
+router
+	.route('/picture')
+	/**
+	 * Render the profile picture changing form.
+	 * HTTP Method: GET
+	 * Endpoint: /profile/picture
+	 */
+	.get(userController.changePicture)
+	/**
+	 * Handle profile picture update.
+	 * HTTP Method: POST
+	 * Endpoint: /profile/picture
+	 */
+	.post(userController.updatePicture);
+
+// View profile route
+router
+	.route('/view/:id')
+	/**
+	 * View another user's profile.
+	 * HTTP Method: GET
+	 * Endpoint: /profile/view/:id
+	 * @param {string} id - The user ID.
+	 */
+	.get(userController.viewProfile)
+	/**
+	 * Add another user to a game.
+	 * HTTP Method: POST
+	 * Endpoint: /profile/view/:id
+	 * @param {string} id - The user ID.
+	 */
+	.post(userController.addToGame);
 
 module.exports = router;

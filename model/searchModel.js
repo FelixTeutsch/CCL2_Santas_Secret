@@ -1,5 +1,10 @@
 const db = require('../services/database').config;
 
+/**
+ * Search for users based on a keyword.
+ * @param {string} keyword - The keyword to search for.
+ * @returns {Promise<Array>} - A promise that resolves to an array of user search results.
+ */
 let searchUser = ({ keyword }) =>
 	new Promise((resolve, reject) => {
 		console.log(keyword);
@@ -11,10 +16,14 @@ let searchUser = ({ keyword }) =>
 		});
 	});
 
+/**
+ * Search for games based on a keyword.
+ * @param {string} keyword - The keyword to search for.
+ * @returns {Promise<Array>} - A promise that resolves to an array of game search results.
+ */
 let searchGame = ({ keyword }) =>
 	new Promise((resolve, reject) => {
 		const gameRequest = `SELECT *, COUNT(user_game.G_ID) AS current_members FROM game LEFT JOIN user_game ON game.G_ID = user_game.G_ID WHERE (game.visibility = 'visible' AND game.name LIKE '%${keyword}%') OR game.G_ID = '${keyword}' AND (game.visibility = 'unlisted' OR game.visibility = 'visible') GROUP BY game.G_ID;`;
-		// const gameRequest = `SELECT *, username as name FROM user WHERE username LIKE '%f%' OR first_name LIKE '%f%' OR last_name LIKE '%f%' OR U_ID = 'f';`;
 		db.query(gameRequest, (err, result) => {
 			if (err) reject(err);
 			resolve(result);
