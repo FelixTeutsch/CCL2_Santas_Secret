@@ -164,7 +164,7 @@ function deleteProfile(req, res, next) {
  * @param {Object} res - The response object.
  * @param {function} next - The next middleware function.
  */
-function changePictrue(req, res, next) {
+function changePicture(req, res, next) {
 	userModel
 		.get(req.user.id)
 		.then((user) => {
@@ -231,7 +231,7 @@ module.exports = {
 	edit,
 	updateProfile,
 	deleteProfile,
-	changePictrue,
+	changePicture,
 	updatePicture,
 	addToGame,
 };
