@@ -185,7 +185,7 @@ function addToGame(req, res, next) {
 	gameModel
 		.get(G_ID)
 		.then((game) => {
-			if (game.status == 'paused') {
+			if (game.stage == 'paused') {
 				gameModel
 					.joinGame(U_ID, G_ID)
 					.then(() => {

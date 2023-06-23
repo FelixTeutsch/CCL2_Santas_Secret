@@ -58,7 +58,9 @@ let getGames = (U_ID) =>
 let getGamesWithoutUser = (U_ID, other_user) =>
 	new Promise((resolve, reject) => {
 		// const sql = 'SELECT * FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID  WHERE `creator` = ' + db.escape(U_ID) + ' AND `U_ID` <> ' + db.escape(other_user) + '  GROUP BY g.G_ID';
-		const sql = 'SELECT g.* FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID AND ug.U_ID = ' + db.escape(other_user) + ' WHERE g.creator = ' + db.escape(U_ID) + ' AND ug.U_ID IS NULL;';
+		// const sql = 'SELECT g.*, IFNULL(COUNT(ug.G_ID), 0) AS current_members FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID AND ug.U_ID = ' + db.escape(other_user) + ' WHERE g.creator = ' + db.escape(U_ID) + ' AND ug.U_ID IS NULL AND g.stage = ' + db.escape('paused') + ';';
+		// This is already way to complicated to fix. I'm sorry.
+		const sql = 'SELECT g.*, IFNULL(ug.current_members, 0) AS current_members FROM ( SELECT g.G_ID, COUNT(ug.G_ID) AS current_members FROM `game` AS g LEFT JOIN user_game AS ug ON g.G_ID = ug.G_ID AND ug.U_ID = ' + db.escape(other_user) + ' WHERE g.creator = ' + db.escape(U_ID) + ' AND ug.U_ID IS NULL AND g.stage = ' + db.escape('paused') + ' GROUP BY g.G_ID ) AS ug JOIN `game` AS g ON ug.G_ID = g.G_ID WHERE ug.current_members < g.max_members;';
 		db.query(sql, (error, results) => {
 			if (error) reject(error);
 			resolve(results);

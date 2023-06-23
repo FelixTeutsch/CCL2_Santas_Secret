@@ -41,7 +41,8 @@ main {
 @media (max-width: 1080px) {
 	.iconButton_area {
 		width: 100%;
-		justify-content: space-between;
+		/* justify-content: space-between; */
+		justify-content: flex-end;
 	}
 	.game_area {
 		height: calc(100vh - 96px - 250px);

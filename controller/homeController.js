@@ -4,11 +4,10 @@ const gameModel = require('../model/gameModel');
 function viewHome(req, res, next) {
 	// get notificaitons
 	// get games
-	const games = gameModel.getGames(req.user.id);
-	Promise.all([games])
+	const games = gameModel
+		.getGames(req.user.id)
 		.then((values) => {
-			console.log(values);
-			res.render('home', { games: values[0] });
+			res.render('home', { games: values });
 		})
 		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to get home', message: err }));
 }

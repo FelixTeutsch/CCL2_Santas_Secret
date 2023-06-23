@@ -263,10 +263,20 @@ function deleteGame(req, res, next) {
 
 function kickPlayer(req, res, next) {
 	console.log('Kicking player:', req.params.U_ID, 'from game', req.gameId);
-	gameModel.remove(req.gameId, req.params.U_ID).then((result) => {
-		console.log('Kicked player:', result);
-		res.redirect('/game/' + req.gameId + '/info');
-	});
+	gameModel
+		.get(req.gameId)
+		.then((result) => {
+			if (result.stage == 'paused') {
+				gameModel.remove(req.gameId, req.params.U_ID).then((result) => {
+					console.log('Kicked player:', result);
+					res.redirect('/game/' + req.gameId + '/info');
+				});
+			} else {
+				console.log("Can't kick player from running game:", req.gameId);
+				res.redirect('/game/' + req.gameId + '/info');
+			}
+		})
+		.catch((err) => res.redirect('/game/' + req.gameId + '/info'));
 }
 
 module.exports = {

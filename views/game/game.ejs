@@ -57,7 +57,11 @@
 			<% } else if(game.stage == "paused") { %>
 			<div class="game_not_started">
 				<% if(game.creator === user.id) {	%>
-				<a href="/game/<%=game.G_ID%>/start" class="button">Start the Game...</a>
+				<% if(game.current_members >= 2) {	%>
+				<a href="/game/<%=game.G_ID%>/start" class="button">Start Game</a>
+				<%} else {%>
+				<div class="info"><a href="/search">Add</a> people to your game before you start it!</div>
+				<%} %>
 				<%} else {%>
 				<p>
 					This game has not started yet. Wait for <a href="/profile/view/<%= game.username %>"><%= game.username %></a> to start it...
