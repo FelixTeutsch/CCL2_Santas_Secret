@@ -183,11 +183,20 @@ function addToGame(req, res, next) {
 	const G_ID = req.body.id;
 	console.log('User:', U_ID, 'Game:', G_ID);
 	gameModel
-		.joinGame(U_ID, G_ID)
-		.then(() => {
-			res.redirect('/profile/view/' + U_ID);
+		.get(G_ID)
+		.then((game) => {
+			if (game.status == 'paused') {
+				gameModel
+					.joinGame(U_ID, G_ID)
+					.then(() => {
+						res.redirect('/profile/view/' + U_ID);
+					})
+					.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to join game', message: err }));
+			} else {
+				res.status(500).render('error', { status: 500, error: 'Failed to join game', message: 'Game is running' });
+			}
 		})
-		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to join game', message: err }));
+		.catch((err) => res.status(500).render('error', { status: 500, error: 'Failed to Add to game', message: err }));
 }
 
 module.exports = {

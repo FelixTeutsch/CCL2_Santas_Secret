@@ -36,6 +36,10 @@
 				<p class="description_text">
 					<%= game.description %>
 					</p>
+					<p class="descrption_sentiment <%= game.sentiment <= -0.05 ? 'bad': game.sentiment >= 0.05 ? 'good' : 'neutral' %>">
+						Description Sentiment:
+						<%= game.sentiment <= -0.05 ? 'bad': game.sentiment >= 0.05 ? 'good' : 'neutral' %>
+					</p>
 				</div>
 				<div class="join_game_area">
 					<p class="area_description">Members</p>

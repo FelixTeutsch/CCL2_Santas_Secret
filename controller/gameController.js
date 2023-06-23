@@ -99,6 +99,11 @@ function infoGame(req, res, next) {
 
 	Promise.all([game, members])
 		.then((result) => {
+			const vader = require('vader-sentiment');
+			const sentiment = vader.SentimentIntensityAnalyzer.polarity_scores(result[0].description);
+			result[0].sentiment = sentiment.compound;
+			console.log(result[0].sentiment, result[0].description);
+
 			res.render('game/info', { game: result[0], user: req.user, members: result[1] });
 		})
 		.catch((error) => res.status(500).render('error', { status: 500, error: 'Failed to get game', message: error }));
