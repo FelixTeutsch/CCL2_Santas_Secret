@@ -187,6 +187,43 @@ main * {
 	width: 100%;
 }
 
-.game_description {
+.game_description .description_text {
 	opacity: 0.5;
+	margin: 0;
+	padding: 0;
+}
+
+.description_lable {
+	color: var(--colorBackground);
+	font: var(--dFontDesription);
+	display: none;
+}
+
+.descrption_sentiment:hover .description_lable {
+	display: block;
+}
+
+.descrption_sentiment {
+	margin: 4px 8px;
+	cursor: default;
+	transition: all 0.3s ease-in-out;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: fit-content;
+	height: fit-content;
+	border-radius: var(--border-radius);
+	gap: 8px;
+	color: var(--colorBackground);
+	padding: 4px 8px;
+	font: var(--dFontDesription);
+}
+.descrption_sentiment.good {
+	background-color: var(--colorHeading);
+}
+.descrption_sentiment.neutral {
+	background-color: var(--colorText);
+}
+.descrption_sentiment.bad {
+	background-color: var(--colorLink);
 }

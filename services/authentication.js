@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-// const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET; // not working, for whatever reason
 const ACCESS_TOKEN_SECRET = 'test'; // token temporarily set to 'test' for testing purposes
 const salt = 10;
 
