@@ -25,7 +25,7 @@ const config = mySQL.createConnection({
 	port: '',
 	user: 'root',
 	password: '',
-	database: 'santas_secret2',
+	database: 'santas_secret',
 	multipleStatements: true,
 });
 
