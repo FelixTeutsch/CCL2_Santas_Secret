@@ -2,3 +2,5 @@ node_modules/*
 
 .vscode
 .env
+/public/images/profile/*
+/services/database.js
